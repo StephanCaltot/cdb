@@ -1,4 +1,4 @@
-package check;
+package interfaces;
 
 /**
  * @author Caltot Stéphan

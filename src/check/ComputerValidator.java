@@ -1,5 +1,6 @@
 package check;
 
+import interfaces.ICheck;
 import interfaces.IComputer;
 
 /**
@@ -12,7 +13,9 @@ public interface ComputerValidator{
 	public static void check(IComputer pComputer) throws Exception{
 		ICheck.isNotNull(pComputer.getName());
 		StringCheck.isFormed(pComputer.getName());
-		DateCheck.isGood(pComputer.getDateWichIsIntroduced(), pComputer.getDateWichIsDiscontinued());
+		if (pComputer.getDateWichIsIntroduced() != null){
+			DateCheck.isGood(pComputer.getDateWichIsIntroduced(), pComputer.getDateWichIsDiscontinued());	
+		}
 	}
 }
 

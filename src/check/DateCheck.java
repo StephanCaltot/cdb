@@ -3,6 +3,8 @@ package check;
 import java.time.DateTimeException;
 import java.util.Date;
 
+import interfaces.ICheck;
+
 /**
  * @author Caltot Stéphan
  *

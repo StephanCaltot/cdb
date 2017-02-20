@@ -43,6 +43,14 @@ public class Company implements ICompany {
 	public int getId() {
 		return id;
 	}
+	
+
+	/**
+	 * @param pName : the name to set
+	 */
+	public void setId(int pId){
+		this.id = pId;
+	}
 
 
 	/**
@@ -50,15 +58,21 @@ public class Company implements ICompany {
 	 * @author screetts
 	 */
 	public static class CompanyBuilder {
+		@SuppressWarnings("unused")
+		private int id;
 	    private String name;
 
 	    public CompanyBuilder(String name) {
 	      this.name = name;
+	    }
+	    
+	    public CompanyBuilder id (int pId){
+	    	this.id = pId;
+	    	return this;
 	    }
 
 	    public Company build() {
 	      return new Company(this);
 	    }
 	}
-
 }

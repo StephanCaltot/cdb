@@ -11,8 +11,10 @@ import java.util.Date;
 public interface IComputer {
 
 	public int getId();
+	public void setId(int id);
 	
 	public String getName();
+	public void setName(String name);
 	
 	public Date getDateWichIsIntroduced();	
 	public void setDateWichIsIntroduced(Date dateWichIsIntroduced);

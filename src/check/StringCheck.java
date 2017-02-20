@@ -1,5 +1,7 @@
 package check;
 
+import interfaces.ICheck;
+
 /**
  * @author Caltot Stéphan
  *

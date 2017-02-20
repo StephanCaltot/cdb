@@ -1,5 +1,6 @@
 package check;
 
+import interfaces.ICheck;
 import interfaces.ICompany;
 
 /**
