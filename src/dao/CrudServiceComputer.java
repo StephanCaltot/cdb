@@ -4,10 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import entities.Computer;
+
+import entities.computer.Computer;
 import interfaces.IComputer;
 
 /**
+ * Crud service allows CRUD operations on Computer entities 
  * @author Caltot Stéphan
  *
  * 20 févr. 2017
@@ -15,7 +17,7 @@ import interfaces.IComputer;
 public class CrudServiceComputer {
 	
 	private JdbcConnection jdbcConnection = JdbcConnection.getInstance();
-	private Connection connection = jdbcConnection.getConnection();
+	private Connection connection	      = jdbcConnection.getConnection();
 	@SuppressWarnings("unused")
 	private Statement statement;
 	private ResultSet resultSet ;
@@ -27,22 +29,35 @@ public class CrudServiceComputer {
 	
 	
 	
+	/**
+	 * Constructor initializing statement
+	 * @throws SQLException
+	 */
 	public CrudServiceComputer() throws SQLException{
 		statement =  connection.createStatement();
 	}
 	
 	
-	
+	/**
+	 * Create CRUD's operation
+	 * @param pComputer
+	 * @throws SQLException
+	 */
     public void create(IComputer pComputer) throws SQLException {
-		preparedStatementInsert = connection.prepareStatement("insert into computer(name) values ( ? )");
+		preparedStatementInsert = connection.prepareStatement(JdbcPropreties.INSERT);
     	preparedStatementInsert.setString(1, pComputer.getName());;
     	preparedStatementInsert.execute();
     }
 
     
-
+    /**
+     * Find CRUD's operation
+     * @param pId
+     * @return computer entity find with id gave in parameter
+     * @throws Exception
+     */
     public IComputer find(int pId) throws Exception {
-		preparedStatementFind = connection.prepareStatement("select * from computer where id= ?;");
+		preparedStatementFind = connection.prepareStatement(JdbcPropreties.FIND);
     	preparedStatementFind.setInt(1, pId);
     	resultSet = preparedStatementFind.executeQuery();
     	resultSet.next();
@@ -53,16 +68,25 @@ public class CrudServiceComputer {
  
     }
     
-    
+    /**
+     * Delete CRUD's operation
+     * @param pId
+     * @throws SQLException
+     */
     public void delete(int pId) throws SQLException{
-		preparedStatementDelete = connection.prepareStatement("delete from computer where id= ?;");
+		preparedStatementDelete = connection.prepareStatement(JdbcPropreties.DELETE);
     	preparedStatementDelete.setInt(1, pId);
     	preparedStatementDelete.execute();
     }
     
-    
+    /**
+     * Update CRUD's operation
+     * @param pComputer
+     * @return computer entity updated
+     * @throws Exception
+     */
     public IComputer update(IComputer pComputer) throws Exception{
-		preparedStatementUpdate = connection.prepareStatement("update computer set name = ? where id = ?;");
+		preparedStatementUpdate = connection.prepareStatement(JdbcPropreties.UPDATE);
     	preparedStatementUpdate.setString(1, pComputer.getName());;
     	resultSet = preparedStatementFind.executeQuery();
     	resultSet.next();

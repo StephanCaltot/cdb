@@ -1,9 +1,8 @@
-package entities;
+package entities.computer;
 
 
 import java.util.Date;
 
-import check.ComputerValidator;
 import interfaces.ICompany;
 import interfaces.IComputer;
 

@@ -6,13 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import entities.Company;
+import entities.company.Company;
 import interfaces.ICompany;
 
+
+/**
+ * Crud service allows CRUD's operations on Company entities 
+ * @author Caltot Stéphan
+ *
+ * 20 févr. 2017
+ */
 public class CrudServiceCompany {
-	
+
 	private JdbcConnection jdbcConnection = JdbcConnection.getInstance();
-	private Connection connection = jdbcConnection.getConnection();
+	private Connection connection         = jdbcConnection.getConnection();
 	@SuppressWarnings("unused")
 	private Statement statement;
 	private ResultSet resultSet ;
@@ -20,21 +27,35 @@ public class CrudServiceCompany {
 	private PreparedStatement preparedStatementFind;
 	
 	
+	/**
+	 * Constructor initializing statement
+	 * @throws SQLException
+	 */
 	public CrudServiceCompany() throws SQLException{
 		statement =  connection.createStatement();
 	}
 	
 	
-	
+	/**
+	 * Create CRUD's operation
+	 * @param pCompany
+	 * @throws SQLException
+	 */
     public void create(ICompany pCompany) throws SQLException {
-		preparedStatementInsert = connection.prepareStatement("insert into company(name) values ( ? )");
+		preparedStatementInsert = connection.prepareStatement(JdbcPropreties.INSERT);
     	preparedStatementInsert.setString(1, pCompany.getName());;
     	preparedStatementInsert.execute();
     }
 
-
+    
+    /**
+     * Find CRUD's operation
+     * @param pId
+     * @return company entity find with id gave in parameter
+     * @throws SQLException
+     */
     public ICompany find(int pId) throws SQLException {
-		preparedStatementFind = connection.prepareStatement("select * from company where id= ?;");
+		preparedStatementFind = connection.prepareStatement(JdbcPropreties.FIND);
     	preparedStatementFind.setInt(1, pId);
     	resultSet = preparedStatementFind.executeQuery();
     	resultSet.next();

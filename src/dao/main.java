@@ -2,8 +2,9 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import entities.Company;
-import entities.Computer;
+
+import entities.company.Company;
+import entities.computer.Computer;
 import interfaces.ICompany;
 import interfaces.IComputer;
 
@@ -18,26 +19,29 @@ public class main {
 	public static void main(String[] args) throws Exception {
 				
 		
-		Connection connection = JdbcConnection.getInstance().getConnection();
+		//IComputer computer2 = new Computer.ComputerBuilder("f").build();
+		//System.out.println(computer2.display());
+		
+		
+		//Connection connection = JdbcConnection.getInstance().getConnection();
 	
-		ICompany company = new Company.CompanyBuilder("myBrandHtc").build();
+		//ICompany company = new Company.CompanyBuilder("myBrandHtc").build();
 		
 		IComputer computer = new Computer.ComputerBuilder("myBrandHtc").build();
 		
+		
 		CrudServiceComputer crudServiceComputer = new CrudServiceComputer();
+		crudServiceComputer.create(computer);
+		
+		//computer = crudServiceComputer.find(1);
+		//System.out.println(computer.display());
+		
+		//computer.setName("bon sang");
+		//crudServiceComputer.update(computer);
+		
+		/*
 		computer = crudServiceComputer.find(577);
-		System.out.println(computer.display());
-		
-		computer.setName("bon sang");
-		crudServiceComputer.update(computer);
-		
-		
-		computer = crudServiceComputer.find(577);
-		System.out.println(computer.display());
-		
-//		ResultSet res =  stat.executeQuery(sql);
-//		System.out.println(res.next());
-//		System.out.println(res.getString("name"));
+		System.out.println(computer.display());*/
 
 
 		JdbcConnection.getInstance().closeConnection();
