@@ -2,6 +2,9 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
+
 import entities.Company;
 import entities.Computer;
 import interfaces.ICompany;
@@ -25,15 +28,17 @@ public class main {
 		IComputer computer = new Computer.ComputerBuilder("myBrandHtc").build();
 		
 		CrudServiceComputer crudServiceComputer = new CrudServiceComputer();
-		computer = crudServiceComputer.find(577);
-		System.out.println(computer.display());
 		
-		computer.setName("bon sang");
-		crudServiceComputer.update(computer);
+		computer = new CrudServiceComputer().find(1);
+	
+		System.out.println(computer.display() + "\n");
 		
+		//System.out.println(computer.display());
+
 		
-		computer = crudServiceComputer.find(577);
-		System.out.println(computer.display());
+//		computer.setName("alphonse");
+//		crudServiceComputer.update(computer);
+//		
 		
 //		ResultSet res =  stat.executeQuery(sql);
 //		System.out.println(res.next());

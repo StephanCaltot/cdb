@@ -34,7 +34,7 @@ public interface IComputer {
 		return "Computer " + getId() + " brand : " + getName()
 			+ ", introduced in " + getDateWichIsIntroduced()
 			+ " and discontinued in " + getDateWichIsDiscontinued()
-			+ ". Manufactured by " + getManufacturer();
+			+ ". Manufactured by company number " + getManufacturer().getId();
 		}
 	
 }

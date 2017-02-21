@@ -19,7 +19,7 @@ public interface ICompany {
 	 * Display one "Company" entity
 	 */
 	public default String display() {
-		return "Company named" + getName();
+		return "Company " + getId() +   " and named " + getName();
 	}
 	
 }
