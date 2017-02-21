@@ -27,8 +27,8 @@ public class CrudServiceCompany {
 	private ResultSet resultSet ;
 	private PreparedStatement preparedStatementInsert;
 	private PreparedStatement preparedStatementFind;
-	private List<String> companies ;
-
+	private List<ICompany> companies ;
+	private ICompany company;
 	
 	/**
 	 * Constructor initializing statement
@@ -70,13 +70,14 @@ public class CrudServiceCompany {
      * @return list contains all companies
      * @throws Exception
      */
-    public List<String> findAll() throws Exception{
-		companies = new ArrayList<String>();
+    public List<ICompany> findAll() throws Exception{
+		companies = new ArrayList<ICompany>();
 		
     	preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
     	resultSet = preparedStatementFind.executeQuery();
     	while ( resultSet.next()){
-    		companies.add(resultSet.getString("name"));
+    		company = resultSetToEntity(resultSet);
+    		companies.add(company);
     	}
     	return companies;
     }

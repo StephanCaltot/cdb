@@ -32,9 +32,10 @@ public class main {
 		
 		
 		CrudServiceComputer crudServiceComputer = new CrudServiceComputer();
-		List<String> computers = crudServiceComputer.findAll();
-		for(String computerr : computers)
-			System.out.println( computerr.toString());
+		List<IComputer> computers = crudServiceComputer.findAll();
+		
+		for(IComputer computerr : computers)
+			System.out.println(computerr.display());
 
 
 		JdbcConnection.getInstance().closeConnection();

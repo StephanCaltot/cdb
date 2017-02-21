@@ -29,9 +29,15 @@ public class CrudServiceComputer {
 	private PreparedStatement preparedStatementFind;
 	private PreparedStatement preparedStatementDelete;	
 	private PreparedStatement preparedStatementUpdate;
-	private List<String> computers ;
-
-	
+	private PreparedStatement preparedStatementFindAll;
+	private PreparedStatement preparedStatementFindByPage;
+	private List<IComputer> computers ;
+	private IComputer computer;
+	private String name = null;
+	private Date introduced = null;
+	private Date discontinued = null;
+	private int id = 0;
+	public final static int LIMIT = 10;
 	
 	
 	/**
@@ -65,6 +71,7 @@ public class CrudServiceComputer {
 		preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPUTER);
     	preparedStatementFind.setInt(1, pId);
     	resultSet = preparedStatementFind.executeQuery();
+    	resultSet.next();
     	IComputer computer = resultSetToEntity(resultSet);
     	return computer;
  
@@ -95,27 +102,56 @@ public class CrudServiceComputer {
     	preparedStatementUpdate.execute();
     }
     
-    public List<String> findAll() throws Exception{
-		computers = new ArrayList<String>();
-    	preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
-    	resultSet = preparedStatementFind.executeQuery();
-    	while ( resultSet.next()){
-    		computers.add(resultSet.getString("name"));
+    public List<IComputer> findAll() throws Exception{
+		computers = new ArrayList<IComputer>();
+    	preparedStatementFindAll = connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
+    	resultSet = preparedStatementFindAll.executeQuery();
+    	while (resultSet.next()){
+    		computer = resultSetToEntity(resultSet);
+    		computers.add(computer);
+    	}
+    	return computers;
+    }
+    
+    
+    public List<IComputer> findByPage(int pOffset) throws Exception{
+		computers = new ArrayList<IComputer>();
+    	preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER);
+    	preparedStatementFindByPage.setInt(1, LIMIT);
+    	preparedStatementFindByPage.setInt(2, pOffset);
+    	System.out.println(preparedStatementFindByPage.toString());
+    	resultSet = preparedStatementFindByPage.executeQuery();
+    	while (resultSet.next()){
+    		computer = resultSetToEntity(resultSet);
+    		computers.add(computer);
     	}
     	return computers;
     }
     
     public IComputer resultSetToEntity(ResultSet pResultSet) throws Exception{
-    	resultSet.next();
-    	String name = resultSet.getString("name");
-    	Date introduced = resultSet.getDate("introduced");
-    	Date discontinued = resultSet.getDate("discontinued");
+    	
+
+    	if ( resultSet.getInt("id") != 0  ) {
+    		id = resultSet.getInt("id");
+    	}
+    	if (resultSet.getString("name") != null ) {
+        	name = resultSet.getString("name");
+    	}
+    	if (resultSet.getDate("introduced") != null){
+        	introduced = resultSet.getDate("introduced");
+    	}
+    	if (resultSet.getDate("discontinued") != null ){
+        	discontinued = resultSet.getDate("discontinued");
+    	}
     	IComputer computer = new Computer.ComputerBuilder(name).build();
-    	computer.setId(resultSet.getInt("id"));
+    	computer.setId(id);
     	computer.setDateWichIsDiscontinued(discontinued);
     	computer.setDateWichIsIntroduced(introduced);
-    	ICompany company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
-    	computer.setManufacturer(company);
+    	if (resultSet.getInt("company_id") != 0 ) {
+        	ICompany company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
+        	computer.setManufacturer(company);	
+    	}
+    	
     	return computer;
     }
 

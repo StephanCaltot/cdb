@@ -17,7 +17,7 @@ public class JdbcConnection {
 	private static final String DB_IP        = "localhost";
 	private static final String DB_LOGIN     = "admincdb";
 	private static final String DB_PASSWORD  = "qwerty1234";
-	private static final String URL          = "jdbc:mysql://" + DB_IP + "/" + DB_NAME;
+	private static final String URL          = "jdbc:mysql://" + DB_IP + "/" + DB_NAME + "?zeroDateTimeBehavior=convertToNull";
 	private static final String DRIVER 		 = "com.mysql.jdbc.Driver";
 
 	private Connection connection ;
@@ -27,7 +27,7 @@ public class JdbcConnection {
 	 * Singleton's private constructor
 	 */
 	private JdbcConnection(){
-		getConnection();
+		initConnection();
 	}
 	
 	
@@ -35,7 +35,7 @@ public class JdbcConnection {
 	 * Initialization of connection
 	 * @return connection : the open connection
 	 */
-	public Connection getConnection(){
+	public void initConnection(){
 		try {
 			Class.forName(DRIVER);
 		} catch (ClassNotFoundException e1) {
@@ -46,8 +46,10 @@ public class JdbcConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return connection;
+	}
+	
+	public Connection getConnection(){
+		return this.connection;
 	}
 	
 	/**

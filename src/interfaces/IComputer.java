@@ -31,10 +31,9 @@ public interface IComputer {
 	 */
 
 	public default String display() {
-		return "Computer " + getId() + " brand : " + getName()
-			+ ", introduced in " + getDateWichIsIntroduced()
-			+ " and discontinued in " + getDateWichIsDiscontinued()
-			+ ". Manufactured by company number " + getManufacturer().getId();
+		return "Computer (" + getId() + ") - " + getName()
+			+ ((getDateWichIsIntroduced() == null) ? ", not introduced yet ":", introduced in " + getDateWichIsIntroduced())
+			+ ((getDateWichIsIntroduced() == null) ? ", not discontinued yet ":", diconstinued in " + getDateWichIsIntroduced())
+		    + ((getManufacturer() == null) ? ". No company available": ". Manufactured by company number " + getManufacturer().getId() + " .");
 		}
-	
 }
