@@ -9,16 +9,17 @@ package interfaces;
 public interface ICompany {
 
 	public int getId();
+	public void setId(int id);
 	
 	public String getName();
-	
+	public void setName(String name);
 	
 
 	/**
-	 * Display one "Company" entity
+	 * Displays one "Company" entity
 	 */
 	public default String display() {
-		return "Company named" + getName();
+		return "Company " + getId() +   " and named " + getName();
 	}
 	
 }

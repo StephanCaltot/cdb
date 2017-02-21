@@ -11,8 +11,10 @@ import java.util.Date;
 public interface IComputer {
 
 	public int getId();
+	public void setId(int id);
 	
 	public String getName();
+	public void setName(String name);
 	
 	public Date getDateWichIsIntroduced();	
 	public void setDateWichIsIntroduced(Date dateWichIsIntroduced);
@@ -25,14 +27,14 @@ public interface IComputer {
 
 	
 	/**
-	 * Display one "Computer" entity
+	 * Displays one "Computer" entity
 	 */
 
 	public default String display() {
 		return "Computer " + getId() + " brand : " + getName()
 			+ ", introduced in " + getDateWichIsIntroduced()
 			+ " and discontinued in " + getDateWichIsDiscontinued()
-			+ ". Manufactured by " + getManufacturer();
+			+ ". Manufactured by company number " + getManufacturer().getId();
 		}
 	
 }

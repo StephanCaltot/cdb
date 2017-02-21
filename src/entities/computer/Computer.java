@@ -1,9 +1,8 @@
-package entities;
+package entities.computer;
 
 
 import java.util.Date;
 
-import check.ComputerValidator;
 import interfaces.ICompany;
 import interfaces.IComputer;
 
@@ -45,6 +44,15 @@ public class Computer implements IComputer {
 
 
 	/**
+	 * 
+	 * @param pId : the id to set
+	 */
+	public void setId(int pId) {
+		this.id =  pId;
+	}
+	
+	
+	/**
 	 * @return the name
 	 */
 	public String getName() {
@@ -52,7 +60,14 @@ public class Computer implements IComputer {
 	}
 
 
+	/**
+	 * @param pName : the name to set
+	 */
+	public void setName(String pName){
+		this.name = pName;
+	}
 
+	
 	/**
 	 * @return the dateWichIsIntroduced
 	 */
@@ -109,6 +124,8 @@ public class Computer implements IComputer {
 	 * @author screetts
 	 */
 	public static class ComputerBuilder {
+		@SuppressWarnings("unused")
+		private int id;
 		private String name;
 		private Date dateWichIsIntroduced;
 		private Date dateWichIsDiscontinued;
@@ -130,6 +147,11 @@ public class Computer implements IComputer {
 
 	    public ComputerBuilder manufacturer (ICompany manufacturer){
 	    	this.manufacturer = manufacturer;
+	    	return this;
+	    }
+	    
+	    public ComputerBuilder id (int pId){
+	    	this.id = pId;
 	    	return this;
 	    }
 	    

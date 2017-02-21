@@ -1,5 +1,7 @@
-package check;
+package entities.company;
 
+import check.StringCheck;
+import interfaces.ICheck;
 import interfaces.ICompany;
 
 /**
@@ -9,6 +11,11 @@ import interfaces.ICompany;
  */
 public interface CompanyValidator {
 
+	/**
+	 * Method checking Company's entity
+	 * @param pCompany
+	 * @throws Exception
+	 */
 	public static void check(ICompany pCompany) throws Exception{
 		ICheck.isNotNull(pCompany.getName());
 		StringCheck.isFormed(pCompany.getName());
