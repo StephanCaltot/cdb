@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 /**
+ * Class allows jdbc connection ( initialization, opening and closing )
  * @author Caltot Stéphan
  *
  * 20 févr. 2017
@@ -22,13 +23,18 @@ public class JdbcConnection {
 	private Connection connection ;
 	
 	
-	
+	/**
+	 * Singleton's private constructor
+	 */
 	private JdbcConnection(){
 		getConnection();
 	}
 	
 	
-	
+	/**
+	 * Initialization of connection
+	 * @return connection : the open connection
+	 */
 	public Connection getConnection(){
 		try {
 			Class.forName(DRIVER);
@@ -44,7 +50,9 @@ public class JdbcConnection {
 		return connection;
 	}
 	
-	
+	/**
+	 * Close the connection
+	 */
 	public void closeConnection (){
 		try {
 			connection.close();
@@ -53,6 +61,10 @@ public class JdbcConnection {
 		}
 	}
 	
+	/**
+	 * Getter for static instance of singleton
+	 * @return the instance of singleton JdbcConnection
+	 */
 	public static JdbcConnection getInstance(){
 		return JDBC_CONNECTION;
 	}

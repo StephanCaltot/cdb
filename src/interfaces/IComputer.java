@@ -27,7 +27,7 @@ public interface IComputer {
 
 	
 	/**
-	 * Display one "Computer" entity
+	 * Displays one "Computer" entity
 	 */
 
 	public default String display() {
