@@ -5,6 +5,7 @@ import interfaces.ICompany;
 import interfaces.IComputer;
 
 /**
+ * View fir Command line interface
  * @author Caltot Stéphan
  *
  * 21 févr. 2017
@@ -12,7 +13,7 @@ import interfaces.IComputer;
 public class ViewCli {
 
 	@SuppressWarnings("unused")
-	private ControlerCli controlerCli;
+	private ControllerCli controlerCli;
 	
 	public static final String FORMAT_COMPUTER = "%3s | %15.15s |%10s | %10s | %10s%n";
 	
@@ -20,10 +21,20 @@ public class ViewCli {
 
 	public final static String FOOTER = "____________________________________________________"; 
 	
-	public ViewCli (ControlerCli pControlerCli){
+	
+	/**
+	 * View constructor setting controller
+	 * @param pControlerCli
+	 */
+	public ViewCli (ControllerCli pControlerCli){
 		this.controlerCli = pControlerCli;
 	}
 	
+	
+	
+	/**
+	 * Designed display for CLI home
+	 */
 	public void welcome() {
 		System.out.println("####################################################");
 		System.out.println("#                                                  #");
@@ -35,6 +46,11 @@ public class ViewCli {
 		System.out.println("####################################################\n\n");
 	}
 	
+	
+	
+	/**
+	 * Designed display for CLI menu
+	 */
 	public void displayMenu(){
 		System.out.println("\n\n");
 		System.out.println("----------------------> Menu <----------------------\n" );
@@ -50,6 +66,12 @@ public class ViewCli {
 
 	}
 	
+	
+	
+	/**
+	 * Method displaying computers formated
+	 * @param pComputers
+	 */
 	public void displayAllComputers(List<IComputer> pComputers){
 		System.out.println("\n");
 		System.out.printf(FORMAT_COMPUTER, "ID", "NAME" , "INTRODUCED" , "DISCONTINUED" , "COMPANY_ID");
@@ -60,6 +82,11 @@ public class ViewCli {
 	}
 
 	
+	
+	/**
+	 * Method displaying companies formated
+	 * @param pCompanies
+	 */
 	public void displayAllCompanies(List<ICompany> pCompanies){
 		System.out.println("\n");
 		System.out.printf(FORMAT_COMPANY, "ID", "NAME");
@@ -71,10 +98,21 @@ public class ViewCli {
 	}
 	
 	
+	
+	/**
+	 * Method displaying details for on computer
+	 * @param pComputer
+	 */
 	public void displayComputersDetails(IComputer pComputer){
 		System.out.println("\n" + pComputer.display() + "\n");
 	}
 	
+	
+	
+	/**
+	 * Displaying information given in parameter
+	 * @param pInfo
+	 */
 	public void displayInfo(String pInfo){
 		System.out.print(pInfo);
 	}

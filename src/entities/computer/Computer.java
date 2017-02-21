@@ -22,6 +22,7 @@ public class Computer implements IComputer {
 
 	
 	/**
+	 * 
 	 * Private constructor with all needed parameters ( only "name" is absolutly needed )
 	 * @param computerBuilder
 	 */
@@ -35,6 +36,7 @@ public class Computer implements IComputer {
 	}
 
 
+	
 	/**
 	 * @return the id
 	 */
@@ -42,6 +44,7 @@ public class Computer implements IComputer {
 		return id;
 	}
 
+	
 
 	/**
 	 * 
@@ -52,6 +55,7 @@ public class Computer implements IComputer {
 	}
 	
 	
+	
 	/**
 	 * @return the name
 	 */
@@ -59,6 +63,7 @@ public class Computer implements IComputer {
 		return name;
 	}
 
+	
 
 	/**
 	 * @param pName : the name to set
@@ -68,6 +73,7 @@ public class Computer implements IComputer {
 	}
 
 	
+	
 	/**
 	 * @return the dateWichIsIntroduced
 	 */
@@ -75,6 +81,7 @@ public class Computer implements IComputer {
 		return dateWichIsIntroduced;
 	}
 
+	
 
 	/**
 	 * @param dateWichIsIntroduced : the dateWichIsIntroduced to set
@@ -92,6 +99,7 @@ public class Computer implements IComputer {
 		return dateWichIsDiscontinued;
 	}
 
+	
 
 	/**
 	 * @param dateWichIsDiscontinued : the dateWichIsDiscontinued to set
@@ -110,6 +118,7 @@ public class Computer implements IComputer {
 	}
 
 
+	
 	/**
 	 * @param manufacturer : the manufacturer (company) to set
 	 */

@@ -15,6 +15,7 @@ public interface ICompany {
 	public void setName(String name);
 	
 
+	
 	/**
 	 * Displays one "Company" entity
 	 */

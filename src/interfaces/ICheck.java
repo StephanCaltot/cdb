@@ -7,6 +7,9 @@ package interfaces;
  * 20 févr. 2017
  */
 public interface ICheck {
+	
+	
+	
 	/**
 	 * Static method checking "null" for all entities
 	 * @param object

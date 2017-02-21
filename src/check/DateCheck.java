@@ -11,6 +11,9 @@ import interfaces.ICheck;
  * 20 févr. 2017
  */
 public class DateCheck implements ICheck{
+	
+	
+	
 	/**
 	 * Check if first date is before second date and throws an exception
 	 * @param firstDate

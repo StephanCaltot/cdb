@@ -11,6 +11,8 @@ import interfaces.ICompany;
  */
 public interface CompanyValidator {
 
+	
+	
 	/**
 	 * Method checking Company's entity
 	 * @param pCompany

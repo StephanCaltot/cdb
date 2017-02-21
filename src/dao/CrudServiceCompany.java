@@ -1,13 +1,9 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import entities.company.Company;
 import interfaces.ICompany;
 
@@ -20,23 +16,16 @@ import interfaces.ICompany;
  */
 public class CrudServiceCompany {
 
-	private JdbcConnection jdbcConnection = JdbcConnection.getInstance();
-	private Connection connection         = jdbcConnection.getConnection();
-	@SuppressWarnings("unused")
-	private Statement statement;
-	private ResultSet resultSet ;
-	private PreparedStatement preparedStatementInsert;
-	private PreparedStatement preparedStatementFind;
-	private List<ICompany> companies ;
-	private ICompany company;
+	
 	
 	/**
 	 * Constructor initializing statement
 	 * @throws SQLException
 	 */
 	public CrudServiceCompany() throws SQLException{
-		statement =  connection.createStatement();
+		crudServiceConstant.statement =  crudServiceConstant.connection.createStatement();
 	}
+	
 	
 	
 	/**
@@ -45,11 +34,13 @@ public class CrudServiceCompany {
 	 * @throws SQLException
 	 */
     public void create(ICompany pCompany) throws SQLException {
-		preparedStatementInsert = connection.prepareStatement(DaoProperties.CREATE_COMPANY);
-    	preparedStatementInsert.setString(1, pCompany.getName());;
-    	preparedStatementInsert.execute();
+    	crudServiceConstant.preparedStatementInsert = crudServiceConstant.connection.prepareStatement(DaoProperties.CREATE_COMPANY);
+    	crudServiceConstant.preparedStatementInsert.setString(1, pCompany.getName());;
+    	crudServiceConstant.preparedStatementInsert.execute();
     }
 
+    
+    
 	/**
 	 * Find CRUD's operation
 	 * @param pId
@@ -57,13 +48,15 @@ public class CrudServiceCompany {
 	 * @throws SQLException
 	 */
     public ICompany find(int pId) throws Exception {
-		preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPANY);    
-    	preparedStatementFind.setInt(1, pId);
-    	resultSet = preparedStatementFind.executeQuery();
-    	ICompany company = resultSetToEntity(resultSet);
+    	crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_COMPANY);    
+    	crudServiceConstant.preparedStatementFind.setInt(1, pId);
+    	crudServiceConstant.resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
+    	ICompany company = resultSetToEntity(crudServiceConstant.resultSet);
     	return company;
  
     }
+    
+    
     
     /**
      * Retrieves all companies
@@ -71,17 +64,40 @@ public class CrudServiceCompany {
      * @throws Exception
      */
     public List<ICompany> findAll() throws Exception{
-		companies = new ArrayList<ICompany>();
+    	crudServiceConstant.companies = new ArrayList<ICompany>();
 		
-    	preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
-    	resultSet = preparedStatementFind.executeQuery();
-    	while ( resultSet.next()){
-    		company = resultSetToEntity(resultSet);
-    		companies.add(company);
+    	crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
+    	crudServiceConstant.resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
+    	while ( crudServiceConstant.resultSet.next()){
+    		crudServiceConstant.company = resultSetToEntity(crudServiceConstant.resultSet);
+    		crudServiceConstant.companies.add(crudServiceConstant.company);
     	}
-    	return companies;
+    	return crudServiceConstant.companies;
     }
    
+    
+    
+    /**
+     * Allows pagination for findAll companies
+     * @param pOffset
+     * @return list of companies paginated
+     * @throws Exception
+     */
+    public List<ICompany> findByPage(int pOffset) throws Exception{
+    	crudServiceConstant.companies = new ArrayList<ICompany>();
+    	crudServiceConstant.preparedStatementFindByPage = crudServiceConstant.connection.prepareStatement(DaoProperties.PAGE_COMPANY);
+    	crudServiceConstant.preparedStatementFindByPage.setInt(1, crudServiceConstant.LIMIT);
+    	crudServiceConstant.preparedStatementFindByPage.setInt(2, pOffset);
+    	crudServiceConstant.resultSet = crudServiceConstant.preparedStatementFindByPage.executeQuery();
+      	while (crudServiceConstant.resultSet.next()){
+      		crudServiceConstant.company = resultSetToEntity(crudServiceConstant.resultSet);
+      		crudServiceConstant.companies.add(crudServiceConstant.company);
+      	}
+      	return crudServiceConstant.companies;
+      }
+    
+    
+    
     /**
      * Transforms result retrieved in new company entity
      * @param pResultSet
@@ -89,10 +105,10 @@ public class CrudServiceCompany {
      * @throws Exception
      */
     public ICompany resultSetToEntity(ResultSet pResultSet) throws Exception{
-    	resultSet.next();
-    	String name = resultSet.getString("name");
+    	crudServiceConstant.resultSet.next();
+    	String name = crudServiceConstant.resultSet.getString("name");
     	ICompany company = new Company.CompanyBuilder(name).build();
-    	company.setId(resultSet.getInt("id"));
+    	company.setId(crudServiceConstant.resultSet.getInt("id"));
     	return company;
     }
 }

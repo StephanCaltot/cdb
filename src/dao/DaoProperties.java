@@ -1,6 +1,7 @@
 package dao;
 
 /**
+ * Class contains all needed constant for dao request
  * @author Caltot Stéphan
  *
  * 21 févr. 2017

@@ -3,39 +3,61 @@ package cli;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-
 import dao.CrudServiceCompany;
 import dao.CrudServiceComputer;
 import interfaces.ICompany;
 import interfaces.IComputer;
 
 /**
+ * Controler for Command line interface
  * @author Caltot Stéphan
  *
  * 21 févr. 2017
  */
-public class ControlerCli {
+public class ControllerCli {
 
 	private ViewCli viewCli;
 	private CrudServiceComputer crudServiceComputer;
 	private CrudServiceCompany crudServiceCompany;
 	private List<IComputer> computers;
-	private int offset = 0;
+	private List<ICompany> companies;
+	private int offset = 0;	
+	private int offsetCompany = 0;
 	
-	public ControlerCli () throws SQLException{
+	
+	
+	/**
+	 * Controler's constructor setting crudService for company and computer
+	 * @throws SQLException
+	 */
+	public ControllerCli () throws SQLException{
 		crudServiceCompany = new CrudServiceCompany();
 		crudServiceComputer = new CrudServiceComputer();
 	}
 	
+	
+	
+	/**
+	 * @param pViewCLi : the view to set
+	 */
 	public void setViewCli (ViewCli pViewCli){
 		this.viewCli = pViewCli;
 	}
 
 	
+	
+	/**
+	 * Method : listing computers paginated
+	 * @throws Exception
+	 */
 	public void listingOfComputers() throws Exception{
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		String choice = null;
+		
+		computers = crudServiceComputer.findByPage(offset);
+		viewCli.displayAllComputers(computers);
+		viewCli.displayInfo(ViewCli.FOOTER);
 		do{
 			viewCli.displayInfo("\nPress (p) to preview and (n) to next : ");
 			
@@ -48,7 +70,7 @@ public class ControlerCli {
 				viewCli.displayAllComputers(computers);
 				viewCli.displayInfo(ViewCli.FOOTER);
 				break;
-			case "p":
+			case "p" :
 				if (offset-10 >= 0){
 					offset -= 10;
 					computers = crudServiceComputer.findByPage(offset);
@@ -58,8 +80,11 @@ public class ControlerCli {
 					viewCli.displayInfo("Index too low you have to 'next'");
 				}
 				break;
+			case "q" :
+				offset = -1;
+				break;
 			default:
-				viewCli.displayInfo("You have to press (n) or (p)");
+				viewCli.displayInfo("You have to press (n) or (p) or (q) to quit");
 				break;
 			}
 			
@@ -67,13 +92,60 @@ public class ControlerCli {
 		
 	}
 	
+	
+	
+	/**
+	 * Method : listing companies paginated
+	 * @throws Exception
+	 */
 	public void listingOfCompanies() throws Exception{
-		List<ICompany> companies = crudServiceCompany.findAll();
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		String choice = null;
+		
+		companies = crudServiceCompany.findByPage(offsetCompany);
 		viewCli.displayAllCompanies(companies);
 		viewCli.displayInfo(ViewCli.FOOTER);
+		do{
+			viewCli.displayInfo("\nPress (p) to preview and (n) to next : ");
+			
+			choice = scan.nextLine();
+			
+			switch(choice){
+			case "n" :
+				offsetCompany += 10;
+				companies = crudServiceCompany.findByPage(offsetCompany);
+				viewCli.displayAllCompanies(companies);
+				viewCli.displayInfo(ViewCli.FOOTER);
+				break;
+			case "p" :
+				if (offsetCompany-10 >= 0){
+					offsetCompany -= 10;
+					companies = crudServiceCompany.findByPage(offsetCompany);
+					viewCli.displayAllCompanies(companies);
+				}
+				else{
+					viewCli.displayInfo("Index too low you have to 'next'");
+				}
+				break;
+			case "q" :
+				offsetCompany = -1;
+				break;
+			default:
+				viewCli.displayInfo("You have to press (n) or (p) or (q) to quit");
+				break;
+			}
+			
+		} while (offsetCompany >= 0);
+		
 	}
 
-
+	
+	
+	/**
+	 * Method : showing details for one computer
+	 * @throws Exception
+	 */
 	public void showComputersDetails() throws Exception{
 		
 		@SuppressWarnings("resource")
@@ -87,6 +159,12 @@ public class ControlerCli {
 		viewCli.displayComputersDetails(computer);
 	}
 	
+	
+	
+	/**
+	 * Method : deleting one computer
+	 * @throws SQLException
+	 */
 	public void deleteComputer() throws SQLException{
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
@@ -100,7 +178,13 @@ public class ControlerCli {
 		viewCli.displayInfo("\nComputer (" + computerId + ") deleted successfully !\n\n");
 		}
 	
-	public void execute () throws Exception{
+	
+	
+	/**
+	 * Method : handling menu execution
+	 * @throws Exception
+	 */
+	public void execute() throws Exception{
 		
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
@@ -123,24 +207,22 @@ public class ControlerCli {
 				showComputersDetails();
 				break;
 			case "4":
-				deleteComputer();
 				break;
 			case "5":
 				break;
 			case "6":
+				deleteComputer();
 				break;
 			case "q":
 				viewCli.displayInfo(ViewCli.FOOTER);
-				viewCli.displayInfo("CLI closed, good bye !");
+				viewCli.displayInfo("\n		CLI closed, good bye !\n");
 				viewCli.displayInfo(ViewCli.FOOTER);
 				break;
 			case "d":
 				viewCli.displayMenu();
 				break;
 			default :
-				viewCli.displayInfo(ViewCli.FOOTER);
-				viewCli.displayInfo("You pressed an unrecognized key, please hit an other again");
-				viewCli.displayInfo(ViewCli.FOOTER);
+				viewCli.displayInfo("\nYou pressed an unrecognized key, please hit an other again");
 				break;
 			}
 		} while(!inputValue.equals("q"));

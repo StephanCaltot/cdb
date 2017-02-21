@@ -1,13 +1,8 @@
 package dao;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import entities.computer.Computer;
 import interfaces.ICompany;
 import interfaces.IComputer;
@@ -20,24 +15,9 @@ import interfaces.IComputer;
  */
 public class CrudServiceComputer {
 	
-	private JdbcConnection jdbcConnection = JdbcConnection.getInstance();
-	private Connection connection	      = jdbcConnection.getConnection();
-	@SuppressWarnings("unused")
-	private Statement statement;
+
 	private ResultSet resultSet ;
-	private PreparedStatement preparedStatementInsert;
-	private PreparedStatement preparedStatementFind;
-	private PreparedStatement preparedStatementDelete;	
-	private PreparedStatement preparedStatementUpdate;
-	private PreparedStatement preparedStatementFindAll;
-	private PreparedStatement preparedStatementFindByPage;
-	private List<IComputer> computers ;
-	private IComputer computer;
-	private String name = null;
-	private Date introduced = null;
-	private Date discontinued = null;
-	private int id = 0;
-	public final static int LIMIT = 10;
+	
 	
 	
 	/**
@@ -45,8 +25,9 @@ public class CrudServiceComputer {
 	 * @throws SQLException
 	 */
 	public CrudServiceComputer() throws SQLException{
-		statement =  connection.createStatement();
+		crudServiceConstant.statement =  crudServiceConstant.connection.createStatement();
 	}
+	
 	
 	
 	/**
@@ -55,11 +36,12 @@ public class CrudServiceComputer {
 	 * @throws SQLException
 	 */
     public void create(IComputer pComputer) throws SQLException {
-		preparedStatementInsert = connection.prepareStatement(DaoProperties.CREATE_COMPUTER);
-    	preparedStatementInsert.setString(1, pComputer.getName());;
-    	preparedStatementInsert.execute();
+    	crudServiceConstant.preparedStatementInsert = crudServiceConstant.connection.prepareStatement(DaoProperties.CREATE_COMPUTER);
+    	crudServiceConstant.preparedStatementInsert.setString(1, pComputer.getName());;
+    	crudServiceConstant.preparedStatementInsert.execute();
     }
 
+    
     
     /**
      * Find CRUD's operation
@@ -68,14 +50,16 @@ public class CrudServiceComputer {
      * @throws Exception
      */
     public IComputer find(int pId) throws Exception {
-		preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPUTER);
-    	preparedStatementFind.setInt(1, pId);
-    	resultSet = preparedStatementFind.executeQuery();
+    	crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_COMPUTER);
+    	crudServiceConstant.preparedStatementFind.setInt(1, pId);
+    	resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
     	resultSet.next();
     	IComputer computer = resultSetToEntity(resultSet);
     	return computer;
  
     }
+    
+    
     
     /**
      * Delete CRUD's operation
@@ -83,10 +67,12 @@ public class CrudServiceComputer {
      * @throws SQLException
      */
     public void delete(int pId) throws SQLException{
-		preparedStatementDelete = connection.prepareStatement(DaoProperties.DELETE_COMPUTER);
-    	preparedStatementDelete.setInt(1, pId);
-    	preparedStatementDelete.execute();
+    	crudServiceConstant.preparedStatementDelete = crudServiceConstant.connection.prepareStatement(DaoProperties.DELETE_COMPUTER);
+    	crudServiceConstant.preparedStatementDelete.setInt(1, pId);
+    	crudServiceConstant.preparedStatementDelete.execute();
     }
+    
+    
     
     /**
      * Update CRUD's operation
@@ -95,58 +81,77 @@ public class CrudServiceComputer {
      * @throws Exception
      */
     public void update(IComputer pComputer) throws Exception{
-		preparedStatementUpdate = connection.prepareStatement(DaoProperties.UPDATE_COMPUTER);
-    	preparedStatementUpdate.setString(1, pComputer.getName());
-    	preparedStatementUpdate.setInt(2, pComputer.getId());
-    	System.out.println(preparedStatementUpdate.toString());
-    	preparedStatementUpdate.execute();
+    	crudServiceConstant.preparedStatementUpdate = crudServiceConstant.connection.prepareStatement(DaoProperties.UPDATE_COMPUTER);
+    	crudServiceConstant.preparedStatementUpdate.setString(1, pComputer.getName());
+    	crudServiceConstant.preparedStatementUpdate.setInt(2, pComputer.getId());
+    	crudServiceConstant.preparedStatementUpdate.execute();
     }
     
+    
+    
+    /**
+     * Retrieves all computers without any pagination
+     * @return list of computers
+     * @throws Exception
+     */
     public List<IComputer> findAll() throws Exception{
-		computers = new ArrayList<IComputer>();
-    	preparedStatementFindAll = connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
-    	resultSet = preparedStatementFindAll.executeQuery();
+    	crudServiceConstant.computers = new ArrayList<IComputer>();
+		crudServiceConstant.preparedStatementFindAll = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
+    	resultSet = crudServiceConstant.preparedStatementFindAll.executeQuery();
     	while (resultSet.next()){
-    		computer = resultSetToEntity(resultSet);
-    		computers.add(computer);
+    		crudServiceConstant.computer = resultSetToEntity(resultSet);
+    		crudServiceConstant.computers.add(crudServiceConstant.computer);
     	}
-    	return computers;
+    	return crudServiceConstant.computers;
     }
     
     
+    
+    /**
+     * Retrieves computers paginated by limit ( 10 here )
+     * @param pOffset
+     * @return list of computers paginated
+     * @throws Exception
+     */
     public List<IComputer> findByPage(int pOffset) throws Exception{
-		computers = new ArrayList<IComputer>();
-    	preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER);
-    	preparedStatementFindByPage.setInt(1, LIMIT);
-    	preparedStatementFindByPage.setInt(2, pOffset);
-    	System.out.println(preparedStatementFindByPage.toString());
-    	resultSet = preparedStatementFindByPage.executeQuery();
+    	crudServiceConstant.computers = new ArrayList<IComputer>();
+		crudServiceConstant.preparedStatementFindByPage = crudServiceConstant.connection.prepareStatement(DaoProperties.PAGE_COMPUTER);
+		crudServiceConstant.preparedStatementFindByPage.setInt(1, crudServiceConstant.LIMIT);
+		crudServiceConstant.preparedStatementFindByPage.setInt(2, pOffset);
+    	resultSet = crudServiceConstant.preparedStatementFindByPage.executeQuery();
     	while (resultSet.next()){
-    		computer = resultSetToEntity(resultSet);
-    		computers.add(computer);
+    		crudServiceConstant.computer = resultSetToEntity(resultSet);
+    		crudServiceConstant.computers.add(crudServiceConstant.computer);
     	}
-    	return computers;
+    	return crudServiceConstant.computers;
     }
     
+    
+    
+    /**
+     * Method transform resultSet in computer entity
+     * @param pResultSet
+     * @return IComputer
+     * @throws Exception
+     */
     public IComputer resultSetToEntity(ResultSet pResultSet) throws Exception{
-    	
 
     	if ( resultSet.getInt("id") != 0  ) {
-    		id = resultSet.getInt("id");
+    		crudServiceConstant.id = resultSet.getInt("id");
     	}
     	if (resultSet.getString("name") != null ) {
-        	name = resultSet.getString("name");
+    		crudServiceConstant.name = resultSet.getString("name");
     	}
     	if (resultSet.getDate("introduced") != null){
-        	introduced = resultSet.getDate("introduced");
+    		crudServiceConstant.introduced = resultSet.getDate("introduced");
     	}
     	if (resultSet.getDate("discontinued") != null ){
-        	discontinued = resultSet.getDate("discontinued");
+    		crudServiceConstant.discontinued = resultSet.getDate("discontinued");
     	}
-    	IComputer computer = new Computer.ComputerBuilder(name).build();
-    	computer.setId(id);
-    	computer.setDateWichIsDiscontinued(discontinued);
-    	computer.setDateWichIsIntroduced(introduced);
+    	IComputer computer = new Computer.ComputerBuilder(crudServiceConstant.name).build();
+    	computer.setId(crudServiceConstant.id);
+    	computer.setDateWichIsDiscontinued(crudServiceConstant.discontinued);
+    	computer.setDateWichIsIntroduced(crudServiceConstant.introduced);
     	if (resultSet.getInt("company_id") != 0 ) {
         	ICompany company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
         	computer.setManufacturer(company);	

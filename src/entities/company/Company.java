@@ -13,6 +13,8 @@ public class Company implements ICompany {
 	private int id;
 	private String name;
 
+	
+	
 	/**
 	 * Private constructor with all needed parameters ( only "name" is absolutly needed )
 	 * @param companyBuilder
@@ -22,6 +24,7 @@ public class Company implements ICompany {
 	}
 
 	
+	
 	/**
 	 * @return the name
 	 */
@@ -29,6 +32,8 @@ public class Company implements ICompany {
 		return name;
 	}
 
+	
+	
 	/**
 	 * @param name : the name to set
 	 */
@@ -36,6 +41,7 @@ public class Company implements ICompany {
 		this.name = name;
 	}
 
+	
 
 	/**
 	 * @return the id
@@ -45,6 +51,7 @@ public class Company implements ICompany {
 	}
 	
 
+	
 	/**
 	 * @param pName : the name to set
 	 */
@@ -53,6 +60,7 @@ public class Company implements ICompany {
 	}
 
 
+	
 	/**
 	 * Builder Pattern for company
 	 * @author screetts

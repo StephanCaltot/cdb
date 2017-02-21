@@ -23,12 +23,14 @@ public class JdbcConnection {
 	private Connection connection ;
 	
 	
+	
 	/**
 	 * Singleton's private constructor
 	 */
 	private JdbcConnection(){
 		initConnection();
 	}
+	
 	
 	
 	/**
@@ -48,9 +50,17 @@ public class JdbcConnection {
 		}
 	}
 	
+	
+	
+	/**
+	 * Retrieves the connection
+	 * @return connection
+	 */
 	public Connection getConnection(){
 		return this.connection;
 	}
+	
+	
 	
 	/**
 	 * Close the connection
@@ -62,6 +72,8 @@ public class JdbcConnection {
 			e1.printStackTrace();
 		}
 	}
+	
+	
 	
 	/**
 	 * Getter for static instance of singleton

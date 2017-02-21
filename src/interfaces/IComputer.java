@@ -29,7 +29,6 @@ public interface IComputer {
 	/**
 	 * Displays one "Computer" entity
 	 */
-
 	public default String display() {
 		return "Computer (" + getId() + ") - " + getName()
 			+ ((getDateWichIsIntroduced() == null) ? ", not introduced yet ":", introduced in " + getDateWichIsIntroduced())

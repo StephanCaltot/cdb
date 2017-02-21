@@ -11,6 +11,9 @@ import interfaces.IComputer;
  * 20 févr. 2017
  */
 public interface ComputerValidator{
+	
+	
+	
 	/**
 	 * Static method checking Computer entity
 	 * @param pComputer
