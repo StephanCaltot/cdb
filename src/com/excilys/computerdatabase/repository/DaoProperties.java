@@ -1,4 +1,4 @@
-package dao;
+package com.excilys.computerdatabase.repository;
 
 /**
  * Class contains all needed constant for dao request

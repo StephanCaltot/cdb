@@ -1,11 +1,12 @@
-package dao;
+package com.excilys.computerdatabase.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import entities.computer.Computer;
-import interfaces.ICompany;
-import interfaces.IComputer;
+
+import com.excilys.computerdatabase.entities.company.Company;
+import com.excilys.computerdatabase.entities.computer.Computer;
 
 /**
  * Crud service allows CRUD operations on Computer entities 
@@ -13,11 +14,12 @@ import interfaces.IComputer;
  *
  * 20 févr. 2017
  */
-public class CrudServiceComputer {
+public class CrudServiceComputer implements CrudService<Computer> {
 	
 
 	private ResultSet resultSet ;
-	
+	private Computer computer;
+	private List<Computer> computers;
 	
 	
 	/**
@@ -35,9 +37,9 @@ public class CrudServiceComputer {
 	 * @param pComputer
 	 * @throws SQLException
 	 */
-    public void create(IComputer pComputer) throws SQLException {
+    public void create(Computer computer) throws SQLException {
     	crudServiceConstant.preparedStatementInsert = crudServiceConstant.connection.prepareStatement(DaoProperties.CREATE_COMPUTER);
-    	crudServiceConstant.preparedStatementInsert.setString(1, pComputer.getName());;
+    	crudServiceConstant.preparedStatementInsert.setString(1, computer.getName());;
     	crudServiceConstant.preparedStatementInsert.execute();
     }
 
@@ -49,12 +51,12 @@ public class CrudServiceComputer {
      * @return computer entity find with id gave in parameter
      * @throws Exception
      */
-    public IComputer find(int pId) throws Exception {
+    public Computer find(long id) throws Exception {
     	crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_COMPUTER);
-    	crudServiceConstant.preparedStatementFind.setInt(1, pId);
+    	crudServiceConstant.preparedStatementFind.setLong(1, id);
     	resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
     	resultSet.next();
-    	IComputer computer = resultSetToEntity(resultSet);
+    	Computer computer = resultSetToEntity();
     	return computer;
  
     }
@@ -66,9 +68,9 @@ public class CrudServiceComputer {
      * @param pId
      * @throws SQLException
      */
-    public void delete(int pId) throws SQLException{
+    public void delete(long id) throws SQLException{
     	crudServiceConstant.preparedStatementDelete = crudServiceConstant.connection.prepareStatement(DaoProperties.DELETE_COMPUTER);
-    	crudServiceConstant.preparedStatementDelete.setInt(1, pId);
+    	crudServiceConstant.preparedStatementDelete.setLong(1, id);
     	crudServiceConstant.preparedStatementDelete.execute();
     }
     
@@ -80,10 +82,10 @@ public class CrudServiceComputer {
      * @return computer entity updated
      * @throws Exception
      */
-    public void update(IComputer pComputer) throws Exception{
+    public void update(Computer computer) throws Exception{
     	crudServiceConstant.preparedStatementUpdate = crudServiceConstant.connection.prepareStatement(DaoProperties.UPDATE_COMPUTER);
-    	crudServiceConstant.preparedStatementUpdate.setString(1, pComputer.getName());
-    	crudServiceConstant.preparedStatementUpdate.setInt(2, pComputer.getId());
+    	crudServiceConstant.preparedStatementUpdate.setString(1, computer.getName());
+    	crudServiceConstant.preparedStatementUpdate.setLong(2, computer.getId());
     	crudServiceConstant.preparedStatementUpdate.execute();
     }
     
@@ -94,15 +96,15 @@ public class CrudServiceComputer {
      * @return list of computers
      * @throws Exception
      */
-    public List<IComputer> findAll() throws Exception{
-    	crudServiceConstant.computers = new ArrayList<IComputer>();
+    public List<Computer> findAll() throws Exception{
+    	computers = new ArrayList<>();
 		crudServiceConstant.preparedStatementFindAll = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
     	resultSet = crudServiceConstant.preparedStatementFindAll.executeQuery();
     	while (resultSet.next()){
-    		crudServiceConstant.computer = resultSetToEntity(resultSet);
-    		crudServiceConstant.computers.add(crudServiceConstant.computer);
+    		computer = resultSetToEntity();
+    		computers.add(computer);
     	}
-    	return crudServiceConstant.computers;
+    	return computers;
     }
     
     
@@ -113,17 +115,17 @@ public class CrudServiceComputer {
      * @return list of computers paginated
      * @throws Exception
      */
-    public List<IComputer> findByPage(int pOffset) throws Exception{
-    	crudServiceConstant.computers = new ArrayList<IComputer>();
+    public List<Computer> findByPage(long offset) throws Exception{
+    	computers = new ArrayList<>();
 		crudServiceConstant.preparedStatementFindByPage = crudServiceConstant.connection.prepareStatement(DaoProperties.PAGE_COMPUTER);
 		crudServiceConstant.preparedStatementFindByPage.setInt(1, crudServiceConstant.LIMIT);
-		crudServiceConstant.preparedStatementFindByPage.setInt(2, pOffset);
+		crudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
     	resultSet = crudServiceConstant.preparedStatementFindByPage.executeQuery();
     	while (resultSet.next()){
-    		crudServiceConstant.computer = resultSetToEntity(resultSet);
-    		crudServiceConstant.computers.add(crudServiceConstant.computer);
+    		computer = resultSetToEntity();
+    		computers.add(computer);
     	}
-    	return crudServiceConstant.computers;
+    	return computers;
     }
     
     
@@ -134,26 +136,31 @@ public class CrudServiceComputer {
      * @return IComputer
      * @throws Exception
      */
-    public IComputer resultSetToEntity(ResultSet pResultSet) throws Exception{
-
-    	if ( resultSet.getInt("id") != 0  ) {
-    		crudServiceConstant.id = resultSet.getInt("id");
+    public Computer resultSetToEntity() throws Exception{
+    	
+    	long id = 0;
+    	String name = null;
+    	Date introduced = null;
+    	Date discontinued = null;
+    	
+    	if ( resultSet.getLong("id") != 0  ) {
+    		id = resultSet.getLong("id");
     	}
     	if (resultSet.getString("name") != null ) {
-    		crudServiceConstant.name = resultSet.getString("name");
+    		name = resultSet.getString("name");
     	}
     	if (resultSet.getDate("introduced") != null){
-    		crudServiceConstant.introduced = resultSet.getDate("introduced");
+    		introduced = resultSet.getDate("introduced");
     	}
     	if (resultSet.getDate("discontinued") != null ){
-    		crudServiceConstant.discontinued = resultSet.getDate("discontinued");
+    		discontinued = resultSet.getDate("discontinued");
     	}
-    	IComputer computer = new Computer.ComputerBuilder(crudServiceConstant.name).build();
-    	computer.setId(crudServiceConstant.id);
-    	computer.setDateWichIsDiscontinued(crudServiceConstant.discontinued);
-    	computer.setDateWichIsIntroduced(crudServiceConstant.introduced);
+    	Computer computer = new Computer.Builder().withName(name).build();
+		computer.setId(id);
+    	computer.setDateWichIsDiscontinued(discontinued);
+    	computer.setDateWichIsIntroduced(introduced);
     	if (resultSet.getInt("company_id") != 0 ) {
-        	ICompany company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
+        	Company company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
         	computer.setManufacturer(company);	
     	}
     	

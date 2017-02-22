@@ -1,4 +1,4 @@
-package cli;
+package com.excilys.computerdatabase.cli;
 
 /**
  * Main of Command line interface
@@ -8,6 +8,8 @@ package cli;
  */
 public class MainCli {
 
+	
+	
 	/**
 	 * Main for launch et handle CLI
 	 * @param args

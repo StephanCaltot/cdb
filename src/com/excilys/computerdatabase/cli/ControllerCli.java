@@ -1,12 +1,13 @@
-package cli;
+package com.excilys.computerdatabase.cli;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-import dao.CrudServiceCompany;
-import dao.CrudServiceComputer;
-import interfaces.ICompany;
-import interfaces.IComputer;
+
+import com.excilys.computerdatabase.entities.company.Company;
+import com.excilys.computerdatabase.entities.computer.Computer;
+import com.excilys.computerdatabase.repository.CrudServiceCompany;
+import com.excilys.computerdatabase.repository.CrudServiceComputer;
 
 /**
  * Controler for Command line interface
@@ -19,8 +20,8 @@ public class ControllerCli {
 	private ViewCli viewCli;
 	private CrudServiceComputer crudServiceComputer;
 	private CrudServiceCompany crudServiceCompany;
-	private List<IComputer> computers;
-	private List<ICompany> companies;
+	private List<Computer> computers;
+	private List<Company> companies;
 	private int offset = 0;	
 	private int offsetCompany = 0;
 	
@@ -155,7 +156,7 @@ public class ControllerCli {
 			viewCli.displayInfo("\nPlease enter the computer's id : ");
 			computerId = scan.nextInt();			
 		} while (computerId == 0);
-		IComputer computer = crudServiceComputer.find(computerId);
+		Computer computer = crudServiceComputer.find(computerId);
 		viewCli.displayComputersDetails(computer);
 	}
 	

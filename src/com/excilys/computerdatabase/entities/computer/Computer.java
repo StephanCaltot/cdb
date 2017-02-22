@@ -1,10 +1,10 @@
-package entities.computer;
+package com.excilys.computerdatabase.entities.computer;
 
 
 import java.util.Date;
 
-import interfaces.ICompany;
-import interfaces.IComputer;
+import com.excilys.computerdatabase.entities.company.Company;
+
 
 /**
  * Class representing a Computer implementing IComputer
@@ -12,27 +12,21 @@ import interfaces.IComputer;
  *
  * 20 févr. 2017
  */
-public class Computer implements IComputer {
+public class Computer {
 	
-	private int id;
+	private long id;
 	private String name;
 	private Date dateWichIsIntroduced;
 	private Date dateWichIsDiscontinued;
-	private ICompany manufacturer;
+	private Company manufacturer;
 
 	
 	/**
 	 * 
-	 * Private constructor with all needed parameters ( only "name" is absolutly needed )
+	 * Private constructor with no parameters 
 	 * @param computerBuilder
 	 */
-	private Computer (ComputerBuilder computerBuilder) {
-		super();
-		this.name = computerBuilder.name;
-		this.dateWichIsIntroduced = computerBuilder.dateWichIsIntroduced;
-		this.dateWichIsDiscontinued = computerBuilder.dateWichIsDiscontinued;
-		this.manufacturer = computerBuilder.manufacturer;
-
+	private Computer () {
 	}
 
 
@@ -40,7 +34,7 @@ public class Computer implements IComputer {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -50,7 +44,7 @@ public class Computer implements IComputer {
 	 * 
 	 * @param pId : the id to set
 	 */
-	public void setId(int pId) {
+	public void setId(long pId) {
 		this.id =  pId;
 	}
 	
@@ -113,7 +107,7 @@ public class Computer implements IComputer {
 	/**
 	 * @return the manufacturer
 	 */
-	public ICompany getManufacturer() {
+	public Company getManufacturer() {
 		return manufacturer;
 	}
 
@@ -122,55 +116,73 @@ public class Computer implements IComputer {
 	/**
 	 * @param manufacturer : the manufacturer (company) to set
 	 */
-	public void setManufacturer(ICompany manufacturer) {
+	public void setManufacturer(Company manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 
 
+	
+	
+	/**
+	 * Displays one "Computer" entity
+	 */
+	@Override
+	public String toString() {
+		return "Computer (" + getId() + ") - " + getName()
+			+ ((getDateWichIsIntroduced() == null) ? ", not introduced yet ":", introduced in " + getDateWichIsIntroduced())
+			+ ((getDateWichIsIntroduced() == null) ? ", not discontinued yet ":", diconstinued in " + getDateWichIsIntroduced())
+		    + ((getManufacturer() == null) ? ". No company available": ". Manufactured by company number " + getManufacturer().getId() + " .");
+		}
+	
 
+	
+	
+	
+	
 	/**
 	 * Builder Pattern for computer
 	 * @author screetts
 	 */
-	public static class ComputerBuilder {
-		@SuppressWarnings("unused")
-		private int id;
-		private String name;
-		private Date dateWichIsIntroduced;
-		private Date dateWichIsDiscontinued;
-		private ICompany manufacturer;
+	public static class Builder {
 		
-	    public ComputerBuilder(String name) {
-	      this.name = name;
+		private Computer computer;
+		
+	    public Builder() {
+	      this.computer = new Computer();
 	    }
 	    
-	    public ComputerBuilder dateWichIsIntroduced (Date dateWichIsIntroduced){
-	    	this.dateWichIsIntroduced = dateWichIsIntroduced;
+	    public Builder withDateWichIsIntroduced (Date dateWichIsIntroduced){
+	    	this.computer.dateWichIsIntroduced = dateWichIsIntroduced;
 	    	return this;
 	    }
 
-	    public ComputerBuilder dateWichIsDiscontinued (Date dateWichIsDiscontinued){
-	    	this.dateWichIsIntroduced = dateWichIsDiscontinued;
+	    public Builder withDateWichIsDiscontinued (Date dateWichIsDiscontinued){
+	    	this.computer.dateWichIsIntroduced = dateWichIsDiscontinued;
 	    	return this;
 	    }
 
-	    public ComputerBuilder manufacturer (ICompany manufacturer){
-	    	this.manufacturer = manufacturer;
+	    public Builder withManufacturer (Company manufacturer){
+	    	this.computer.manufacturer = manufacturer;
 	    	return this;
 	    }
 	    
-	    public ComputerBuilder id (int pId){
-	    	this.id = pId;
+	    public Builder withId (long id){
+	    	this.computer.id = id;
 	    	return this;
 	    }
 	    
 	    
-	    public IComputer build() throws Exception {
+	    public Builder withName (String name){
+	    	this.computer.name = name;
+	    	return this;
+	    }
+	    
+	    
+	    public Computer build() throws Exception {
 	    	
-	    	IComputer computer = new Computer(this);
 	    	ComputerValidator.check(computer);
 	    	
-	    	return new Computer(this);
+	    	return computer;
 	    }
 	}
 	

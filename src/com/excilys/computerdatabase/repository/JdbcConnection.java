@@ -1,4 +1,4 @@
-package dao;
+package com.excilys.computerdatabase.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,15 +9,16 @@ import java.sql.SQLException;
  *
  * 20 févr. 2017
  */
-public class JdbcConnection {
+public enum JdbcConnection {
 
-	private static final JdbcConnection JDBC_CONNECTION = new JdbcConnection();
+	INSTANCE;
 	
 	private static final String DB_NAME      = "computer-database-db";
 	private static final String DB_IP        = "localhost";
 	private static final String DB_LOGIN     = "admincdb";
 	private static final String DB_PASSWORD  = "qwerty1234";
-	private static final String URL          = "jdbc:mysql://" + DB_IP + "/" + DB_NAME + "?zeroDateTimeBehavior=convertToNull";
+	private static final String SGBD         = "jdbc:mysql";
+	private static final String URL          = SGBD + "://" + DB_IP + "/" + DB_NAME + "?zeroDateTimeBehavior=convertToNull";
 	private static final String DRIVER 		 = "com.mysql.jdbc.Driver";
 
 	private Connection connection ;
@@ -58,28 +59,5 @@ public class JdbcConnection {
 	 */
 	public Connection getConnection(){
 		return this.connection;
-	}
-	
-	
-	
-	/**
-	 * Close the connection
-	 */
-	public void closeConnection (){
-		try {
-			connection.close();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
-	
-	
-	
-	/**
-	 * Getter for static instance of singleton
-	 * @return the instance of singleton JdbcConnection
-	 */
-	public static JdbcConnection getInstance(){
-		return JDBC_CONNECTION;
 	}
 }

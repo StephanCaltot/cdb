@@ -1,8 +1,7 @@
-package check;
+package com.excilys.computerdatabase.check;
 
 import java.time.DateTimeException;
 import java.util.Date;
-import interfaces.ICheck;
 
 /**
  * Verifying date initialization  
@@ -10,7 +9,7 @@ import interfaces.ICheck;
  *
  * 20 févr. 2017
  */
-public class DateCheck implements ICheck{
+public class DateCheck {
 	
 	
 	

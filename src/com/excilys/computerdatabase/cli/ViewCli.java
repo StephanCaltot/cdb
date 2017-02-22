@@ -1,8 +1,9 @@
-package cli;
+package com.excilys.computerdatabase.cli;
 
 import java.util.List;
-import interfaces.ICompany;
-import interfaces.IComputer;
+
+import com.excilys.computerdatabase.entities.company.Company;
+import com.excilys.computerdatabase.entities.computer.Computer;
 
 /**
  * View fir Command line interface
@@ -20,6 +21,7 @@ public class ViewCli {
 	public static final String FORMAT_COMPANY  = "%3s | %15.15s%n";
 
 	public final static String FOOTER = "____________________________________________________"; 
+	
 	
 	
 	/**
@@ -72,10 +74,10 @@ public class ViewCli {
 	 * Method displaying computers formated
 	 * @param pComputers
 	 */
-	public void displayAllComputers(List<IComputer> pComputers){
+	public void displayAllComputers(List<Computer> computers){
 		System.out.println("\n");
 		System.out.printf(FORMAT_COMPUTER, "ID", "NAME" , "INTRODUCED" , "DISCONTINUED" , "COMPANY_ID");
-		for (IComputer computer : pComputers){
+		for (Computer computer : computers){
 			System.out.printf(FORMAT_COMPUTER,computer.getId(), computer.getName(),computer.getDateWichIsIntroduced(), computer.getDateWichIsDiscontinued(), ((computer.getManufacturer() == null) ? "No company": computer.getManufacturer().getId()));								
 		}
 		System.out.println("\n");
@@ -87,11 +89,11 @@ public class ViewCli {
 	 * Method displaying companies formated
 	 * @param pCompanies
 	 */
-	public void displayAllCompanies(List<ICompany> pCompanies){
+	public void displayAllCompanies(List<Company> companies){
 		System.out.println("\n");
 		System.out.printf(FORMAT_COMPANY, "ID", "NAME");
 		System.out.println("---------------------");
-		for (ICompany company : pCompanies){
+		for (Company company : companies){
 			System.out.printf(FORMAT_COMPANY, company.getId(), company.getName() );
 		}
 		System.out.println("\n");
@@ -103,8 +105,8 @@ public class ViewCli {
 	 * Method displaying details for on computer
 	 * @param pComputer
 	 */
-	public void displayComputersDetails(IComputer pComputer){
-		System.out.println("\n" + pComputer.display() + "\n");
+	public void displayComputersDetails(Computer computer){
+		System.out.println("\n" + computer.toString() + "\n");
 	}
 	
 	
