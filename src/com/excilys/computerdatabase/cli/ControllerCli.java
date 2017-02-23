@@ -39,7 +39,7 @@ public class ControllerCli {
 		scan = ScannerSystemIn.getInstance();
 	}
 	
-	
+		
 	
 	/**
 	 * @param pViewCLi : the view to set

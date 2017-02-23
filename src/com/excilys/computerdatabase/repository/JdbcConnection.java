@@ -9,21 +9,16 @@ import java.sql.SQLException;
  *
  * 20 févr. 2017
  */
+import java.util.Properties;
+
+import com.excilys.computerdatabase.PropertiesFile;
 public class JdbcConnection {
 
 	
-	private static final String DB_NAME      = "computer-database-db";
-	private static final String DB_IP        = "localhost";
-	private static final String DB_LOGIN     = "admincdb";
-	private static final String DB_PASSWORD  = "qwerty1234";
-	private static final String SGBD         = "jdbc:mysql";
-	private static final String URL          = SGBD + "://" + DB_IP + "/" + DB_NAME + "?zeroDateTimeBehavior=convertToNull";
-	private static final String DRIVER 		 = "com.mysql.jdbc.Driver";
-
 	private Connection connection ;
 	
-	
-	
+	private Properties properties = new PropertiesFile().getProperties("sgbd.propreties");
+		
 	/**
 	 * Singleton's private constructor
 	 */
