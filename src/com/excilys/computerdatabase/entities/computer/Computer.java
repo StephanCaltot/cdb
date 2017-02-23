@@ -1,7 +1,7 @@
 package com.excilys.computerdatabase.entities.computer;
 
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.logging.Logger;
 import com.excilys.computerdatabase.entities.company.Company;
 
@@ -18,8 +18,8 @@ public class Computer {
 	private final static Logger LOGGER = Logger.getLogger(Computer.class.getName());
 	private long id;
 	private String name;
-	private Date dateWichIsIntroduced;
-	private Date dateWichIsDiscontinued;
+	private LocalDate dateWichIsIntroduced;
+	private LocalDate dateWichIsDiscontinued;
 	private Company manufacturer;
 
 	
@@ -74,7 +74,7 @@ public class Computer {
 	/**
 	 * @return the dateWichIsIntroduced
 	 */
-	public Date getDateWichIsIntroduced() {
+	public LocalDate getDateWichIsIntroduced() {
 		return dateWichIsIntroduced;
 	}
 
@@ -83,7 +83,7 @@ public class Computer {
 	/**
 	 * @param dateWichIsIntroduced : the dateWichIsIntroduced to set
 	 */
-	public void setDateWichIsIntroduced(Date dateWichIsIntroduced) {
+	public void setDateWichIsIntroduced(LocalDate dateWichIsIntroduced) {
 		this.dateWichIsIntroduced = dateWichIsIntroduced;
 	}
 
@@ -92,7 +92,7 @@ public class Computer {
 	/**
 	 * @return the dateWichIsDiscontinued
 	 */
-	public Date getDateWichIsDiscontinued() {
+	public LocalDate getDateWichIsDiscontinued() {
 		return dateWichIsDiscontinued;
 	}
 
@@ -101,7 +101,7 @@ public class Computer {
 	/**
 	 * @param dateWichIsDiscontinued : the dateWichIsDiscontinued to set
 	 */
-	public void setDateWichIsDiscontinued(Date dateWichIsDiscontinued) {
+	public void setDateWichIsDiscontinued(LocalDate dateWichIsDiscontinued) {
 		this.dateWichIsDiscontinued = dateWichIsDiscontinued;
 	}
 
@@ -151,12 +151,12 @@ public class Computer {
 	      this.computer = new Computer();
 	    }
 	    
-	    public Builder withDateWichIsIntroduced (Date dateWichIsIntroduced) {
+	    public Builder withDateWichIsIntroduced (LocalDate dateWichIsIntroduced) {
 	    	this.computer.dateWichIsIntroduced = dateWichIsIntroduced;
 	    	return this;
 	    }
 
-	    public Builder withDateWichIsDiscontinued (Date dateWichIsDiscontinued) {
+	    public Builder withDateWichIsDiscontinued (LocalDate dateWichIsDiscontinued) {
 	    	this.computer.dateWichIsIntroduced = dateWichIsDiscontinued;
 	    	return this;
 	    }

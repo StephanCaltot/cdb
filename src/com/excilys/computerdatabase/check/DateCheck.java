@@ -1,7 +1,7 @@
 package com.excilys.computerdatabase.check;
 
 import java.time.DateTimeException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 /**
@@ -23,9 +23,9 @@ public class DateCheck {
 	 * @param secondDate
 	 * @throws DateTimeException
 	 */
-	public static boolean isGood(Date firstDate, Date secondDate) {
+	public static boolean isGood(LocalDate firstDate, LocalDate secondDate) {
 		if (!firstDate.equals(null) && !secondDate.equals(null)){
-			if (!firstDate.after(secondDate)){
+			if (!firstDate.isAfter(secondDate)){
 				return true;
 			}
 			return false;

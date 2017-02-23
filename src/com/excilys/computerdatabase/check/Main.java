@@ -1,11 +1,7 @@
 package com.excilys.computerdatabase.check;
 
 import java.sql.SQLException;
-import java.util.List;
-
-import com.excilys.computerdatabase.entities.company.Company;
 import com.excilys.computerdatabase.entities.computer.Computer;
-import com.excilys.computerdatabase.repository.CrudServiceCompany;
 import com.excilys.computerdatabase.repository.CrudServiceComputer;
 
 /**
@@ -40,9 +36,9 @@ public class Main {
 //		System.out.println(comp.toString());
 		
 		
-		Computer computer = new Computer.Builder().withId(45454).withName("mdrrrrrfff").build();
-		System.out.println(computer.getName());
-		new CrudServiceComputer().create(computer);
+		Computer computer = new CrudServiceComputer().find(5).get();
+		System.out.println(computer.toString());
+		
 	}
 
 }

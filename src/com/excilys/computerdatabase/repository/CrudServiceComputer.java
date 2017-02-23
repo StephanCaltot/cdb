@@ -50,13 +50,13 @@ public class CrudServiceComputer implements CrudService<Computer> {
     	try {
 			crudServiceConstant.preparedStatementInsert.setString(1, computer.getName());
 			if (computer.getDateWichIsIntroduced() != null ){
-				crudServiceConstant.preparedStatementInsert.setDate(2, (Date) computer.getDateWichIsIntroduced());
+				crudServiceConstant.preparedStatementInsert.setObject(2, Date.valueOf(computer.getDateWichIsIntroduced()));
 			}
 			else{
 				crudServiceConstant.preparedStatementInsert.setNull(2, java.sql.Types.DATE);
 			}
 			if (computer.getDateWichIsDiscontinued() != null ){
-				crudServiceConstant.preparedStatementInsert.setDate(3, (Date) computer.getDateWichIsDiscontinued());
+				crudServiceConstant.preparedStatementInsert.setDate(3, Date.valueOf(computer.getDateWichIsDiscontinued()));
 			}
 			else{
 				crudServiceConstant.preparedStatementInsert.setNull(3, java.sql.Types.DATE);
@@ -90,7 +90,7 @@ public class CrudServiceComputer implements CrudService<Computer> {
 	    	crudServiceConstant.preparedStatementFind.setLong(1, id);
 	    	resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
 	    	resultSet.next();
-		    computer = MapperComputer.resultSetToEntity(resultSet).get();	    		
+		    computer = MapperComputer.resultSetToEntity(resultSet).get();
 	  
 		} catch (SQLException e) {
 			e.printStackTrace();
