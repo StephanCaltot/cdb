@@ -11,7 +11,7 @@ public class MainCli {
 	
 	
 	/**
-	 * Main for launch et handle CLI
+	 * Main for launch and handle CLI
 	 * @param args
 	 * @throws Exception
 	 */

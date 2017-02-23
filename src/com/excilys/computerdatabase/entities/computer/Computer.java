@@ -2,7 +2,7 @@ package com.excilys.computerdatabase.entities.computer;
 
 
 import java.util.Date;
-
+import java.util.logging.Logger;
 import com.excilys.computerdatabase.entities.company.Company;
 
 
@@ -13,6 +13,11 @@ import com.excilys.computerdatabase.entities.company.Company;
  * 20 févr. 2017
  */
 public class Computer {
+	
+	
+	private final static Logger LOGGER = Logger.getLogger(Computer.class.getName());
+
+	
 	
 	private long id;
 	private String name;
@@ -44,8 +49,8 @@ public class Computer {
 	 * 
 	 * @param pId : the id to set
 	 */
-	public void setId(long pId) {
-		this.id =  pId;
+	public void setId(long id) {
+		this.id =  id;
 	}
 	
 	
@@ -62,8 +67,8 @@ public class Computer {
 	/**
 	 * @param pName : the name to set
 	 */
-	public void setName(String pName){
-		this.name = pName;
+	public void setName(String name){
+		this.name = name;
 	}
 
 	
@@ -178,11 +183,21 @@ public class Computer {
 	    }
 	    
 	    
-	    public Computer build() throws Exception {
-	    	
-	    	ComputerValidator.check(computer);
+	    public Computer build() {
 	    	
 	    	return computer;
+	    	
+//	    	if ( ComputerValidator.check(computer) ) {
+//	    		return computer;
+//	    	}
+//	    	
+//	    	else {
+//	    		LOGGER.warning("COMPUTER BUILDER RETURN NULL OBJECT");
+//	    		computer = null;
+//	    		return computer;
+//	    	}
+
+	    	
 	    }
 	}
 	

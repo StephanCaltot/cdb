@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.entities.company;
 
+import java.util.logging.Logger;
+
 /**
  * Class representing a Company implementing ICompany
  * @author Caltot Stéphan
@@ -7,6 +9,10 @@ package com.excilys.computerdatabase.entities.company;
  * 20 févr. 2017
  */
 public class Company {
+	
+	
+	private final static Logger LOGGER = Logger.getLogger(Company.class.getName());
+
 	
 	private long id;
 	private String name;
@@ -93,7 +99,18 @@ public class Company {
 	    
 
 	    public Company build() {
-	      return company;
+	    	
+	    	return company;
+	    	
+//	    	if ( CompanyValidator.check(company) ) {
+//	    		return company;
+//	    	}
+//	    	
+//	    	else {
+//	    		LOGGER.warning("COMPANY BUILDER RETURN NULL OBJECT");
+//	    		company = null;
+//	    		return company;
+//	    	}
 	    }
 	}
 }

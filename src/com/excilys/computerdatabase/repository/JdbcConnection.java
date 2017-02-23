@@ -9,9 +9,8 @@ import java.sql.SQLException;
  *
  * 20 févr. 2017
  */
-public enum JdbcConnection {
+public class JdbcConnection {
 
-	INSTANCE;
 	
 	private static final String DB_NAME      = "computer-database-db";
 	private static final String DB_IP        = "localhost";
@@ -32,6 +31,19 @@ public enum JdbcConnection {
 		initConnection();
 	}
 	
+	
+	/**
+	 * Holder setting the singleton's instance
+	 * @author Caltot Stéphan
+	 *
+	 * 23 févr. 2017
+	 */
+	private static class JdbcConnectionHolder {
+		
+		private final static JdbcConnection INSTANCE = new JdbcConnection();
+
+	}
+
 	
 	
 	/**
@@ -54,10 +66,21 @@ public enum JdbcConnection {
 	
 	
 	/**
+	 * Retrieves singleton'instance
+	 * @return 
+	 */
+	public static JdbcConnection getInstance()
+	{
+		return JdbcConnectionHolder.INSTANCE;
+	}
+	
+	
+	
+	/**
 	 * Retrieves the connection
 	 * @return connection
 	 */
 	public Connection getConnection(){
-		return this.connection;
+		return JdbcConnectionHolder.INSTANCE.connection;
 	}
 }

@@ -28,8 +28,8 @@ public class ViewCli {
 	 * View constructor setting controller
 	 * @param pControlerCli
 	 */
-	public ViewCli (ControllerCli pControlerCli){
-		this.controlerCli = pControlerCli;
+	public ViewCli (ControllerCli controlerCli){
+		this.controlerCli = controlerCli;
 	}
 	
 	
@@ -79,6 +79,7 @@ public class ViewCli {
 		System.out.printf(FORMAT_COMPUTER, "ID", "NAME" , "INTRODUCED" , "DISCONTINUED" , "COMPANY_ID");
 		for (Computer computer : computers){
 			System.out.printf(FORMAT_COMPUTER,computer.getId(), computer.getName(),computer.getDateWichIsIntroduced(), computer.getDateWichIsDiscontinued(), ((computer.getManufacturer() == null) ? "No company": computer.getManufacturer().getId()));								
+
 		}
 		System.out.println("\n");
 	}
@@ -115,8 +116,8 @@ public class ViewCli {
 	 * Displaying information given in parameter
 	 * @param pInfo
 	 */
-	public void displayInfo(String pInfo){
-		System.out.print(pInfo);
+	public void displayInfo(String info){
+		System.out.print(info);
 	}
 	
 }

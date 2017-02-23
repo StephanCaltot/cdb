@@ -23,12 +23,21 @@ public class CrudServiceCompany implements CrudService<Company> {
 	private Company company;
 	private List<Company> companies;
 	
+	
+	
 	/**
 	 * Constructor initializing statement
 	 * @throws SQLException
 	 */
-	public CrudServiceCompany() throws SQLException{
-		crudServiceConstant.statement =  crudServiceConstant.connection.createStatement();
+	public CrudServiceCompany() {
+		try {
+			crudServiceConstant.statement =  crudServiceConstant.connection.createStatement();
+			crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_COMPANY);
+	    	crudServiceConstant.preparedStatementFindAll = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
+	    	crudServiceConstant.preparedStatementFindByPage = crudServiceConstant.connection.prepareStatement(DaoProperties.PAGE_COMPANY);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -40,13 +49,20 @@ public class CrudServiceCompany implements CrudService<Company> {
 	 * @return company entity find with id gave in parameter
 	 * @throws SQLException
 	 */
-    public Company find(long id) throws Exception {
-    	crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_COMPANY);    
-    	crudServiceConstant.preparedStatementFind.setLong(1, id);
-    	resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
-    	resultSet.next();
-    	Company company = resultSetToEntity();
-    	return company;
+    public Company find(long id) {
+    	Company company = null;
+		try {
+			crudServiceConstant.preparedStatementFind.setLong(1, id);
+	    	resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
+	    	resultSet.next();
+	    	company = MapperCompany.resultSetToEntity(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return company;
  
     }
     
@@ -57,14 +73,20 @@ public class CrudServiceCompany implements CrudService<Company> {
      * @return list contains all companies
      * @throws Exception
      */
-    public List<Company> findAll() throws Exception{
+    public List<Company> findAll() {
     	companies = new ArrayList<>();
-    	crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
-    	resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
-    	while ( resultSet.next()){
-    		company = resultSetToEntity();
-    		companies.add(company);
-    	}
+    	try {
+			resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
+	    	while ( resultSet.next()){
+	    		company = MapperCompany.resultSetToEntity(resultSet);
+	    		companies.add(company);
+	    	}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
     	return companies;
     }
    
@@ -76,33 +98,22 @@ public class CrudServiceCompany implements CrudService<Company> {
      * @return list of companies paginated
      * @throws Exception
      */
-    public List<Company> findByPage(long offset) throws Exception{
-    	companies = new ArrayList<Company>();
-    	crudServiceConstant.preparedStatementFindByPage = crudServiceConstant.connection.prepareStatement(DaoProperties.PAGE_COMPANY);
-    	crudServiceConstant.preparedStatementFindByPage.setInt(1, crudServiceConstant.LIMIT);
-    	crudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
-    	resultSet = crudServiceConstant.preparedStatementFindByPage.executeQuery();
-      	while (resultSet.next()){
-      		company = resultSetToEntity();
-      		companies.add(company);
-      	}
+    public List<Company> findByPage(long offset) {
+    	companies = new ArrayList<>();
+    	try {
+			crudServiceConstant.preparedStatementFindByPage.setInt(1, crudServiceConstant.LIMIT);
+	    	crudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
+	    	resultSet = crudServiceConstant.preparedStatementFindByPage.executeQuery();
+	      	while (resultSet.next()){
+	      		company = MapperCompany.resultSetToEntity(resultSet);
+	      		companies.add(company);
+	      	}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
       	return companies;
       }
-    
-    
-    
-    /**
-     * Transforms result retrieved in new company entity
-     * @param pResultSet
-     * @return company entity
-     * @throws Exception
-     */
-    public Company resultSetToEntity() throws Exception{
-        
-    	String name = resultSet.getString("name");
-    	company = new Company.Builder().withName(name).build();
-    	company.setId(resultSet.getInt("id"));
-    	
-    	return company;
-    }
 }

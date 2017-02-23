@@ -22,9 +22,10 @@ public class ControllerCli {
 	private CrudServiceCompany crudServiceCompany;
 	private List<Computer> computers;
 	private List<Company> companies;
-	private int offset = 0;	
-	private int offsetCompany = 0;
-	
+	private long offset = 0;	
+	private long offsetCompany = 0;
+	private Scanner scan ;
+
 	
 	
 	/**
@@ -34,6 +35,7 @@ public class ControllerCli {
 	public ControllerCli () throws SQLException{
 		crudServiceCompany = new CrudServiceCompany();
 		crudServiceComputer = new CrudServiceComputer();
+		scan = ScannerSystemIn.getInstance();
 	}
 	
 	
@@ -41,8 +43,8 @@ public class ControllerCli {
 	/**
 	 * @param pViewCLi : the view to set
 	 */
-	public void setViewCli (ViewCli pViewCli){
-		this.viewCli = pViewCli;
+	public void setViewCli (ViewCli viewCli){
+		this.viewCli = viewCli;
 	}
 
 	
@@ -52,8 +54,7 @@ public class ControllerCli {
 	 * @throws Exception
 	 */
 	public void listingOfComputers() throws Exception{
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
+
 		String choice = null;
 		
 		computers = crudServiceComputer.findByPage(offset);
@@ -100,8 +101,7 @@ public class ControllerCli {
 	 * @throws Exception
 	 */
 	public void listingOfCompanies() throws Exception{
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
+
 		String choice = null;
 		
 		companies = crudServiceCompany.findByPage(offsetCompany);
@@ -149,9 +149,7 @@ public class ControllerCli {
 	 */
 	public void showComputersDetails() throws Exception{
 		
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
-		int computerId = 0;
+		long computerId = 0;
 		do{
 			viewCli.displayInfo("\nPlease enter the computer's id : ");
 			computerId = scan.nextInt();			
@@ -167,9 +165,8 @@ public class ControllerCli {
 	 * @throws SQLException
 	 */
 	public void deleteComputer() throws SQLException{
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
-		int computerId = 0;
+		
+		long computerId = 0;
 		do{
 			viewCli.displayInfo("\nPlease enter the computer's id you want delete : ");
 			computerId = scan.nextInt();			
@@ -187,8 +184,6 @@ public class ControllerCli {
 	 */
 	public void execute() throws Exception{
 		
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
 		String inputValue = "";
 		do {
 			if (!inputValue.equals("d")) {

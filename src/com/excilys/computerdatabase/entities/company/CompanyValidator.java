@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.entities.company;
 
+import java.util.logging.Logger;
+
 import com.excilys.computerdatabase.check.StringCheck;
 
 /**
@@ -9,15 +11,20 @@ import com.excilys.computerdatabase.check.StringCheck;
  */
 public interface CompanyValidator {
 
-	
+	public final static Logger LOGGER = Logger.getLogger(CompanyValidator.class.getName());
+
 	
 	/**
 	 * Method checking Company's entity
 	 * @param pCompany
 	 * @throws Exception
 	 */
-	public static void check(Company company) throws Exception{
-		if(company.getName().equals(null)) throw new Exception("Name can't be null");
-		StringCheck.isFormed(company.getName());
+	public static Boolean check(Company company) {
+		if(company.getName().equals(null) || StringCheck.isFormed(company.getName()) ) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 }

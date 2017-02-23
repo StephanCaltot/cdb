@@ -10,7 +10,9 @@ import java.util.List;
 public interface CrudService<T> {
 	
 	T find(long id) throws Exception;
+	
 	List<T> findAll() throws Exception;
+	
 	List<T> findByPage(long offset) throws Exception;
 	
 }
