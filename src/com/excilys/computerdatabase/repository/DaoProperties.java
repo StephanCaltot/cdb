@@ -8,7 +8,7 @@ package com.excilys.computerdatabase.repository;
  */
 public class DaoProperties {
 
-	public static final String CREATE_COMPUTER    = "insert into computer(name) values ( ? )";
+	public static final String CREATE_COMPUTER    = "insert into computer(name, introduced, discontinued, company_id) values ( ?, ?, ?, ? )";
 	public static final String DELETE_COMPUTER    = "delete from computer where id= ?;";
 	public static final String UPDATE_COMPUTER    = "update computer set name = ? where id = ?;";
 	public static final String CREATE_COMPANY     = "insert into company(name) values ( ? )";

@@ -11,10 +11,12 @@ import com.excilys.computerdatabase.entities.company.CompanyValidator;
  *
  * 20 févr. 2017
  */
-public interface ComputerValidator{
+public interface ComputerValidator {
+	
 	
 	public final static Logger LOGGER = Logger.getLogger(CompanyValidator.class.getName());
 
+	
 	
 	/**
 	 * Static method checking Computer entity
@@ -27,7 +29,7 @@ public interface ComputerValidator{
 		}
 		else {
 				
-			if (DateCheck.isGood(computer.getDateWichIsIntroduced(), computer.getDateWichIsDiscontinued())){
+			if (DateCheck.isGood(computer.getDateWichIsIntroduced(), computer.getDateWichIsDiscontinued())) {
 				return true;
 			}
 			else {

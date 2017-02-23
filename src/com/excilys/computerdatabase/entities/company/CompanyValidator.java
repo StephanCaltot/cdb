@@ -11,8 +11,10 @@ import com.excilys.computerdatabase.check.StringCheck;
  */
 public interface CompanyValidator {
 
+	
 	public final static Logger LOGGER = Logger.getLogger(CompanyValidator.class.getName());
 
+	
 	
 	/**
 	 * Method checking Company's entity
@@ -20,7 +22,7 @@ public interface CompanyValidator {
 	 * @throws Exception
 	 */
 	public static Boolean check(Company company) {
-		if(company.getName().equals(null) || StringCheck.isFormed(company.getName()) ) {
+		if(company.getName().equals(null) || !StringCheck.isFormed(company.getName()) ) {
 			return false;
 		}
 		else {

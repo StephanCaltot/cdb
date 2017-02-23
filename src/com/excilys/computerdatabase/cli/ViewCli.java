@@ -13,7 +13,6 @@ import com.excilys.computerdatabase.entities.computer.Computer;
  */
 public class ViewCli {
 
-	@SuppressWarnings("unused")
 	private ControllerCli controlerCli;
 	
 	public static final String FORMAT_COMPUTER = "%3s | %15.15s |%10s | %10s | %10s%n";
@@ -30,6 +29,7 @@ public class ViewCli {
 	 */
 	public ViewCli (ControllerCli controlerCli){
 		this.controlerCli = controlerCli;
+		controlerCli.setViewCli(this);
 	}
 	
 	
@@ -65,7 +65,12 @@ public class ViewCli {
 		System.out.println("	* Press [6] to delete computer ");
 		System.out.println("	* Press [q] to quit command line interface");
 		System.out.println("----------------------------------------------------\n\n");
-
+		
+		try {
+			controlerCli.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

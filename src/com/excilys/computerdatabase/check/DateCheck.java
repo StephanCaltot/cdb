@@ -15,6 +15,8 @@ public class DateCheck {
 	
 	private final static Logger LOGGER = Logger.getLogger(DateCheck.class.getName());
 
+	
+	
 	/**
 	 * Check if first date is before second date and throws an exception
 	 * @param firstDate

@@ -9,12 +9,15 @@ import java.util.Scanner;
  */
 public class ScannerSystemIn {
 	
+	
+	
 	/**
 	 * Private constructor for ScannerSystemIn singleton
 	 */
 	private ScannerSystemIn (){
 		
 	}
+	
 	
 	
 	/**
@@ -26,7 +29,6 @@ public class ScannerSystemIn {
 	private static class ScannerHolder {
 		private final static Scanner INSTANCE = new Scanner(System.in);
 	}
-	
 	
 	
 	

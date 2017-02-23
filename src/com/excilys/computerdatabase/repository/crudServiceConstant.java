@@ -19,21 +19,21 @@ import com.excilys.computerdatabase.entities.computer.Computer;
 public class crudServiceConstant {
 
 	/**
-	 * Limit of pagination
+	 * Default Limit of pagination
 	 */
-	static final int LIMIT = 10;
+	public static final int LIMIT_DEFAULT = 10;
 
-	static JdbcConnection jdbcConnection = JdbcConnection.getInstance();
-	static Connection connection = jdbcConnection.getConnection();
-	static Statement statement;
-	static ResultSet resultSet;
-	static PreparedStatement preparedStatementInsert;
-	static PreparedStatement preparedStatementFind;
-	static PreparedStatement preparedStatementDelete;	
-	static PreparedStatement preparedStatementUpdate;
-	static PreparedStatement preparedStatementFindAll;
-	static PreparedStatement preparedStatementFindByPage;
-	static List<Computer> computers ;
-	static List<Company>  companies ;
+	public static JdbcConnection jdbcConnection = JdbcConnection.getInstance();
+	public static Connection connection = jdbcConnection.getConnection();
+	public static Statement statement;
+	public static ResultSet resultSet;
+	public static PreparedStatement preparedStatementInsert;
+	public static PreparedStatement preparedStatementFind;
+	public static PreparedStatement preparedStatementDelete;	
+	public static PreparedStatement preparedStatementUpdate;
+	public static PreparedStatement preparedStatementFindAll;
+	public static PreparedStatement preparedStatementFindByPage;
+	public static List<Computer> computers ;
+	public static List<Company>  companies ;
 
 }

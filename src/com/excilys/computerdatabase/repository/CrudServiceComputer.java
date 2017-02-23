@@ -1,8 +1,11 @@
 package com.excilys.computerdatabase.repository;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import com.excilys.computerdatabase.entities.computer.Computer;
 
 /**
@@ -19,6 +22,7 @@ public class CrudServiceComputer implements CrudService<Computer> {
 	private List<Computer> computers;
 	
 	
+	
 	/**
 	 * Constructor initializing statement
 	 * @throws SQLException
@@ -26,14 +30,13 @@ public class CrudServiceComputer implements CrudService<Computer> {
 	public CrudServiceComputer() {
 		try {
 			crudServiceConstant.statement =  crudServiceConstant.connection.createStatement();
+	    	crudServiceConstant.preparedStatementInsert = crudServiceConstant.connection.prepareStatement(DaoProperties.CREATE_COMPUTER);
 	    	crudServiceConstant.preparedStatementDelete = crudServiceConstant.connection.prepareStatement(DaoProperties.DELETE_COMPUTER);
 	    	crudServiceConstant.preparedStatementUpdate = crudServiceConstant.connection.prepareStatement(DaoProperties.UPDATE_COMPUTER);
 			crudServiceConstant.preparedStatementFindAll = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 	
 	
@@ -46,6 +49,26 @@ public class CrudServiceComputer implements CrudService<Computer> {
     public void create(Computer computer) {
     	try {
 			crudServiceConstant.preparedStatementInsert.setString(1, computer.getName());
+			if (computer.getDateWichIsIntroduced() != null ){
+				crudServiceConstant.preparedStatementInsert.setDate(2, (Date) computer.getDateWichIsIntroduced());
+			}
+			else{
+				crudServiceConstant.preparedStatementInsert.setNull(2, java.sql.Types.DATE);
+			}
+			if (computer.getDateWichIsDiscontinued() != null ){
+				crudServiceConstant.preparedStatementInsert.setDate(3, (Date) computer.getDateWichIsDiscontinued());
+			}
+			else{
+				crudServiceConstant.preparedStatementInsert.setNull(3, java.sql.Types.DATE);
+			}
+			
+			if (computer.getManufacturer() != null) {
+				crudServiceConstant.preparedStatementInsert.setLong(4, computer.getManufacturer().getId());
+			}
+			else {
+				crudServiceConstant.preparedStatementInsert.setNull(4, java.sql.Types.INTEGER);
+
+			}
 	    	crudServiceConstant.preparedStatementInsert.execute();
 
 		} catch (SQLException e) {
@@ -61,20 +84,21 @@ public class CrudServiceComputer implements CrudService<Computer> {
      * @return computer entity find with id gave in parameter
      * @throws Exception
      */
-    public Computer find(long id) {
+    public Optional <Computer> find(long id) {
     	try {
 			crudServiceConstant.preparedStatementFind = crudServiceConstant.connection.prepareStatement(DaoProperties.FIND_COMPUTER);
 	    	crudServiceConstant.preparedStatementFind.setLong(1, id);
 	    	resultSet = crudServiceConstant.preparedStatementFind.executeQuery();
 	    	resultSet.next();
-	    	computer = MapperComputer.resultSetToEntity(resultSet);
+		    computer = MapperComputer.resultSetToEntity(resultSet).get();	    		
+	  
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-    	return computer;
+    	return Optional.of(computer);
  
     }
     
@@ -125,8 +149,10 @@ public class CrudServiceComputer implements CrudService<Computer> {
     	try {
 			resultSet = crudServiceConstant.preparedStatementFindAll.executeQuery();
 	    	while (resultSet.next()){
-	    		computer = MapperComputer.resultSetToEntity(resultSet);
-	    		computers.add(computer);
+	    		if (MapperComputer.resultSetToEntity(resultSet).isPresent()){
+		    		computer = MapperComputer.resultSetToEntity(resultSet).get();
+		    		computers.add(computer);	
+	    		}
 	    	}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -145,16 +171,24 @@ public class CrudServiceComputer implements CrudService<Computer> {
      * @return list of computers paginated
      * @throws Exception
      */
-    public List<Computer> findByPage(long offset) {
+    public List<Computer> findByPage(long offset, int numberForEachpPage) {
     	computers = new ArrayList<>();
+    	if (numberForEachpPage <= 0){
+    		numberForEachpPage = crudServiceConstant.LIMIT_DEFAULT;
+    	}
+    	if (offset < 0){
+    		offset = 0;;
+    	}
 		try {
 			crudServiceConstant.preparedStatementFindByPage = crudServiceConstant.connection.prepareStatement(DaoProperties.PAGE_COMPUTER);
-			crudServiceConstant.preparedStatementFindByPage.setInt(1, crudServiceConstant.LIMIT);
+			crudServiceConstant.preparedStatementFindByPage.setInt(1, numberForEachpPage);
 			crudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
 	    	resultSet = crudServiceConstant.preparedStatementFindByPage.executeQuery();
 	    	while (resultSet.next()){
-	    		computer = MapperComputer.resultSetToEntity(resultSet);
-	    		computers.add(computer);
+	    		if(MapperComputer.resultSetToEntity(resultSet).isPresent()){
+		    		computer = MapperComputer.resultSetToEntity(resultSet).get();
+		    		computers.add(computer);	
+	    		}
 	    	}
 		} catch (SQLException e) {
 			e.printStackTrace();

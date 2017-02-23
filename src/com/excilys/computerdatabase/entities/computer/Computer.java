@@ -16,15 +16,13 @@ public class Computer {
 	
 	
 	private final static Logger LOGGER = Logger.getLogger(Computer.class.getName());
-
-	
-	
 	private long id;
 	private String name;
 	private Date dateWichIsIntroduced;
 	private Date dateWichIsDiscontinued;
 	private Company manufacturer;
 
+	
 	
 	/**
 	 * 
@@ -141,9 +139,6 @@ public class Computer {
 	
 
 	
-	
-	
-	
 	/**
 	 * Builder Pattern for computer
 	 * @author screetts
@@ -156,28 +151,28 @@ public class Computer {
 	      this.computer = new Computer();
 	    }
 	    
-	    public Builder withDateWichIsIntroduced (Date dateWichIsIntroduced){
+	    public Builder withDateWichIsIntroduced (Date dateWichIsIntroduced) {
 	    	this.computer.dateWichIsIntroduced = dateWichIsIntroduced;
 	    	return this;
 	    }
 
-	    public Builder withDateWichIsDiscontinued (Date dateWichIsDiscontinued){
+	    public Builder withDateWichIsDiscontinued (Date dateWichIsDiscontinued) {
 	    	this.computer.dateWichIsIntroduced = dateWichIsDiscontinued;
 	    	return this;
 	    }
 
-	    public Builder withManufacturer (Company manufacturer){
+	    public Builder withManufacturer (Company manufacturer) {
 	    	this.computer.manufacturer = manufacturer;
 	    	return this;
 	    }
 	    
-	    public Builder withId (long id){
+	    public Builder withId (long id) {
 	    	this.computer.id = id;
 	    	return this;
 	    }
 	    
 	    
-	    public Builder withName (String name){
+	    public Builder withName (String name) {
 	    	this.computer.name = name;
 	    	return this;
 	    }

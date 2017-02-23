@@ -22,7 +22,8 @@ public class ControllerCli {
 	private CrudServiceCompany crudServiceCompany;
 	private List<Computer> computers;
 	private List<Company> companies;
-	private long offset = 0;	
+	private long offset = 0;
+	private static int numberForEachpPage = 10;
 	private long offsetCompany = 0;
 	private Scanner scan ;
 
@@ -32,7 +33,7 @@ public class ControllerCli {
 	 * Controler's constructor setting crudService for company and computer
 	 * @throws SQLException
 	 */
-	public ControllerCli () throws SQLException{
+	public ControllerCli () throws SQLException {
 		crudServiceCompany = new CrudServiceCompany();
 		crudServiceComputer = new CrudServiceComputer();
 		scan = ScannerSystemIn.getInstance();
@@ -43,7 +44,7 @@ public class ControllerCli {
 	/**
 	 * @param pViewCLi : the view to set
 	 */
-	public void setViewCli (ViewCli viewCli){
+	public void setViewCli (ViewCli viewCli) {
 		this.viewCli = viewCli;
 	}
 
@@ -53,11 +54,11 @@ public class ControllerCli {
 	 * Method : listing computers paginated
 	 * @throws Exception
 	 */
-	public void listingOfComputers() throws Exception{
+	public void listingOfComputers() throws Exception {
 
 		String choice = null;
 		
-		computers = crudServiceComputer.findByPage(offset);
+		computers = crudServiceComputer.findByPage(offset, numberForEachpPage);
 		viewCli.displayAllComputers(computers);
 		viewCli.displayInfo(ViewCli.FOOTER);
 		do{
@@ -66,16 +67,31 @@ public class ControllerCli {
 			choice = scan.nextLine();
 			
 			switch(choice){
+			case "1":
+				listingOfComputers();
+				break;
+			case "2":
+				listingOfCompanies();
+				break;
+			case "3":
+				showComputersDetails();
+				break;
+			case "6":
+				deleteComputer();
+				break;
+			case "d":
+				viewCli.displayMenu();
+				break;
 			case "n" :
 				offset += 10;
-				computers = crudServiceComputer.findByPage(offset);
+				computers = crudServiceComputer.findByPage(offset, numberForEachpPage);
 				viewCli.displayAllComputers(computers);
 				viewCli.displayInfo(ViewCli.FOOTER);
 				break;
 			case "p" :
 				if (offset-10 >= 0){
 					offset -= 10;
-					computers = crudServiceComputer.findByPage(offset);
+					computers = crudServiceComputer.findByPage(offset, numberForEachpPage);
 					viewCli.displayAllComputers(computers);
 				}
 				else{
@@ -100,11 +116,11 @@ public class ControllerCli {
 	 * Method : listing companies paginated
 	 * @throws Exception
 	 */
-	public void listingOfCompanies() throws Exception{
+	public void listingOfCompanies() throws Exception {
 
 		String choice = null;
 		
-		companies = crudServiceCompany.findByPage(offsetCompany);
+		companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
 		viewCli.displayAllCompanies(companies);
 		viewCli.displayInfo(ViewCli.FOOTER);
 		do{
@@ -113,16 +129,31 @@ public class ControllerCli {
 			choice = scan.nextLine();
 			
 			switch(choice){
+			case "1":
+				listingOfComputers();
+				break;
+			case "2":
+				listingOfCompanies();
+				break;
+			case "3":
+				showComputersDetails();
+				break;
+			case "6":
+				deleteComputer();
+				break;
+			case "d":
+				viewCli.displayMenu();
+				break;
 			case "n" :
 				offsetCompany += 10;
-				companies = crudServiceCompany.findByPage(offsetCompany);
+				companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
 				viewCli.displayAllCompanies(companies);
 				viewCli.displayInfo(ViewCli.FOOTER);
 				break;
 			case "p" :
 				if (offsetCompany-10 >= 0){
 					offsetCompany -= 10;
-					companies = crudServiceCompany.findByPage(offsetCompany);
+					companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
 					viewCli.displayAllCompanies(companies);
 				}
 				else{
@@ -147,14 +178,17 @@ public class ControllerCli {
 	 * Method : showing details for one computer
 	 * @throws Exception
 	 */
-	public void showComputersDetails() throws Exception{
-		
+	public void showComputersDetails() throws Exception {
+		Computer computer = null;
 		long computerId = 0;
 		do{
 			viewCli.displayInfo("\nPlease enter the computer's id : ");
 			computerId = scan.nextInt();			
 		} while (computerId == 0);
-		Computer computer = crudServiceComputer.find(computerId);
+		if( crudServiceComputer.find(computerId).isPresent()){
+			computer = crudServiceComputer.find(computerId).get();
+
+		}
 		viewCli.displayComputersDetails(computer);
 	}
 	
@@ -164,7 +198,7 @@ public class ControllerCli {
 	 * Method : deleting one computer
 	 * @throws SQLException
 	 */
-	public void deleteComputer() throws SQLException{
+	public void deleteComputer() throws SQLException {
 		
 		long computerId = 0;
 		do{
@@ -182,12 +216,11 @@ public class ControllerCli {
 	 * Method : handling menu execution
 	 * @throws Exception
 	 */
-	public void execute() throws Exception{
+	public void execute() throws Exception {
 		
 		String inputValue = "";
 		do {
 			if (!inputValue.equals("d")) {
-				viewCli.displayInfo(ViewCli.FOOTER);
 				viewCli.displayInfo("\n\nPlease select an option (press 'd' to see full menu)  :  ");
 			}
 			inputValue = scan.nextLine();
@@ -201,10 +234,6 @@ public class ControllerCli {
 				break;
 			case "3":
 				showComputersDetails();
-				break;
-			case "4":
-				break;
-			case "5":
 				break;
 			case "6":
 				deleteComputer();

@@ -17,13 +17,10 @@ public class MainCli {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		ControllerCli controlerCli = new ControllerCli();
-		ViewCli viewCli = new ViewCli(controlerCli);
-		controlerCli.setViewCli(viewCli);
+		ViewCli viewCli = new ViewCli(new ControllerCli());
 		
 		viewCli.welcome();
 		viewCli.displayMenu();
-		controlerCli.execute();
 	}
 	
 }

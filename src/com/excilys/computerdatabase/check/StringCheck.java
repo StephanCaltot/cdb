@@ -14,18 +14,19 @@ public class StringCheck {
 	private final static Logger LOGGER = Logger.getLogger(DateCheck.class.getName());
 
 	
+	
 	/**
 	 * Check if the string is null or empty
 	 * @param string
 	 * @throws Exception
 	 */
 	public static Boolean isFormed(String string) {		
-		if (string.matches("")){
-			LOGGER.warning("The string is empty, null or content forbidden characters \n");
-			return false;
+		if (string.matches("[a-zA-Z0-9-_ ]*") && !string.equals("") && !string.matches("[ ]*")) {
+			return true;
 		}
 		else {
-			return true;
+			LOGGER.warning("The string is empty, null or content forbidden characters \n");
+			return false;
 		}
 
 	}

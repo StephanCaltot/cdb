@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Optional;
 
 import com.excilys.computerdatabase.entities.company.Company;
 import com.excilys.computerdatabase.entities.computer.Computer;
@@ -25,7 +26,7 @@ public class MapperComputer {
     * @return IComputer
     * @throws Exception
     */
-   public static Computer resultSetToEntity(ResultSet resultSet) {
+   public static Optional<Computer> resultSetToEntity(ResultSet resultSet) {
    	
    	long id = 0;
    	String name = null;
@@ -55,14 +56,14 @@ public class MapperComputer {
    	computer.setDateWichIsIntroduced(introduced);
    	try {
 		if (resultSet.getInt("company_id") != 0 ) {
-		   	Company company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
-		   	computer.setManufacturer(company);	
+		   	Optional<Company> company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
+		   	computer.setManufacturer(company.get());	
 		}
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
    	
-   	return computer;
+   	return Optional.of(computer);
    }
 
 	

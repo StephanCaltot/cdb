@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Caltot Stéphan
@@ -9,10 +10,10 @@ import java.util.List;
  */
 public interface CrudService<T> {
 	
-	T find(long id) throws Exception;
+	public Optional<T> find(long id) throws Exception;
 	
-	List<T> findAll() throws Exception;
+	public List<T> findAll() throws Exception;
 	
-	List<T> findByPage(long offset) throws Exception;
+	public List<T> findByPage(long offset, int numberForEachpPage) throws Exception;
 	
 }

@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import com.excilys.computerdatabase.entities.company.Company;
 
@@ -23,7 +24,7 @@ public class MapperCompany {
      * @return company entity
      * @throws Exception
      */
-    public static Company resultSetToEntity(ResultSet resultSet) {
+    public static Optional <Company> resultSetToEntity(ResultSet resultSet) {
         
     	String name;
 		try {
@@ -34,7 +35,7 @@ public class MapperCompany {
 			e.printStackTrace();
 		}
     	
-    	return company;
+    	return Optional.of(company);
     }
 	
 }
