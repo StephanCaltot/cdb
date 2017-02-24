@@ -7,11 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 
 /**
- * Crud service allows CRUD operations on Computer entities.
+ * CRUD service allows CRUD operations on Computer entities.
  *
  * @author Caltot Stéphan
  *
@@ -19,19 +20,14 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
  */
 public class CrudServiceComputer implements CrudService<Computer> {
 
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrudServiceComputer.class);
+
     private ResultSet resultSet;
     private Computer computer;
     private List<Computer> computers;
     private Connection connection;
 
-    /**
-     * Constructor initializing statement.
-     *
-     * @throws SQLException
-     */
-    public CrudServiceComputer() {
-
-    }
 
     /**
      * Create CRUD's operation.
@@ -39,28 +35,31 @@ public class CrudServiceComputer implements CrudService<Computer> {
      * @param computer :
      * @throws SQLException :
      */
-    public void create(Computer computer) {
-
+    public void create(Optional<Computer> computer) {
+        if (!computer.isPresent()){
+            LOGGER.warn("You are trying to create a null computer !\n");
+            return;
+        }
         connection = CrudServiceConstant.jdbcConnection.getConnection();
 
         try {
             CrudServiceConstant.preparedStatementInsert = connection.prepareStatement(DaoProperties.CREATE_COMPUTER);
-            CrudServiceConstant.preparedStatementInsert.setString(1, computer.getName());
-            if (computer.getDateWichIsIntroduced() != null) {
+            CrudServiceConstant.preparedStatementInsert.setString(1, computer.get().getName());
+            if (computer.get().getDateWichIsIntroduced() != null) {
                 CrudServiceConstant.preparedStatementInsert.setObject(2,
-                        Date.valueOf(computer.getDateWichIsIntroduced()));
+                        Date.valueOf(computer.get().getDateWichIsIntroduced()));
             } else {
                 CrudServiceConstant.preparedStatementInsert.setNull(2, java.sql.Types.DATE);
             }
-            if (computer.getDateWichIsDiscontinued() != null) {
+            if (computer.get().getDateWichIsDiscontinued() != null) {
                 CrudServiceConstant.preparedStatementInsert.setDate(3,
-                        Date.valueOf(computer.getDateWichIsDiscontinued()));
+                        Date.valueOf(computer.get().getDateWichIsDiscontinued()));
             } else {
                 CrudServiceConstant.preparedStatementInsert.setNull(3, java.sql.Types.DATE);
             }
 
-            if (computer.getManufacturer() != null) {
-                CrudServiceConstant.preparedStatementInsert.setLong(4, computer.getManufacturer().getId());
+            if (computer.get().getManufacturer() != null) {
+                CrudServiceConstant.preparedStatementInsert.setLong(4, computer.get().getManufacturer().getId());
             } else {
                 CrudServiceConstant.preparedStatementInsert.setNull(4, java.sql.Types.INTEGER);
 
@@ -82,6 +81,11 @@ public class CrudServiceComputer implements CrudService<Computer> {
      * @throws Exception
      */
     public Optional<Computer> find(long id) {
+        
+        if (id <= 0) {
+            LOGGER.warn("You are trying to find a computer with null or negative id !\n");
+            return Optional.empty();
+        }
         connection = CrudServiceConstant.jdbcConnection.getConnection();
 
         try {
@@ -110,7 +114,10 @@ public class CrudServiceComputer implements CrudService<Computer> {
      * @throws SQLException
      */
     public void delete(long id) {
-
+        if (id <= 0) {
+            LOGGER.warn("You are trying to delete a computer with null or negative id !\n");
+            return ;
+        }
         connection = CrudServiceConstant.jdbcConnection.getConnection();
 
         try {
@@ -131,14 +138,17 @@ public class CrudServiceComputer implements CrudService<Computer> {
      * @param computer :
      * @throws Exception
      */
-    public void update(Computer computer) {
-
+    public void update(Optional <Computer> computer) {
+        if (!computer.isPresent()){
+            LOGGER.warn("You are trying to update a null computer !\n");
+            return;
+        }
         connection = CrudServiceConstant.jdbcConnection.getConnection();
 
         try {
             CrudServiceConstant.preparedStatementUpdate = connection.prepareStatement(DaoProperties.UPDATE_COMPUTER);
-            CrudServiceConstant.preparedStatementUpdate.setString(1, computer.getName());
-            CrudServiceConstant.preparedStatementUpdate.setLong(2, computer.getId());
+            CrudServiceConstant.preparedStatementUpdate.setString(1, computer.get().getName());
+            CrudServiceConstant.preparedStatementUpdate.setLong(2, computer.get().getId());
             CrudServiceConstant.preparedStatementUpdate.execute();
         } catch (SQLException e) {
             e.printStackTrace();

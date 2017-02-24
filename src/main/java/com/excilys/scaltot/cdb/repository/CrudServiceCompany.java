@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 
@@ -18,19 +20,13 @@ import com.excilys.scaltot.cdb.entities.company.Company;
  */
 public class CrudServiceCompany implements CrudService<Company> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrudServiceCompany.class.getName());
+
     private ResultSet resultSet;
     private Company company;
     private List<Company> companies;
     private Connection connection;
 
-    /**
-     * Constructor initializing statement.
-     *
-     * @throws SQLException
-     */
-    public CrudServiceCompany() {
-
-    }
 
     /**
      * Find CRUD's operation.
@@ -40,9 +36,13 @@ public class CrudServiceCompany implements CrudService<Company> {
      * @throws SQLException
      */
     public Optional<Company> find(long id) {
-
+        
+        if (id <= 0) {
+            LOGGER.warn("You are trying to find a company with null or negative id");
+            return Optional.empty();
+        }
+        
         connection = CrudServiceConstant.jdbcConnection.getConnection();
-        company = null;
 
         try {
             CrudServiceConstant.preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPANY);

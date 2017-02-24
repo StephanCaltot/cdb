@@ -1,8 +1,9 @@
 package com.excilys.scaltot.cdb.check;
 
-
 import java.time.LocalDate;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Verifying date initialization.
@@ -13,9 +14,9 @@ import java.util.logging.Logger;
 public class DateCheck {
 
     /**
-     * Logger for Datecheck class.
+     * Logger for Date check class.
      */
-    private static final Logger LOGGER = Logger.getLogger(DateCheck.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateCheck.class.getName());
 
 
     /** Check if first date is before second date and throws an exception.
@@ -28,7 +29,7 @@ public class DateCheck {
         if (!firstDate.equals(null) && !secondDate.equals(null)) {
             return !firstDate.isAfter(secondDate);
         } else {
-            LOGGER.warning("One of computer's dates is null or discontinued date is more recent than introducing date \n");
+            LOGGER.warn("One of computer's dates is null or discontinued date is more recent than introducing date \n");
             return false;
             }
         }

@@ -33,7 +33,7 @@ public class Main {
         // comp.setDateWichIsDiscontinued(null);
         // System.out.println(comp.toString());
 
-        Computer computer = new CrudServiceComputer().find(5).get();
+        Computer computer = new CrudServiceComputer().find(0).get();
         System.out.println(computer.toString());
 
     }
