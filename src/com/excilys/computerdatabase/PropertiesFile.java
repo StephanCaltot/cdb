@@ -1,47 +1,36 @@
 package com.excilys.computerdatabase;
 
-import java.io.InputStream;
-import java.util.Properties;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Date;
+import java.util.Properties;
 
 /**
  * @author Caltot Stéphan
  *
  * 23 févr. 2017
  */
-public class PropertiesFile {
-	static InputStream inputStream;
+public enum PropertiesFile {
  
-	Properties properties;
+	INSTANCE;
 	
-	public Properties getProperties(String nameOfFile) throws IOException {
+	private Properties properties;
+	
+	private static final String FILE_NAME = "/home/excilys/Documents/computer_database/resources/sgbd.properties";
+
+	
+	private PropertiesFile() {
  
-		try {
 			properties = new Properties();
-			String propFileName = "sgbd.properties";
- 
-			inputStream = getClass().getClassLoader().getResourceAsStream("computer_database/resources/sgbd.properties");
- 
-			if (inputStream != null) {
-				properties.load(inputStream);
-			} else {
-				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			
+			try {
+				properties.load(new FileInputStream(FILE_NAME));
+			} catch (IOException e) {
+				
 			}
-		} catch (Exception e) {
-			System.out.println("Exception: " + e);
-		}
-		return properties;
 	}
 	
 	
-	public static void main(String[] args) throws IOException {
-		
-		PropertiesFile propertiesFile = new PropertiesFile();
-		Properties properties =  propertiesFile.getProperties("sgbd.properties");
-		System.out.println(properties.getProperty("DB_NAME"));
-		inputStream.close();
-
+	public Properties getProperties (){
+		return properties;
 	}
 }	 

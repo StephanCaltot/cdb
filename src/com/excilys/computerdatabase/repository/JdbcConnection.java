@@ -3,21 +3,22 @@ package com.excilys.computerdatabase.repository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+
+import com.excilys.computerdatabase.PropertiesFile;
+
 /**
  * Class allows jdbc connection ( initialization, opening and closing )
  * @author Caltot Stéphan
  *
  * 20 févr. 2017
  */
-import java.util.Properties;
-
-import com.excilys.computerdatabase.PropertiesFile;
 public class JdbcConnection {
 
 	
 	private Connection connection ;
 	
-	private Properties properties = new PropertiesFile().getProperties("sgbd.propreties");
+	private Properties properties = PropertiesFile.INSTANCE.getProperties();
 		
 	/**
 	 * Singleton's private constructor
@@ -47,12 +48,12 @@ public class JdbcConnection {
 	 */
 	public void initConnection(){
 		try {
-			Class.forName(DRIVER);
+			Class.forName(properties.getProperty("DRIVER"));
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
 		try {
-			connection = DriverManager.getConnection(URL,DB_LOGIN,DB_PASSWORD);
+			connection = DriverManager.getConnection(properties.getProperty("URL"),properties.getProperty("DB_LOGIN"),properties.getProperty("DB_PASSWORD"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
