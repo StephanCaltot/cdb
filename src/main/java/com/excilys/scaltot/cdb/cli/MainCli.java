@@ -1,5 +1,9 @@
 package com.excilys.scaltot.cdb.cli;
 
+import java.util.Optional;
+
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+
 /**
  * Main of Command line interface.
  *
@@ -14,10 +18,11 @@ public class MainCli {
      *
      * @param args :
      * @throws Exception :
+     * @throws PersistenceException :
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        ViewCli viewCli = new ViewCli(new ControllerCli());
+        ViewCli viewCli = new ViewCli(Optional.of(new ControllerCli()));
 
         viewCli.welcome();
         viewCli.displayMenu();

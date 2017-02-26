@@ -1,8 +1,11 @@
 package com.excilys.scaltot.cdb.entities.company;
 
-import java.util.logging.Logger;
+import java.util.Optional;
 
-import com.excilys.scaltot.cdb.check.StringCheck;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.scaltot.cdb.validation.StringCheck;
 
 /**
  * @author Caltot Stéphan
@@ -11,16 +14,21 @@ import com.excilys.scaltot.cdb.check.StringCheck;
  */
 public interface CompanyValidator {
 
-    Logger LOGGER = Logger.getLogger(CompanyValidator.class.getName());
+    Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
 
     /**
      * Method checking Company's entity .
      *
      * @param company :
-     * @throws Exception
+     * @throws Exception :
      * @return boolean
      */
-    static Boolean check(Company company) {
-        return !(company.getName().equals(null) || !StringCheck.isFormed(company.getName()));
+    static Boolean check(Optional<Company> company) {
+        if (!(company.get().getName().equals(null) || StringCheck.isFormed(Optional.of(company.get().getName())))) {
+        	return true;
+        } else {
+        	LOGGER.warn("The company's name is null or doesn't matches with authorized characters");
+        	return false;
+        }
     }
 }

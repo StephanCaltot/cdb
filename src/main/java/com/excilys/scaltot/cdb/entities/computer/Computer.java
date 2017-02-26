@@ -36,8 +36,7 @@ public class Computer {
 
     /**
      *
-     * @param id
-     *            : the id to set
+     * @param id : the id to set
      */
     public void setId(long id) {
         this.id = id;
@@ -51,8 +50,7 @@ public class Computer {
     }
 
     /**
-     * @param name
-     *            : the name to set
+     * @param name : the name to set
      */
     public void setName(String name) {
         this.name = name;
@@ -66,8 +64,7 @@ public class Computer {
     }
 
     /**
-     * @param dateWichIsIntroduced
-     *            : the dateWichIsIntroduced to set
+     * @param dateWichIsIntroduced : the dateWichIsIntroduced to set
      */
     public void setDateWichIsIntroduced(LocalDate dateWichIsIntroduced) {
         this.dateWichIsIntroduced = dateWichIsIntroduced;
@@ -81,8 +78,7 @@ public class Computer {
     }
 
     /**
-     * @param dateWichIsDiscontinued
-     *            : the dateWichIsDiscontinued to set
+     * @param dateWichIsDiscontinued : the dateWichIsDiscontinued to set
      */
     public void setDateWichIsDiscontinued(LocalDate dateWichIsDiscontinued) {
         this.dateWichIsDiscontinued = dateWichIsDiscontinued;
@@ -96,8 +92,7 @@ public class Computer {
     }
 
     /**
-     * @param manufacturer
-     *            : the manufacturer (company) to set
+     * @param manufacturer : the manufacturer (company) to set
      */
     public void setManufacturer(Company manufacturer) {
         this.manufacturer = manufacturer;
@@ -111,8 +106,8 @@ public class Computer {
         return "Computer (" + getId() + ") - " + getName()
                 + ((getDateWichIsIntroduced() == null) ? ", not introduced yet "
                         : ", introduced in " + getDateWichIsIntroduced())
-                + ((getDateWichIsIntroduced() == null) ? ", not discontinued yet "
-                        : ", diconstinued in " + getDateWichIsIntroduced())
+                + ((getDateWichIsDiscontinued() == null) ? ", not discontinued yet "
+                        : ", diconstinued in " + getDateWichIsDiscontinued())
                 + ((getManufacturer() == null) ? ". No company available"
                         : ". Manufactured by company number " + getManufacturer().getId() + " .");
     }
@@ -181,7 +176,7 @@ public class Computer {
          * @return builder
          */
         public Builder withDateWichIsDiscontinued(LocalDate dateWichIsDiscontinued) {
-            this.computer.dateWichIsIntroduced = dateWichIsDiscontinued;
+            this.computer.dateWichIsDiscontinued = dateWichIsDiscontinued;
             return this;
         }
 

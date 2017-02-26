@@ -1,11 +1,14 @@
-package com.excilys.scaltot.cdb.repository;
+package com.excilys.scaltot.cdb.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import com.excilys.scaltot.cdb.PropertiesFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
  * Class allows jdbc connection ( initialization, opening and closing ).
@@ -17,7 +20,7 @@ import com.excilys.scaltot.cdb.PropertiesFile;
 public class JdbcConnection {
 
     private Connection connection;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnection.class.getName());
     private Properties properties = PropertiesFile.INSTANCE.getProperties();
 
     /**
@@ -73,13 +76,18 @@ public class JdbcConnection {
      * Retrieves the initialized connection.
      *
      * @return Connection
+     * @throws PersistenceException :
+     * @throws SQLException :
      */
     public Connection getConnection() {
         try {
             connection = DriverManager.getConnection(properties.getProperty("URL"), properties.getProperty("DB_LOGIN"),
                     properties.getProperty("DB_PASSWORD"));
         } catch (SQLException e) {
-            e.printStackTrace();
+			throw new PersistenceException("Connection can't be etablished and retrieved... (check your connection's properties)",e);
+        }
+        if (!connection.equals(null)){
+        	LOGGER.info("Connection etablished and retrieved");
         }
         return connection;
     }
@@ -90,6 +98,7 @@ public class JdbcConnection {
     public void closeConnection() {
         try {
             connection.close();
+        	LOGGER.info("Connection closed");
         } catch (SQLException e) {
             e.printStackTrace();
         }

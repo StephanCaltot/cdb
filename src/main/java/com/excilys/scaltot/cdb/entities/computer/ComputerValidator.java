@@ -1,8 +1,13 @@
 package com.excilys.scaltot.cdb.entities.computer;
 
-import java.util.logging.Logger;
-import com.excilys.scaltot.cdb.check.StringCheck;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.scaltot.cdb.entities.company.CompanyValidator;
+import com.excilys.scaltot.cdb.validation.DateCheck;
+import com.excilys.scaltot.cdb.validation.StringCheck;
 
 /**
  * @author Caltot Stéphan
@@ -11,16 +16,20 @@ import com.excilys.scaltot.cdb.entities.company.CompanyValidator;
  */
 public interface ComputerValidator {
 
-    Logger LOGGER = Logger.getLogger(CompanyValidator.class.getName());
+    Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
 
+    
     /**
-     * Static method checking Computer entity.
-     *
+     * Static method checking all form's rules for computer.
      * @param computer :
-     * @throws Exception
-     * @return Boolean
+     * @return boolean
      */
-    static Boolean check(Computer computer) {
-        return !(computer.getName().equals(null) || !StringCheck.isFormed(computer.getName()));
+    static Boolean check(Optional<Computer> computer) {
+        if (!computer.get().getName().equals(null)
+        		&& StringCheck.isFormed(Optional.of(computer.get().getName()))
+        		&& DateCheck.bothDatesNotNull(Optional.of(computer.get().getDateWichIsIntroduced()), Optional.of(computer.get().getDateWichIsDiscontinued()))){
+        	return DateCheck.isGood(Optional.of(computer.get().getDateWichIsIntroduced()),Optional.of(computer.get().getDateWichIsDiscontinued()) );
+        }
+        return false;
     }
 }

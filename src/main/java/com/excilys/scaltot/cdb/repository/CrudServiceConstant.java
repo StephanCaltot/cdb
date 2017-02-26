@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.utils.JdbcConnection;
 
 /**
  * Class contains all needed constant for crudService operation.

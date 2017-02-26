@@ -1,9 +1,11 @@
 package com.excilys.scaltot.cdb.cli;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
  * View fir Command line interface.
@@ -14,6 +16,7 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
  */
 public class ViewCli {
 
+	
     private ControllerCli controlerCli;
 
     public static final String FORMAT_COMPUTER = "%3s | %15.15s |%10s | %10s | %10s%n";
@@ -22,14 +25,15 @@ public class ViewCli {
 
     public static final String FOOTER = "                                                    ";
 
+    
     /**
      * View constructor setting controller.
      *
      * @param controlerCli :
      */
-    public ViewCli(ControllerCli controlerCli) {
-        this.controlerCli = controlerCli;
-        controlerCli.setViewCli(this);
+    public ViewCli(Optional<ControllerCli> controlerCli) {
+        this.controlerCli = controlerCli.get();
+        controlerCli.get().setViewCli(Optional.of(this));
     }
 
     /**
@@ -48,6 +52,7 @@ public class ViewCli {
 
     /**
      * Designed display for CLI menu.
+     * @throws PersistenceException :
      */
     public void displayMenu() {
         System.out.println("\n\n");
@@ -106,8 +111,10 @@ public class ViewCli {
      *
      * @param computer :
      */
-    public void displayComputersDetails(Computer computer) {
-        System.out.println("\n" + computer.toString() + "\n");
+    public void displayComputersDetails(Optional<Computer> computer) {
+    	if (computer.isPresent()){
+            System.out.println("\n" + computer.get().toString() + "\n");    		
+    	}
     }
 
     /**
@@ -115,8 +122,10 @@ public class ViewCli {
      *
      * @param info :
      */
-    public void displayInfo(String info) {
-        System.out.print(info);
+    public void displayInfo(Optional<String> info) {
+    	if (info.isPresent()){
+            System.out.print(info);    		
+    	}
     }
 
 }

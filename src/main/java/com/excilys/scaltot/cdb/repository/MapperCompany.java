@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
  * @author Caltot Stéphan
@@ -19,18 +20,30 @@ public class MapperCompany {
      * Transforms result retrieved in new company entity.
      *
      * @param resultSet :
-     * @return company entity
+     * @return Optional company entity
+     * @throws PersistenceException :
      * @throws Exception
      */
-    public static Optional<Company> resultSetToEntity(ResultSet resultSet) {
+    public static Optional<Company> resultSetToEntity(Optional <ResultSet> resultSet) {
 
-        String name;
+        String name = null;
+        long id = 0;
+        
         try {
-            name = resultSet.getString("name");
-            company = new Company.Builder().withName(name).build();
-            company.setId(resultSet.getInt("id"));
+            company = new Company.Builder().build();
+            
+            if (resultSet.get().getLong("id") != 0) {
+                id = resultSet.get().getLong("id");
+            }
+            if (resultSet.get().getString("name") != null) {
+                name = resultSet.get().getString("name");
+            }
+            company = new Company.Builder()
+            		.withName(name)
+            		.withId(id)
+            		.build();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new PersistenceException(e);
         }
 
         return Optional.of(company);

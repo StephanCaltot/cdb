@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
  * @author Caltot Stéphan
@@ -22,46 +23,62 @@ public class MapperComputer {
      * Method transform resultSet in computer entity.
      *
      * @param resultSet :
-     * @return IComputer
-     * @throws Exception
+     * @return Optional computer entity
+     * @throws PersistenceException :
+     * @throws Exception :
      */
-    public static Optional<Computer> resultSetToEntity(ResultSet resultSet) {
-
+    public static Optional<Computer> resultSetToEntity(Optional <ResultSet> resultSet) {
+    	if (!resultSet.isPresent()){
+    		return Optional.empty();
+    	}
         long id = 0;
+        long companyId = 0;
+        String companyName = null;
         String name = null;
         Object introduced = null;
         Object discontinued = null;
-
+        
         try {
-            computer = new Computer.Builder().withName(name).build();
-
-            if (resultSet.getLong("id") != 0) {
-                id = resultSet.getLong("id");
-                computer.setId(id);
+        	
+            if (resultSet.get().getLong("id") != 0) {
+                id = resultSet.get().getLong("id");
             }
-            if (resultSet.getString("name") != null) {
-                name = resultSet.getString("name");
-                computer.setName(name);
+            
+            if (resultSet.get().getString("name") != null) {
+                name = resultSet.get().getString("name");
             }
-            if (resultSet.getObject("introduced") != null) {
-                introduced = ((Timestamp) resultSet.getObject("introduced")).toLocalDateTime().toLocalDate();
-                computer.setDateWichIsIntroduced((LocalDate) introduced);
+            
+            if (resultSet.get().getObject("introduced") != null) {
+                introduced = ((Timestamp) resultSet.get().getObject("introduced")).toLocalDateTime().toLocalDate();
             }
-            if (resultSet.getObject("discontinued") != null) {
-                discontinued = ((Timestamp) resultSet.getObject("discontinued")).toLocalDateTime().toLocalDate();
-                computer.setDateWichIsDiscontinued((LocalDate) discontinued);
+            
+            if (resultSet.get().getObject("discontinued") != null) {
+                discontinued = ((Timestamp) resultSet.get().getObject("discontinued")).toLocalDateTime().toLocalDate();
             }
+            
+            if (resultSet.get().getLong("company_id") != 0) {
+                companyId = resultSet.get().getLong("company_id");
+            }
+            
+            if (resultSet.get().getString("company_name") != null) {
+            	companyName = resultSet.get().getString("company_name");
+            }
+            
+            Company company = new Company.Builder()
+            		.withId(companyId)
+            		.withName(companyName)
+            		.build();
+            
+            computer = new Computer.Builder()
+            		.withId(id)
+            		.withName(name)
+            		.withDateWichIsIntroduced((LocalDate) introduced)
+            		.withDateWichIsDiscontinued((LocalDate) discontinued)
+            		.withManufacturer(company)
+            		.build();
+            
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (resultSet.getInt("company_id") != 0) {
-                Optional<Company> company = new CrudServiceCompany().find(resultSet.getInt("company_id"));
-                computer.setManufacturer(company.get());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            throw new PersistenceException(e);
         }
 
         return Optional.of(computer);

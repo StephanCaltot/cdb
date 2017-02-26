@@ -7,7 +7,7 @@ import java.util.Optional;
  * @author Caltot Stéphan
  *
  *         22 févr. 2017
- */
+ */	
 public interface CrudService<T> {
     /**
      *
@@ -15,14 +15,14 @@ public interface CrudService<T> {
      * @return T
      * @throws Exception :
      */
-    Optional<T> find(long id) throws Exception;
+    Optional<T> find(long id);
 
     /**
      *
      * @return T
      * @throws Exception :
      */
-    List<T> findAll() throws Exception;
+    List<T> findAll();
 
     /**
      *
@@ -31,6 +31,6 @@ public interface CrudService<T> {
      * @return List<T>
      * @throws Exception :
      */
-    List<T> findByPage(long offset, int numberForEachpPage) throws Exception;
+    List<T> findByPage(long offset, long numberForEachpPage);
 
 }
