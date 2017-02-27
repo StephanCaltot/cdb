@@ -3,7 +3,6 @@ package com.excilys.scaltot.cdb.entities;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import org.junit.Test;
