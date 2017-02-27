@@ -24,9 +24,11 @@ import com.excilys.scaltot.cdb.utils.DaoProperties;
  *
  *         20 févr. 2017
  */
-public class CrudServiceComputerImpl implements CrudServiceComputer {
+public enum CrudServiceComputerImpl implements CrudServiceComputer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CrudServiceComputerImpl.class);
+    INSTANCE;
+
+    Logger LOGGER = LoggerFactory.getLogger(CrudServiceComputerImpl.class);
 
     private ResultSet resultSet;
     private Computer computer;
@@ -36,12 +38,9 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
     /**
      * Create CRUD's operation.
      *
-     * @param computer
-     *            :
-     * @throws PersistenceException
-     *             :
-     * @throws SQLException
-     *             :
+     * @param computer : computer
+     * @throws PersistenceException : persistence exception
+     * @throws SQLException : SQLException
      */
     public void create(Optional<Computer> computer) {
         if (!computer.isPresent()) {
@@ -90,11 +89,9 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
     /**
      * Find CRUD's operation.
      *
-     * @param id
-     *            :
+     * @param id : id
      * @return computer entity find with id gave in parameter
-     * @throws PersistenceException
-     *             :
+     * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
     public Optional<Computer> find(long id) {
@@ -131,8 +128,8 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
     /**
      * Delete CRUD's operation.
      *
-     * @param id :
-     * @throws PersistenceException :
+     * @param id : id
+     * @throws PersistenceException : PersistenceException
      * @throws SQLException
      * @return boolean
      */
@@ -161,10 +158,8 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
     /**
      * Update CRUD's operation.
      *
-     * @param computer
-     *            :
-     * @throws PersistenceException
-     *             :
+     * @param computer : computer
+     * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
     public void update(Optional<Computer> computer) {
@@ -251,10 +246,10 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
     /**
      * Retrieves computers paginated by limit ( 10 here ).
      *
-     * @param offset :
-     * @param numberForEachpPage :
+     * @param offset : begin's value of current page
+     * @param numberForEachpPage : number of elements for each page
      * @return list of computers paginated
-     * @throws PersistenceException :
+     * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
     public List<Computer> findByPage(long offset, long numberForEachpPage) {

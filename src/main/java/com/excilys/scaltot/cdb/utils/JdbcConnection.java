@@ -76,10 +76,8 @@ public class JdbcConnection {
      * Retrieves the initialized connection.
      *
      * @return Connection
-     * @throws PersistenceException
-     *             :
-     * @throws SQLException
-     *             :
+     * @throws PersistenceException : persistence exception
+     * @throws SQLException : SQL exception
      */
     public Connection getConnection() {
         try {

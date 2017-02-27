@@ -36,8 +36,8 @@ public class ControllerCli {
      * @throws SQLException :
      */
     public ControllerCli() {
-        crudServiceCompany = new CrudServiceCompanyImpl();
-        crudServiceComputer = new CrudServiceComputerImpl();
+        crudServiceCompany = CrudServiceCompanyImpl.INSTANCE;
+        crudServiceComputer = CrudServiceComputerImpl.INSTANCE;
         scan = ScannerSystemIn.getInstance();
     }
 
@@ -179,15 +179,14 @@ public class ControllerCli {
      *             :
      */
     public void showComputersDetails() {
-        Optional<Computer> computer = null;
         long computerId = 0;
         do {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id : "));
             computerId = scan.nextInt();
         } while (computerId == 0);
-        if (crudServiceComputer.find(computerId).isPresent()) {
-            computer = crudServiceComputer.find(computerId);
-            viewCli.displayComputersDetails(computer);
+        Optional<Computer> computerOptional = crudServiceComputer.find(computerId);
+        if (computerOptional.isPresent()) {
+            viewCli.displayComputersDetails(computerOptional);
         }
     }
 

@@ -3,11 +3,12 @@ package com.excilys.scaltot.cdb.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.company.Company.CompanyBuilder;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.entities.computer.Computer.ComputerBuilder;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
@@ -17,60 +18,61 @@ import com.excilys.scaltot.cdb.exceptions.PersistenceException;
  */
 public class MapperComputer {
 
+    private static ComputerBuilder computerBuilder;
+    private static CompanyBuilder companyBuilder;
     private static Computer computer;
+    private static Company company;
 
     /**
      * Method transform resultSet in computer entity.
      *
-     * @param resultSet
-     *            :
+     * @param resultSet : resultSet
      * @return Optional computer entity
-     * @throws PersistenceException
-     *             :
-     * @throws Exception
-     *             :
+     * @throws PersistenceException : Persistence Exception
+     * @throws Exception : exception
      */
     public static Optional<Computer> resultSetToEntity(Optional<ResultSet> resultSet) {
         if (!resultSet.isPresent()) {
             return Optional.empty();
         }
-        long id = 0;
-        long companyId = 0;
-        String companyName = null;
-        String name = null;
-        Object introduced = null;
-        Object discontinued = null;
 
         try {
+            computerBuilder = new Computer.ComputerBuilder();
+            companyBuilder = new Company.CompanyBuilder();
 
             if (resultSet.get().getLong("id") != 0) {
-                id = resultSet.get().getLong("id");
+                long id = resultSet.get().getLong("id");
+                computerBuilder.withId(id);
             }
 
             if (resultSet.get().getString("name") != null) {
-                name = resultSet.get().getString("name");
+                String name = resultSet.get().getString("name");
+                computerBuilder.withName(name);
             }
 
-            if (resultSet.get().getObject("introduced") != null) {
-                introduced = ((Timestamp) resultSet.get().getObject("introduced")).toLocalDateTime().toLocalDate();
+            if (resultSet.get().getTimestamp(("introduced")) != null) {
+                Timestamp introduced = resultSet.get().getTimestamp("introduced");
+                computerBuilder.withDateWichIsIntroduced(introduced.toLocalDateTime().toLocalDate());
             }
 
-            if (resultSet.get().getObject("discontinued") != null) {
-                discontinued = ((Timestamp) resultSet.get().getObject("discontinued")).toLocalDateTime().toLocalDate();
+            if (resultSet.get().getTimestamp(("discontinued")) != null) {
+                Timestamp discontinued = resultSet.get().getTimestamp("discontinued");
+                computerBuilder.withDateWichIsDiscontinued(discontinued.toLocalDateTime().toLocalDate());
             }
 
             if (resultSet.get().getLong("company_id") != 0) {
-                companyId = resultSet.get().getLong("company_id");
+                long companyId = resultSet.get().getLong("company_id");
+                companyBuilder.withId(companyId);
             }
 
             if (resultSet.get().getString("company_name") != null) {
-                companyName = resultSet.get().getString("company_name");
+                String companyName = resultSet.get().getString("company_name");
+                companyBuilder.withName(companyName);
             }
 
-            Company company = new Company.Builder().withId(companyId).withName(companyName).build();
+            company = companyBuilder.build();
+            computer = computerBuilder.withManufacturer(company).build();
 
-            computer = new Computer.Builder().withId(id).withName(name).withDateWichIsIntroduced((LocalDate) introduced)
-                    .withDateWichIsDiscontinued((LocalDate) discontinued).withManufacturer(company).build();
 
         } catch (SQLException e) {
             throw new PersistenceException(e);

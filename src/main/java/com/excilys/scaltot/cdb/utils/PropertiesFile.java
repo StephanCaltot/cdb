@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.excilys.scaltot.cdb.exceptions.FileNotFoundException;
+
 /**
  * @author Caltot Stéphan
  *
@@ -14,8 +16,8 @@ public enum PropertiesFile {
     INSTANCE;
 
     private Properties properties;
-
-    private static final String FILE_NAME = "/home/excilys/Documents/cdb/resources/sgbd.properties";
+    private static final String FILE_NAME = "sgbd.properties";
+    private static final String FILE_PATH = "/home/excilys/Documents/cdb/resources/" + FILE_NAME;
 
     /**
      * Private constructor.
@@ -25,9 +27,9 @@ public enum PropertiesFile {
         properties = new Properties();
 
         try {
-            properties.load(new FileInputStream(FILE_NAME));
+            properties.load(new FileInputStream(FILE_PATH));
         } catch (IOException e) {
-
+            throw new FileNotFoundException("File " + FILE_NAME + "not found", e);
         }
     }
 

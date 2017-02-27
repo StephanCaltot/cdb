@@ -32,7 +32,7 @@ public class MapperCompany {
         long id = 0;
 
         try {
-            company = new Company.Builder().build();
+            company = new Company.CompanyBuilder().build();
 
             if (resultSet.get().getLong("id") != 0) {
                 id = resultSet.get().getLong("id");
@@ -40,7 +40,7 @@ public class MapperCompany {
             if (resultSet.get().getString("name") != null) {
                 name = resultSet.get().getString("name");
             }
-            company = new Company.Builder().withName(name).withId(id).build();
+            company = new Company.CompanyBuilder().withName(name).withId(id).build();
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
