@@ -19,16 +19,18 @@ public interface CompanyValidator {
     /**
      * Method checking Company's entity .
      *
-     * @param company :
-     * @throws Exception :
+     * @param company
+     *            :
+     * @throws Exception
+     *             :
      * @return boolean
      */
     static Boolean check(Optional<Company> company) {
         if (!(company.get().getName().equals(null) || StringCheck.isFormed(Optional.of(company.get().getName())))) {
-        	return true;
+            return true;
         } else {
-        	LOGGER.warn("The company's name is null or doesn't matches with authorized characters");
-        	return false;
+            LOGGER.warn("The company's name is null or doesn't matches with authorized characters");
+            return false;
         }
     }
 }

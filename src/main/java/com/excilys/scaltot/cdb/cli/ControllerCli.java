@@ -13,6 +13,7 @@ import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
 
 /**
  * Controler for Command line interface.
+ *
  * @author Caltot Stéphan
  *
  *         21 févr. 2017
@@ -31,6 +32,7 @@ public class ControllerCli {
 
     /**
      * Controler's constructor setting crudService for company and computer.
+     *
      * @throws SQLException :
      */
     public ControllerCli() {
@@ -48,6 +50,7 @@ public class ControllerCli {
 
     /**
      * Method : listing computers paginated.
+     *
      * @throws Exception :
      * @throws PersistenceException :
      */
@@ -59,7 +62,7 @@ public class ControllerCli {
         viewCli.displayAllComputers(computers);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
-        	
+
             viewCli.displayInfo(Optional.of("\nPress (p) to preview and (n) to next : "));
             choice = scan.nextLine();
 
@@ -108,6 +111,7 @@ public class ControllerCli {
 
     /**
      * Method : listing companies paginated.
+     *
      * @throws Exception :
      * @throws PersistenceException :
      */
@@ -119,7 +123,7 @@ public class ControllerCli {
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
-        	
+
             viewCli.displayInfo(Optional.of("\nPress (p) to preview and (n) to next : "));
             choice = scan.nextLine();
 
@@ -168,26 +172,32 @@ public class ControllerCli {
 
     /**
      * Method : showing details for one computer.
-     * @throws Exception :
-     * @throws PersistenceException :
+     *
+     * @throws Exception
+     *             :
+     * @throws PersistenceException
+     *             :
      */
     public void showComputersDetails() {
-        Optional <Computer> computer = null;
+        Optional<Computer> computer = null;
         long computerId = 0;
         do {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id : "));
             computerId = scan.nextInt();
         } while (computerId == 0);
         if (crudServiceComputer.find(computerId).isPresent()) {
-        	computer = crudServiceComputer.find(computerId);
+            computer = crudServiceComputer.find(computerId);
             viewCli.displayComputersDetails(computer);
         }
     }
 
     /**
      * Method : deleting one computer.
-     * @throws SQLException :
-     * @throws PersistenceException  :
+     *
+     * @throws SQLException
+     *             :
+     * @throws PersistenceException
+     *             :
      */
     public void deleteComputer() {
 
@@ -196,7 +206,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
             computerId = scan.nextInt();
         } while (computerId <= 0);
-        if (crudServiceComputer.delete(computerId)){
+        if (crudServiceComputer.delete(computerId)) {
             viewCli.displayInfo(Optional.of("\nComputer (" + computerId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -204,8 +214,11 @@ public class ControllerCli {
 
     /**
      * Method : handling menu execution.
-     * @throws Exception :
-     * @throws PersistenceException :
+     *
+     * @throws Exception
+     *             :
+     * @throws PersistenceException
+     *             :
      */
     public void execute() throws Exception {
 

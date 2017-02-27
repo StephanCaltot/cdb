@@ -76,18 +76,21 @@ public class JdbcConnection {
      * Retrieves the initialized connection.
      *
      * @return Connection
-     * @throws PersistenceException :
-     * @throws SQLException :
+     * @throws PersistenceException
+     *             :
+     * @throws SQLException
+     *             :
      */
     public Connection getConnection() {
         try {
             connection = DriverManager.getConnection(properties.getProperty("URL"), properties.getProperty("DB_LOGIN"),
                     properties.getProperty("DB_PASSWORD"));
         } catch (SQLException e) {
-			throw new PersistenceException("Connection can't be etablished and retrieved... (check your connection's properties)",e);
+            throw new PersistenceException(
+                    "Connection can't be etablished and retrieved... (check your connection's properties)", e);
         }
-        if (!connection.equals(null)){
-        	LOGGER.info("Connection etablished and retrieved");
+        if (!connection.equals(null)) {
+            LOGGER.info("Connection etablished and retrieved");
         }
         return connection;
     }
@@ -98,7 +101,7 @@ public class JdbcConnection {
     public void closeConnection() {
         try {
             connection.close();
-        	LOGGER.info("Connection closed");
+            LOGGER.info("Connection closed");
         } catch (SQLException e) {
             e.printStackTrace();
         }

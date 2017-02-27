@@ -18,17 +18,19 @@ public interface ComputerValidator {
 
     Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
 
-    
     /**
      * Static method checking all form's rules for computer.
-     * @param computer :
+     *
+     * @param computer
+     *            :
      * @return boolean
      */
     static Boolean check(Optional<Computer> computer) {
-        if (!computer.get().getName().equals(null)
-        		&& StringCheck.isFormed(Optional.of(computer.get().getName()))
-        		&& DateCheck.bothDatesNotNull(Optional.of(computer.get().getDateWichIsIntroduced()), Optional.of(computer.get().getDateWichIsDiscontinued()))){
-        	return DateCheck.isGood(Optional.of(computer.get().getDateWichIsIntroduced()),Optional.of(computer.get().getDateWichIsDiscontinued()) );
+        if (!computer.get().getName().equals(null) && StringCheck.isFormed(Optional.of(computer.get().getName()))
+                && DateCheck.bothDatesNotNull(Optional.of(computer.get().getDateWichIsIntroduced()),
+                        Optional.of(computer.get().getDateWichIsDiscontinued()))) {
+            return DateCheck.isGood(Optional.of(computer.get().getDateWichIsIntroduced()),
+                    Optional.of(computer.get().getDateWichIsDiscontinued()));
         }
         return false;
     }

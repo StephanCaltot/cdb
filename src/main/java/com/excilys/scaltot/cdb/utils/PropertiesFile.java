@@ -11,27 +11,27 @@ import java.util.Properties;
  */
 public enum PropertiesFile {
 
-	INSTANCE;
+    INSTANCE;
 
-	private Properties properties;
+    private Properties properties;
 
-	private static final String FILE_NAME = "/home/screetts/Documents/cdb/resources/sgbd.properties";
+    private static final String FILE_NAME = "/home/excilys/Documents/cdb/resources/sgbd.properties";
 
-	/**
-	 * Private constructor.
-	 */
-	PropertiesFile() {
+    /**
+     * Private constructor.
+     */
+    PropertiesFile() {
 
-		properties = new Properties();
+        properties = new Properties();
 
-		try {
-			properties.load(new FileInputStream(FILE_NAME));
-		} catch (IOException e) {
+        try {
+            properties.load(new FileInputStream(FILE_NAME));
+        } catch (IOException e) {
 
-		}
-	}
+        }
+    }
 
-	public Properties getProperties() {
-		return properties;
-	}
+    public Properties getProperties() {
+        return properties;
+    }
 }

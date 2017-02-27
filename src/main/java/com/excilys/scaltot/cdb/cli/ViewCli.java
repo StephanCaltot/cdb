@@ -16,7 +16,6 @@ import com.excilys.scaltot.cdb.exceptions.PersistenceException;
  */
 public class ViewCli {
 
-	
     private ControllerCli controlerCli;
 
     public static final String FORMAT_COMPUTER = "%3s | %15.15s |%10s | %10s | %10s%n";
@@ -25,11 +24,11 @@ public class ViewCli {
 
     public static final String FOOTER = "                                                    ";
 
-    
     /**
      * View constructor setting controller.
      *
-     * @param controlerCli :
+     * @param controlerCli
+     *            :
      */
     public ViewCli(Optional<ControllerCli> controlerCli) {
         this.controlerCli = controlerCli.get();
@@ -52,7 +51,9 @@ public class ViewCli {
 
     /**
      * Designed display for CLI menu.
-     * @throws PersistenceException :
+     *
+     * @throws PersistenceException
+     *             :
      */
     public void displayMenu() {
         System.out.println("\n\n");
@@ -77,7 +78,8 @@ public class ViewCli {
     /**
      * Method displaying computers formated.
      *
-     * @param computers :
+     * @param computers
+     *            :
      */
     public void displayAllComputers(List<Computer> computers) {
         System.out.println("\n");
@@ -94,7 +96,8 @@ public class ViewCli {
     /**
      * Method displaying companies formated.
      *
-     * @param companies :
+     * @param companies
+     *            :
      */
     public void displayAllCompanies(List<Company> companies) {
         System.out.println("\n");
@@ -109,23 +112,25 @@ public class ViewCli {
     /**
      * Method displaying details for on computer.
      *
-     * @param computer :
+     * @param computer
+     *            :
      */
     public void displayComputersDetails(Optional<Computer> computer) {
-    	if (computer.isPresent()){
-            System.out.println("\n" + computer.get().toString() + "\n");    		
-    	}
+        if (computer.isPresent()) {
+            System.out.println("\n" + computer.get().toString() + "\n");
+        }
     }
 
     /**
      * Displaying information given in parameter.
      *
-     * @param info :
+     * @param info
+     *            :
      */
     public void displayInfo(Optional<String> info) {
-    	if (info.isPresent()){
-            System.out.print(info);    		
-    	}
+        if (info.isPresent()) {
+            System.out.print(info);
+        }
     }
 
 }

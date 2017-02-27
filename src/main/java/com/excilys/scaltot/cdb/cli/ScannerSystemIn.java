@@ -9,7 +9,7 @@ import java.util.Scanner;
  */
 public class ScannerSystemIn {
 
-	
+
     /**
      * Private constructor for ScannerSystemIn singleton.
      */

@@ -19,29 +19,28 @@ public class MapperCompany {
     /**
      * Transforms result retrieved in new company entity.
      *
-     * @param resultSet :
+     * @param resultSet
+     *            :
      * @return Optional company entity
-     * @throws PersistenceException :
+     * @throws PersistenceException
+     *             :
      * @throws Exception
      */
-    public static Optional<Company> resultSetToEntity(Optional <ResultSet> resultSet) {
+    public static Optional<Company> resultSetToEntity(Optional<ResultSet> resultSet) {
 
         String name = null;
         long id = 0;
-        
+
         try {
             company = new Company.Builder().build();
-            
+
             if (resultSet.get().getLong("id") != 0) {
                 id = resultSet.get().getLong("id");
             }
             if (resultSet.get().getString("name") != null) {
                 name = resultSet.get().getString("name");
             }
-            company = new Company.Builder()
-            		.withName(name)
-            		.withId(id)
-            		.build();
+            company = new Company.Builder().withName(name).withId(id).build();
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }

@@ -26,7 +26,6 @@ import com.excilys.scaltot.cdb.utils.DaoProperties;
  */
 public class CrudServiceComputerImpl implements CrudServiceComputer {
 
-    
     private static final Logger LOGGER = LoggerFactory.getLogger(CrudServiceComputerImpl.class);
 
     private ResultSet resultSet;
@@ -34,16 +33,18 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
     private List<Computer> computers;
     private Connection connection;
 
-
     /**
      * Create CRUD's operation.
      *
-     * @param computer :
-     * @throws PersistenceException : 
-     * @throws SQLException :
+     * @param computer
+     *            :
+     * @throws PersistenceException
+     *             :
+     * @throws SQLException
+     *             :
      */
     public void create(Optional<Computer> computer) {
-        if (!computer.isPresent()){
+        if (!computer.isPresent()) {
             LOGGER.warn("You are trying to create a null computer !\n");
             return;
         }
@@ -51,13 +52,13 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
 
         try {
             CrudServiceConstant.preparedStatementInsert = connection.prepareStatement(DaoProperties.CREATE_COMPUTER);
-            
+
             if (computer.get().getName() != null) {
-            	CrudServiceConstant.preparedStatementInsert.setString(1, computer.get().getName());
+                CrudServiceConstant.preparedStatementInsert.setString(1, computer.get().getName());
             } else {
                 CrudServiceConstant.preparedStatementInsert.setNull(1, java.sql.Types.VARCHAR);
             }
-            
+
             if (computer.get().getDateWichIsIntroduced() != null) {
                 CrudServiceConstant.preparedStatementInsert.setObject(2,
                         Date.valueOf(computer.get().getDateWichIsIntroduced()));
@@ -89,13 +90,15 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
     /**
      * Find CRUD's operation.
      *
-     * @param id :
+     * @param id
+     *            :
      * @return computer entity find with id gave in parameter
-     * @throws PersistenceException :
+     * @throws PersistenceException
+     *             :
      * @throws Exception
      */
     public Optional<Computer> find(long id) {
-        
+
         if (id <= 0) {
             LOGGER.warn("You are trying to find a computer with null or negative id !\n");
             return Optional.empty();
@@ -105,12 +108,12 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
         try {
             CrudServiceConstant.preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPUTER);
             CrudServiceConstant.preparedStatementFind.setLong(1, id);
-            
-            if (!CrudServiceConstant.preparedStatementFind.executeQuery().isBeforeFirst()){
-            	LOGGER.warn("You are trying to find a computer doesn't exists anymore");
-            	return Optional.empty();
+
+            if (!CrudServiceConstant.preparedStatementFind.executeQuery().isBeforeFirst()) {
+                LOGGER.warn("You are trying to find a computer doesn't exists anymore");
+                return Optional.empty();
             }
-            
+
             resultSet = CrudServiceConstant.preparedStatementFind.executeQuery();
             resultSet.next();
             computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
@@ -131,6 +134,7 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
      * @param id :
      * @throws PersistenceException :
      * @throws SQLException
+     * @return boolean
      */
     public Boolean delete(long id) {
         if (id <= 0) {
@@ -142,27 +146,29 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
         try {
             CrudServiceConstant.preparedStatementDelete = connection.prepareStatement(DaoProperties.DELETE_COMPUTER);
             CrudServiceConstant.preparedStatementDelete.setLong(1, id);
-            if (CrudServiceConstant.preparedStatementDelete.executeUpdate() == 0){
-            	LOGGER.warn("This computer doesn't exist, choose an other ID !");
-            	return false;
+            if (CrudServiceConstant.preparedStatementDelete.executeUpdate() == 0) {
+                LOGGER.warn("This computer doesn't exist, choose an other ID !");
+                return false;
             }
+            return true;
         } catch (SQLException e) {
             throw new PersistenceException(e);
         } finally {
             CrudServiceConstant.jdbcConnection.closeConnection();
         }
-        return true;
     }
 
     /**
      * Update CRUD's operation.
      *
-     * @param computer :
-     * @throws PersistenceException :
+     * @param computer
+     *            :
+     * @throws PersistenceException
+     *             :
      * @throws Exception
      */
-    public void update(Optional <Computer> computer) {
-        if (!computer.isPresent()){
+    public void update(Optional<Computer> computer) {
+        if (!computer.isPresent()) {
             LOGGER.warn("You are trying to update a null computer !\n");
             return;
         }
@@ -171,20 +177,19 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
         try {
             CrudServiceConstant.preparedStatementUpdate = connection.prepareStatement(DaoProperties.UPDATE_COMPUTER);
 
-        	
             if (computer.get().getName() != null) {
-            	CrudServiceConstant.preparedStatementUpdate.setString(1, computer.get().getName());
+                CrudServiceConstant.preparedStatementUpdate.setString(1, computer.get().getName());
             } else {
                 CrudServiceConstant.preparedStatementUpdate.setNull(1, java.sql.Types.VARCHAR);
             }
-            
+
             if (computer.get().getDateWichIsIntroduced() != null) {
                 CrudServiceConstant.preparedStatementUpdate.setObject(2,
                         Date.valueOf(computer.get().getDateWichIsIntroduced()));
             } else {
                 CrudServiceConstant.preparedStatementUpdate.setNull(2, java.sql.Types.DATE);
             }
-            
+
             if (computer.get().getDateWichIsDiscontinued() != null) {
                 CrudServiceConstant.preparedStatementUpdate.setDate(3,
                         Date.valueOf(computer.get().getDateWichIsDiscontinued()));
@@ -197,7 +202,7 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
             } else {
                 CrudServiceConstant.preparedStatementUpdate.setNull(4, java.sql.Types.INTEGER);
             }
-            
+
             if (computer.get().getId() != 0) {
                 CrudServiceConstant.preparedStatementUpdate.setLong(5, computer.get().getId());
             } else {
@@ -216,7 +221,7 @@ public class CrudServiceComputerImpl implements CrudServiceComputer {
      * Retrieves all computers without any pagination.
      *
      * @return list of computers
-     * @throws PersistenceException 
+     * @throws PersistenceException
      * @throws Exception
      */
     public List<Computer> findAll() {

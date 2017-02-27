@@ -32,22 +32,23 @@ public class CrudServiceCompanyImpl implements CrudServiceCompany {
     private List<Company> companies;
     private Connection connection;
 
-
     /**
      * Find CRUD's operation.
      *
-     * @param id :
+     * @param id
+     *            :
      * @return company entity find with id gave in parameter
-     * @throws PersistenceException :
+     * @throws PersistenceException
+     *             :
      * @throws SQLException
      */
     public Optional<Company> find(long id) {
-        
+
         if (id <= 0) {
             LOGGER.warn("You are trying to find a company with null or negative id");
             return Optional.empty();
         }
-        
+
         connection = CrudServiceConstant.jdbcConnection.getConnection();
 
         try {
@@ -70,7 +71,8 @@ public class CrudServiceCompanyImpl implements CrudServiceCompany {
      * Retrieves all companies.
      *
      * @return list contains all companies
-     * @throws PersistenceException :
+     * @throws PersistenceException
+     *             :
      * @throws Exception
      */
     public List<Company> findAll() {
@@ -100,11 +102,15 @@ public class CrudServiceCompanyImpl implements CrudServiceCompany {
     /**
      * Allows pagination for findAll companies.
      *
-     * @param offset :
-     * @param numberForEachpPage :
+     * @param offset
+     *            :
+     * @param numberForEachpPage
+     *            :
      * @return list of companies paginated
-     * @throws PersistenceException :
-     * @throws Exception :
+     * @throws PersistenceException
+     *             :
+     * @throws Exception
+     *             :
      */
     public List<Company> findByPage(long offset, long numberForEachpPage) {
 
