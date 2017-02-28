@@ -23,14 +23,12 @@ public class DateCheck {
     /**
      * Check if first date is before second date and throws an exception.
      *
-     * @param firstDate
-     *            : introduced date
-     * @param secondDate
-     *            : discontinued date
+     * @param firstDate : introduced date
+     * @param secondDate : discontinued date
      * @throws DateTimeException
      * @return boolean
      */
-    public static boolean isGood(final Optional<LocalDate> firstDate, final Optional<LocalDate> secondDate) {
+    public static boolean isRealTime(final Optional<LocalDate> firstDate, final Optional<LocalDate> secondDate) {
         if (firstDate.get().isAfter(secondDate.get())) {
             LOGGER.warn("It's seems like discontinued date is more recent than introducing date \n");
             return false;
@@ -41,10 +39,8 @@ public class DateCheck {
     /**
      * Return boolean if the both dates of computer aren't null.
      *
-     * @param firstDate
-     *            :
-     * @param secondDate
-     *            :
+     * @param firstDate : first date
+     * @param secondDate : second date
      * @return boolean
      */
     public static boolean bothDatesNotNull(final Optional<LocalDate> firstDate, final Optional<LocalDate> secondDate) {
@@ -54,6 +50,22 @@ public class DateCheck {
             LOGGER.info("One of selected date is null");
             return false;
         }
+    }
+
+    /**
+     * Check date's format.
+     * @param optionalDate : date
+     * @return boolean
+     */
+    public static boolean formatIsValid(Optional<String> optionalDate) {
+        if (optionalDate.isPresent()) {
+            String date = optionalDate.get();
+            if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                return true;
+            }
+            LOGGER.warn("The date's format is not valid. Format expected : yyyy-mm-dd");
+        }
+        return false;
     }
 
 }

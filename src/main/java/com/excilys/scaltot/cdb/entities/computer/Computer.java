@@ -149,14 +149,14 @@ public class Computer {
      *
      * @author screetts
      */
-    public static class Builder {
+    public static class ComputerBuilder {
 
         private Computer computer;
 
         /**
          * Builder constructor.
          */
-        public Builder() {
+        public ComputerBuilder() {
             this.computer = new Computer();
         }
 
@@ -165,7 +165,7 @@ public class Computer {
          * @param dateWichIsIntroduced :
          * @return builder
          */
-        public Builder withDateWichIsIntroduced(LocalDate dateWichIsIntroduced) {
+        public ComputerBuilder withDateWichIsIntroduced(LocalDate dateWichIsIntroduced) {
             this.computer.dateWichIsIntroduced = dateWichIsIntroduced;
             return this;
         }
@@ -175,7 +175,7 @@ public class Computer {
          * @param dateWichIsDiscontinued :
          * @return builder
          */
-        public Builder withDateWichIsDiscontinued(LocalDate dateWichIsDiscontinued) {
+        public ComputerBuilder withDateWichIsDiscontinued(LocalDate dateWichIsDiscontinued) {
             this.computer.dateWichIsDiscontinued = dateWichIsDiscontinued;
             return this;
         }
@@ -185,7 +185,7 @@ public class Computer {
          * @param manufacturer :
          * @return builder
          */
-        public Builder withManufacturer(Company manufacturer) {
+        public ComputerBuilder withManufacturer(Company manufacturer) {
             this.computer.manufacturer = manufacturer;
             return this;
         }
@@ -195,7 +195,7 @@ public class Computer {
          * @param id :
          * @return builder
          */
-        public Builder withId(long id) {
+        public ComputerBuilder withId(long id) {
             this.computer.id = id;
             return this;
         }
@@ -204,7 +204,7 @@ public class Computer {
          * @param name :
          * @return builder
          */
-        public Builder withName(String name) {
+        public ComputerBuilder withName(String name) {
             this.computer.name = name;
             return this;
         }

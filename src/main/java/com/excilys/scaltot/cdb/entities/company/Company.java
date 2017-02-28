@@ -87,19 +87,20 @@ public class Company {
         return true;
     }
 
+
     /**
      * Builder Pattern for company.
      *
      * @author screetts
      */
-    public static class Builder {
+    public static class CompanyBuilder {
 
         private Company company;
 
         /**
          * Builder constructor.
          */
-        public Builder() {
+        public CompanyBuilder() {
             this.company = new Company();
         }
 
@@ -108,7 +109,7 @@ public class Company {
          * @param id :
          * @return builder
          */
-        public Builder withId(long id) {
+        public CompanyBuilder withId(long id) {
             this.company.id = id;
             return this;
         }
@@ -118,7 +119,7 @@ public class Company {
          * @param name :
          * @return builder
          */
-        public Builder withName(String name) {
+        public CompanyBuilder withName(String name) {
             this.company.name = name;
             return this;
         }

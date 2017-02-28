@@ -23,9 +23,10 @@ import com.excilys.scaltot.cdb.utils.DaoProperties;
  *
  *         20 févr. 2017
  */
-public class CrudServiceCompanyImpl implements CrudServiceCompany {
+public enum CrudServiceCompanyImpl implements CrudServiceCompany {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CrudServiceCompanyImpl.class.getName());
+    INSTANCE;
+    Logger LOGGER = LoggerFactory.getLogger(CrudServiceCompanyImpl.class.getName());
 
     private ResultSet resultSet;
     private Company company;
