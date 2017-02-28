@@ -39,28 +39,78 @@ public class ComputerValidationTest {
     }
 
     /**
-     * Check computer construction.
+     * Check computer construction with wrong id.
      */
     @Test
-    public void checkIfIsWrong() {
+    public void checkIfIsIdWrong() {
         computer = new Computer.ComputerBuilder().withId(-1).withName("computerTest")
                 .withDateWichIsIntroduced(LocalDate.of(2001, 01, 01))
                 .withDateWichIsDiscontinued(LocalDate.of(2011, 01, 01)).build();
+        
+        company = new Company.CompanyBuilder().withId(1).withName("companyTest").build();
+        computer.setManufacturer(company);
+        
+        assertFalse(ComputerValidator.check(Optional.of(computer)));
+    }
+    
+    /**
+     * Check computer construction with wrong name.
+     */
+    @Test
+    public void checkIfIsNamedWrong() {
+        computer = new Computer.ComputerBuilder().withId(1).withName("computer*Test")
+                .withDateWichIsIntroduced(LocalDate.of(2001, 01, 01))
+                .withDateWichIsDiscontinued(LocalDate.of(2011, 01, 01)).build();
 
+        company = new Company.CompanyBuilder().withId(1).withName("companyTest").build();
+        computer.setManufacturer(company);
+        
         assertFalse(ComputerValidator.check(Optional.of(computer)));
 
-        computer.setName("tes*t");
-        assertFalse(ComputerValidator.check(Optional.of(computer)));
+    }
 
-        computer.setDateWichIsIntroduced(LocalDate.of(2012, 01, 01));
+    /**
+     * Check computer construction with wrong introduced date.
+     */
+    @Test
+    public void checkIfIsDatedWrong() {
+        computer = new Computer.ComputerBuilder().withId(1).withName("computerTest")
+                .withDateWichIsIntroduced(LocalDate.of(2012, 01, 01))
+                .withDateWichIsDiscontinued(LocalDate.of(2011, 01, 01)).build();
+
+        company = new Company.CompanyBuilder().withId(1).withName("companyTest").build();
+        computer.setManufacturer(company);
+
         assertFalse(ComputerValidator.check(Optional.of(computer)));
+    }
+    
+    /**
+     * Check computer construction with wrong introduced date.
+     */
+    @Test
+    public void checkIfIsCompanyIddWrong() {
+        computer = new Computer.ComputerBuilder().withId(1).withName("computerTest")
+                .withDateWichIsIntroduced(LocalDate.of(2010, 01, 01))
+                .withDateWichIsDiscontinued(LocalDate.of(2011, 01, 01)).build();
 
         company = new Company.CompanyBuilder().withId(-1).withName("companyTest").build();
         computer.setManufacturer(company);
-        assertFalse(ComputerValidator.check(Optional.of(computer)));
 
-        computer.getManufacturer().setName("company*Test");
         assertFalse(ComputerValidator.check(Optional.of(computer)));
     }
+    
+    /**
+     * Check computer construction with wrong company name.
+     */
+    @Test
+    public void checkIfIsCompanyNameddWrong() {
+        computer = new Computer.ComputerBuilder().withId(1).withName("computerTest")
+                .withDateWichIsIntroduced(LocalDate.of(2010, 01, 01))
+                .withDateWichIsDiscontinued(LocalDate.of(2011, 01, 01)).build();
 
+        company = new Company.CompanyBuilder().withId(1).withName("company*Test").build();
+        computer.setManufacturer(company);
+
+        assertFalse(ComputerValidator.check(Optional.of(computer)));
+    }
 }

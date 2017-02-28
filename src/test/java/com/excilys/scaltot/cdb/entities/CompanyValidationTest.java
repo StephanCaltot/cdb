@@ -29,11 +29,21 @@ public class CompanyValidationTest {
     }
 
     /**
-     * Check computer construction.
+     * Check computer construction with wrong id.
      */
     @Test
-    public void checkIfIsWrong() {
-        company = new Company.CompanyBuilder().withId(-1).withName("comput*erTest").build();
+    public void checkIfIsIdWrong() {
+        company = new Company.CompanyBuilder().withId(-1).withName("computerTest").build();
+
+        assertFalse(CompanyValidator.check(Optional.of(company)));
+    }
+    
+    /**
+     * Check computer construction with wrong name.
+     */
+    @Test
+    public void checkIfIsNamedWrong() {
+        company = new Company.CompanyBuilder().withId(1).withName("computer*Test").build();
 
         assertFalse(CompanyValidator.check(Optional.of(company)));
     }
