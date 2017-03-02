@@ -8,6 +8,7 @@ import java.util.Scanner;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
 
@@ -27,6 +28,7 @@ public class ControllerCli {
     private static long numberForEachpPage = 10;
     private long offsetCompany = 0;
     private Scanner scan;
+    private Pagination pagination = new Pagination.PaginationBuilder().build();
 
     /**
      * Controler's constructor setting crudService for company and computer.
@@ -54,7 +56,7 @@ public class ControllerCli {
 
         String choice = null;
 
-        computers = CrudComputerService.findByPage(offset, numberForEachpPage);
+        computers = CrudComputerService.findByPageFilter(pagination);
         viewCli.displayAllComputers(computers);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -80,14 +82,16 @@ public class ControllerCli {
                 break;
             case "n":
                 offset += 10;
-                computers = CrudComputerService.findByPage(offset, numberForEachpPage);
+                pagination.setOffset(offset);
+                computers = CrudComputerService.findByPageFilter(pagination);
                 viewCli.displayAllComputers(computers);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
                 if (offset - 10 >= 0) {
                     offset -= 10;
-                    computers = CrudComputerService.findByPage(offset, numberForEachpPage);
+                    pagination.setOffset(offset);
+                    computers = CrudComputerService.findByPage(pagination);
                     viewCli.displayAllComputers(computers);
                 } else {
                     viewCli.displayInfo(Optional.of("Index too low you have to 'next'"));
@@ -96,8 +100,11 @@ public class ControllerCli {
             case "q":
                 offset = -1;
                 break;
+            case "Q":
+                offset = -1;
+                break;
             default:
-                viewCli.displayInfo(Optional.of("You have to press (n) or (p) or (q) to quit"));
+                //viewCli.displayInfo(Optional.of("You have to press (n) or (p) or (q) to quit"));
                 break;
             }
 
@@ -114,8 +121,9 @@ public class ControllerCli {
     public void listingOfCompanies() {
 
         String choice = null;
-
-        companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
+        pagination.setOffset(offset);
+        pagination.setPageSize(numberForEachpPage);
+        companies = new CrudCompanyService().findByPage(pagination);
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -141,14 +149,16 @@ public class ControllerCli {
                 break;
             case "n":
                 offsetCompany += 10;
-                companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
+                pagination.setOffset(offsetCompany);
+                companies = new CrudCompanyService().findByPage(pagination);
                 viewCli.displayAllCompanies(companies);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
                 if (offsetCompany - 10 >= 0) {
                     offsetCompany -= 10;
-                    companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
+                    pagination.setOffset(offsetCompany);
+                    companies = new CrudCompanyService().findByPage(pagination);
                     viewCli.displayAllCompanies(companies);
                 } else {
                     viewCli.displayInfo(Optional.of("Index too low you have to 'next'"));
@@ -157,8 +167,11 @@ public class ControllerCli {
             case "q":
                 offsetCompany = -1;
                 break;
+            case "Q":
+                offsetCompany = -1;
+                break;
             default:
-                viewCli.displayInfo(Optional.of("You have to press (n) or (p) or (q) to quit"));
+                //viewCli.displayInfo(Optional.of("You have to press (n) or (p) or (q) to quit"));
                 break;
             }
 
@@ -238,6 +251,11 @@ public class ControllerCli {
                 deleteComputer();
                 break;
             case "q":
+                viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
+                viewCli.displayInfo(Optional.of("\n     CLI closed, good bye !\n"));
+                viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
+                break;
+            case "Q":
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 viewCli.displayInfo(Optional.of("\n     CLI closed, good bye !\n"));
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));

@@ -12,9 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.CrudServiceComputer;
+import com.excilys.scaltot.cdb.repository.CrudService;
 import com.excilys.scaltot.cdb.repository.CrudServiceConstant;
 import com.excilys.scaltot.cdb.repository.MapperComputer;
+import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.utils.DaoProperties;
 
 /**
@@ -24,7 +25,7 @@ import com.excilys.scaltot.cdb.utils.DaoProperties;
  *
  *         20 févr. 2017
  */
-public enum CrudServiceComputerImpl implements CrudServiceComputer {
+public enum CrudServiceComputerImpl implements CrudService<Computer> {
 
     INSTANCE;
 
@@ -252,20 +253,23 @@ public enum CrudServiceComputerImpl implements CrudServiceComputer {
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
-    public List<Computer> findByPage(long offset, long numberForEachpPage) {
+    public List<Computer> findByPage(Pagination pagination) {
 
         connection = CrudServiceConstant.jdbcConnection.getConnection();
         computers = new ArrayList<>();
 
-        if (numberForEachpPage <= 0) {
-            numberForEachpPage = CrudServiceConstant.LIMIT_DEFAULT;
+        long pageSize = pagination.getPageSize();
+        long offset = pagination.getOffset();
+
+        if ( pageSize <= 0) {
+             pageSize = CrudServiceConstant.LIMIT_DEFAULT;
         }
         if (offset < 0) {
             offset = 0;
         }
         try {
             CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER);
-            CrudServiceConstant.preparedStatementFindByPage.setLong(1, numberForEachpPage);
+            CrudServiceConstant.preparedStatementFindByPage.setLong(1, pageSize);
             CrudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
             resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
             while (resultSet.next()) {
@@ -341,13 +345,16 @@ public enum CrudServiceComputerImpl implements CrudServiceComputer {
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
-    public List<Computer> findByPageFilter(long offset, long numberForEachpPage, String filter) {
+    public List<Computer> findByPageFilter(Pagination pagination) {
 
         connection = CrudServiceConstant.jdbcConnection.getConnection();
         computers = new ArrayList<>();
-
-        if (numberForEachpPage <= 0) {
-            numberForEachpPage = CrudServiceConstant.LIMIT_DEFAULT;
+        long offset = pagination.getOffset();
+        long pageSize = pagination.getPageSize();
+        String filter = pagination.getFilter();
+        
+        if (pageSize <= 0) {
+            pageSize = CrudServiceConstant.LIMIT_DEFAULT;
         }
         if (offset < 0) {
             offset = 0;
@@ -355,7 +362,7 @@ public enum CrudServiceComputerImpl implements CrudServiceComputer {
         try {
             CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER_FILTERED);
             CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + filter + "%");
-            CrudServiceConstant.preparedStatementFindByPage.setLong(2, numberForEachpPage);
+            CrudServiceConstant.preparedStatementFindByPage.setLong(2, pageSize);
             CrudServiceConstant.preparedStatementFindByPage.setLong(3, offset);
             resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
             while (resultSet.next()) {

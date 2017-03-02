@@ -8,6 +8,7 @@ import com.excilys.scaltot.cdb.cli.ViewCli;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
+import com.excilys.scaltot.cdb.repository.Pagination;
 
 /**
  * @author Caltot Stéphan
@@ -32,7 +33,7 @@ public class ControllerCompany {
 
         String choice = null;
 
-        companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
+        companies = CrudCompanyService.findByPage();
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {

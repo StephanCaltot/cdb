@@ -11,9 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.CrudServiceCompany;
+import com.excilys.scaltot.cdb.repository.CrudService;
 import com.excilys.scaltot.cdb.repository.CrudServiceConstant;
 import com.excilys.scaltot.cdb.repository.MapperCompany;
+import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.utils.DaoProperties;
 
 /**
@@ -23,7 +24,7 @@ import com.excilys.scaltot.cdb.utils.DaoProperties;
  *
  *         20 févr. 2017
  */
-public enum CrudServiceCompanyImpl implements CrudServiceCompany {
+public enum CrudServiceCompanyImpl implements CrudService<Company> {
 
     INSTANCE;
     Logger LOGGER = LoggerFactory.getLogger(CrudServiceCompanyImpl.class.getName());
@@ -102,30 +103,23 @@ public enum CrudServiceCompanyImpl implements CrudServiceCompany {
     /**
      * Allows pagination for findAll companies.
      *
-     * @param offset
-     *            :
-     * @param numberForEachPage
-     *            :
-     * @return list of companies paginated
-     * @throws PersistenceException
-     *             :
-     * @throws Exception
-     *             :
      */
-    public List<Company> findByPage(long offset, long numberForEachPage) {
+    public List<Company> findByPage(Pagination pagination) {
 
         connection = CrudServiceConstant.jdbcConnection.getConnection();
         companies = new ArrayList<>();
-
-        if (numberForEachPage <= 0) {
-            numberForEachPage = CrudServiceConstant.LIMIT_DEFAULT;
+        long offset = pagination.getOffset();
+        long pageSize = pagination.getPageSize();
+                
+        if (pageSize <= 0) {
+            pageSize = CrudServiceConstant.LIMIT_DEFAULT;
         }
         if (offset < 0) {
             offset = 0;
         }
         try {
             CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPANY);
-            CrudServiceConstant.preparedStatementFindByPage.setLong(1, numberForEachPage);
+            CrudServiceConstant.preparedStatementFindByPage.setLong(1, pageSize);
             CrudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
             resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
             while (resultSet.next()) {

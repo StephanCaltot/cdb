@@ -5,14 +5,15 @@ import java.util.List;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.managers.CompanyManagerBean;
+import com.excilys.scaltot.cdb.repository.Pagination;
+import com.excilys.scaltot.cdb.services.CrudCompanyService;
 
 /**
  * @author Caltot Stéphan
  *
  *         22 févr. 2017
  */
-public class Main {
+public class Test {
 
     /**
      * @param args
@@ -30,7 +31,7 @@ public class Main {
 
         //Optional<Computer> computer = CrudServiceComputerImpl.INSTANCE.find(503);
         //computer.get().getManufacturer().setName("MDR");
-        List<Company> companies =  new CompanyManagerBean().getDisplayedCompanies();
+        List<Company> companies =  new CrudCompanyService().findByPage(new Pagination.PaginationBuilder().withPageSize(10).withOffset(10).build());
         for (Company company : companies) {
             System.out.println(company.toString());
         }

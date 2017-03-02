@@ -59,7 +59,7 @@ public class ComputerManagerBean {
      * @return list of computers
      */
     public List<Computer> getDisplayedComputers() {
-        return CrudComputerService.findByPageFilter(currentPage, numberForEachPage, filter);
+        return CrudComputerService.findByPageFilter(Pagination pagination);
     }
 
     /**
