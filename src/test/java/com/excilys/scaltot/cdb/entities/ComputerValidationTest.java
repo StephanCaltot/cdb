@@ -46,13 +46,12 @@ public class ComputerValidationTest {
         computer = new Computer.ComputerBuilder().withId(-1).withName("computerTest")
                 .withDateWichIsIntroduced(LocalDate.of(2001, 01, 01))
                 .withDateWichIsDiscontinued(LocalDate.of(2011, 01, 01)).build();
-        
+
         company = new Company.CompanyBuilder().withId(1).withName("companyTest").build();
         computer.setManufacturer(company);
-        
         assertFalse(ComputerValidator.check(Optional.of(computer)));
     }
-    
+
     /**
      * Check computer construction with wrong name.
      */
@@ -64,7 +63,6 @@ public class ComputerValidationTest {
 
         company = new Company.CompanyBuilder().withId(1).withName("companyTest").build();
         computer.setManufacturer(company);
-        
         assertFalse(ComputerValidator.check(Optional.of(computer)));
 
     }
@@ -83,7 +81,7 @@ public class ComputerValidationTest {
 
         assertFalse(ComputerValidator.check(Optional.of(computer)));
     }
-    
+
     /**
      * Check computer construction with wrong introduced date.
      */
@@ -98,7 +96,7 @@ public class ComputerValidationTest {
 
         assertFalse(ComputerValidator.check(Optional.of(computer)));
     }
-    
+
     /**
      * Check computer construction with wrong company name.
      */

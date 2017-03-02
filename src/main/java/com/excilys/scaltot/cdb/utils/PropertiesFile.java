@@ -17,7 +17,7 @@ public enum PropertiesFile {
 
     private Properties properties;
     private static final String FILE_NAME = "sgbd.properties";
-    private static final String FILE_PATH = "/home/excilys/Documents/cdb/resources/" + FILE_NAME;
+    private static final String FILE_PATH = "/home/screetts/Documents/computer-database/resources/" + FILE_NAME;
 
     /**
      * Private constructor.

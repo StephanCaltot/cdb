@@ -31,6 +31,11 @@ public class CrudServiceConstant {
     public static PreparedStatement preparedStatementUpdate;
     public static PreparedStatement preparedStatementFindAll;
     public static PreparedStatement preparedStatementFindByPage;
+    public static PreparedStatement preparedStatementCountComputer;
+    public static PreparedStatement preparedStatementCountCompanies;
+    public static PreparedStatement preparedStatementComputersFiltered;
+    public static PreparedStatement preparedStatementCompaniesFiltered;
+
     public static List<Computer> computers;
     public static List<Company> companies;
 

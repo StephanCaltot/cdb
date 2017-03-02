@@ -36,7 +36,7 @@ public enum CrudServiceCompanyImpl implements CrudServiceCompany {
     /**
      * Find CRUD's operation.
      *
-     * @param id
+     * @param id : id
      *            :
      * @return company entity find with id gave in parameter
      * @throws PersistenceException
@@ -82,9 +82,8 @@ public enum CrudServiceCompanyImpl implements CrudServiceCompany {
         companies = new ArrayList<>();
 
         try {
-            CrudServiceConstant.preparedStatementFindAll = connection
-                    .prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
-            resultSet = CrudServiceConstant.preparedStatementFind.executeQuery();
+            CrudServiceConstant.preparedStatementFindAll = connection.prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
+            resultSet = CrudServiceConstant.preparedStatementFindAll.executeQuery();
             while (resultSet.next()) {
                 if (MapperCompany.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
                     company = MapperCompany.resultSetToEntity(Optional.of(resultSet)).get();
@@ -105,7 +104,7 @@ public enum CrudServiceCompanyImpl implements CrudServiceCompany {
      *
      * @param offset
      *            :
-     * @param numberForEachpPage
+     * @param numberForEachPage
      *            :
      * @return list of companies paginated
      * @throws PersistenceException
@@ -113,20 +112,20 @@ public enum CrudServiceCompanyImpl implements CrudServiceCompany {
      * @throws Exception
      *             :
      */
-    public List<Company> findByPage(long offset, long numberForEachpPage) {
+    public List<Company> findByPage(long offset, long numberForEachPage) {
 
         connection = CrudServiceConstant.jdbcConnection.getConnection();
         companies = new ArrayList<>();
 
-        if (numberForEachpPage <= 0) {
-            numberForEachpPage = CrudServiceConstant.LIMIT_DEFAULT;
+        if (numberForEachPage <= 0) {
+            numberForEachPage = CrudServiceConstant.LIMIT_DEFAULT;
         }
         if (offset < 0) {
             offset = 0;
         }
         try {
             CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPANY);
-            CrudServiceConstant.preparedStatementFindByPage.setLong(1, numberForEachpPage);
+            CrudServiceConstant.preparedStatementFindByPage.setLong(1, numberForEachPage);
             CrudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
             resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
             while (resultSet.next()) {
@@ -142,5 +141,25 @@ public enum CrudServiceCompanyImpl implements CrudServiceCompany {
         }
 
         return companies;
+    }
+
+    /**
+     * Return the number of computer in database.
+     * @return long
+     */
+    public long getCountOfCompanies() {
+
+        connection = CrudServiceConstant.jdbcConnection.getConnection();
+
+        try {
+            CrudServiceConstant.preparedStatementCountCompanies = connection.prepareStatement(DaoProperties.COUNT_COMPANY);
+            resultSet = CrudServiceConstant.preparedStatementCountCompanies.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("number");
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            CrudServiceConstant.jdbcConnection.closeConnection();
+        }
     }
 }

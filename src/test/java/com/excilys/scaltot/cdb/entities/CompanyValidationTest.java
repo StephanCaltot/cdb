@@ -37,7 +37,7 @@ public class CompanyValidationTest {
 
         assertFalse(CompanyValidator.check(Optional.of(company)));
     }
-    
+
     /**
      * Check computer construction with wrong name.
      */

@@ -24,7 +24,7 @@ public class Computer {
      *
      * @param computerBuilder
      */
-    private Computer() {
+    public Computer() {
     }
 
     /**

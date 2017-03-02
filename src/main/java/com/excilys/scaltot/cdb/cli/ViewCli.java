@@ -17,6 +17,8 @@ import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 public class ViewCli {
 
     private ControllerCli controlerCli;
+    private ControllerCompany controllerCompany;
+    private ControllerComputer controllerComputer;
 
     public static final String FORMAT_COMPUTER = "%3s | %15.15s |%10s | %10s | %10s%n";
 
@@ -33,6 +35,34 @@ public class ViewCli {
     public ViewCli(Optional<ControllerCli> controlerCli) {
         this.controlerCli = controlerCli.get();
         controlerCli.get().setViewCli(Optional.of(this));
+    }
+
+    /**
+     * @return the controllerCompany
+     */
+    public ControllerCompany getControllerCompany() {
+        return controllerCompany;
+    }
+
+    /**
+     * @param controllerCompany : the controllerCompany to set
+     */
+    public void setControllerCompany(ControllerCompany controllerCompany) {
+        this.controllerCompany = controllerCompany;
+    }
+
+    /**
+     * @return the controllerComputer
+     */
+    public ControllerComputer getControllerComputer() {
+        return controllerComputer;
+    }
+
+    /**
+     * @param controllerComputer : the controllerComputer to set
+     */
+    public void setControllerComputer(ControllerComputer controllerComputer) {
+        this.controllerComputer = controllerComputer;
     }
 
     /**
@@ -129,8 +159,7 @@ public class ViewCli {
      */
     public void displayInfo(Optional<String> info) {
         if (info.isPresent()) {
-            System.out.print(info);
+            System.out.print(info.get());
         }
     }
-
 }

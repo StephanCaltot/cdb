@@ -8,8 +8,8 @@ import java.util.Scanner;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceCompanyImpl;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
+import com.excilys.scaltot.cdb.services.CrudCompanyService;
+import com.excilys.scaltot.cdb.services.CrudComputerService;
 
 /**
  * Controler for Command line interface.
@@ -21,8 +21,6 @@ import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
 public class ControllerCli {
 
     private ViewCli viewCli;
-    private CrudServiceComputerImpl crudServiceComputer;
-    private CrudServiceCompanyImpl crudServiceCompany;
     private List<Computer> computers;
     private List<Company> companies;
     private long offset = 0;
@@ -36,8 +34,6 @@ public class ControllerCli {
      * @throws SQLException :
      */
     public ControllerCli() {
-        crudServiceCompany = CrudServiceCompanyImpl.INSTANCE;
-        crudServiceComputer = CrudServiceComputerImpl.INSTANCE;
         scan = ScannerSystemIn.getInstance();
     }
 
@@ -58,7 +54,7 @@ public class ControllerCli {
 
         String choice = null;
 
-        computers = crudServiceComputer.findByPage(offset, numberForEachpPage);
+        computers = CrudComputerService.findByPage(offset, numberForEachpPage);
         viewCli.displayAllComputers(computers);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -84,14 +80,14 @@ public class ControllerCli {
                 break;
             case "n":
                 offset += 10;
-                computers = crudServiceComputer.findByPage(offset, numberForEachpPage);
+                computers = CrudComputerService.findByPage(offset, numberForEachpPage);
                 viewCli.displayAllComputers(computers);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
                 if (offset - 10 >= 0) {
                     offset -= 10;
-                    computers = crudServiceComputer.findByPage(offset, numberForEachpPage);
+                    computers = CrudComputerService.findByPage(offset, numberForEachpPage);
                     viewCli.displayAllComputers(computers);
                 } else {
                     viewCli.displayInfo(Optional.of("Index too low you have to 'next'"));
@@ -119,7 +115,7 @@ public class ControllerCli {
 
         String choice = null;
 
-        companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
+        companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -145,14 +141,14 @@ public class ControllerCli {
                 break;
             case "n":
                 offsetCompany += 10;
-                companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
+                companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
                 viewCli.displayAllCompanies(companies);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
                 if (offsetCompany - 10 >= 0) {
                     offsetCompany -= 10;
-                    companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
+                    companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
                     viewCli.displayAllCompanies(companies);
                 } else {
                     viewCli.displayInfo(Optional.of("Index too low you have to 'next'"));
@@ -184,7 +180,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id : "));
             computerId = scan.nextInt();
         } while (computerId == 0);
-        Optional<Computer> computerOptional = crudServiceComputer.find(computerId);
+        Optional<Computer> computerOptional = CrudComputerService.find(computerId);
         if (computerOptional.isPresent()) {
             viewCli.displayComputersDetails(computerOptional);
         }
@@ -205,7 +201,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
             computerId = scan.nextInt();
         } while (computerId <= 0);
-        if (crudServiceComputer.delete(computerId)) {
+        if (CrudComputerService.delete(computerId)) {
             viewCli.displayInfo(Optional.of("\nComputer (" + computerId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -233,7 +229,7 @@ public class ControllerCli {
                 listingOfComputers();
                 break;
             case "2":
-                listingOfCompanies();
+                ControllerCompany.listingOfCompanies();
                 break;
             case "3":
                 showComputersDetails();

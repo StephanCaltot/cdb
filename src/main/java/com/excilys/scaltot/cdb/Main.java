@@ -1,11 +1,11 @@
-package com.excilys.scaltot.cdb.validation;
+package com.excilys.scaltot.cdb;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
+import com.excilys.scaltot.cdb.managers.CompanyManagerBean;
 
 /**
  * @author Caltot Stéphan
@@ -30,9 +30,9 @@ public class Main {
 
         //Optional<Computer> computer = CrudServiceComputerImpl.INSTANCE.find(503);
         //computer.get().getManufacturer().setName("MDR");
-        List<Computer> computers =  CrudServiceComputerImpl.INSTANCE.findByPageFilter(0, 10, "co");
-        for (Computer computer : computers) {
-            System.out.println(computer.toString());
+        List<Company> companies =  new CompanyManagerBean().getDisplayedCompanies();
+        for (Company company : companies) {
+            System.out.println(company.toString());
         }
 //        if (computer.isPresent()) {
 //            System.out.println(computer.toString());

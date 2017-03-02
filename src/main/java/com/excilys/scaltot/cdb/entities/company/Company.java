@@ -15,7 +15,7 @@ public class Company {
     /**
      * Private constructor with no parameters.
      */
-    private Company() {
+    public Company() {
 
     }
 

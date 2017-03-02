@@ -282,4 +282,95 @@ public enum CrudServiceComputerImpl implements CrudServiceComputer {
 
         return computers;
     }
+
+    /**
+     * Return the number of computer in database.
+     * @return long
+     */
+    public long getCountOfComputers() {
+
+        connection = CrudServiceConstant.jdbcConnection.getConnection();
+
+        try {
+            CrudServiceConstant.preparedStatementCountComputer = connection.prepareStatement(DaoProperties.COUNT_COMPUTER);
+            resultSet = CrudServiceConstant.preparedStatementCountComputer.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("number");
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            CrudServiceConstant.jdbcConnection.closeConnection();
+        }
+    }
+
+    /**
+     * Return the list of computer in database filtered by name.
+     * @param nameFilter : filter
+     * @return list of computers
+     */
+    public List<Computer> getComputersFiltered(String nameFilter) {
+
+        connection = CrudServiceConstant.jdbcConnection.getConnection();
+        computers = new ArrayList<>();
+
+        try {
+            CrudServiceConstant.preparedStatementComputersFiltered = connection.prepareStatement(DaoProperties.COMPUTER_FILTERED);
+            CrudServiceConstant.preparedStatementComputersFiltered.setString(1, "%" + nameFilter + "%");
+            resultSet = CrudServiceConstant.preparedStatementComputersFiltered.executeQuery();
+            while (resultSet.next()) {
+                if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
+                    computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
+                    computers.add(computer);
+                }
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            CrudServiceConstant.jdbcConnection.closeConnection();
+        }
+        return computers;
+    }
+
+    /**
+     * Retrieves computers paginated by limit ( 10 here ).
+     *
+     * @param offset : begin's value of current page
+     * @param numberForEachpPage : number of elements for each page
+     * @param filter : name filter
+     * @return list of computers paginated
+     * @throws PersistenceException : PersistenceException
+     * @throws Exception
+     */
+    public List<Computer> findByPageFilter(long offset, long numberForEachpPage, String filter) {
+
+        connection = CrudServiceConstant.jdbcConnection.getConnection();
+        computers = new ArrayList<>();
+
+        if (numberForEachpPage <= 0) {
+            numberForEachpPage = CrudServiceConstant.LIMIT_DEFAULT;
+        }
+        if (offset < 0) {
+            offset = 0;
+        }
+        try {
+            CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER_FILTERED);
+            CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + filter + "%");
+            CrudServiceConstant.preparedStatementFindByPage.setLong(2, numberForEachpPage);
+            CrudServiceConstant.preparedStatementFindByPage.setLong(3, offset);
+            resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
+            while (resultSet.next()) {
+                if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
+                    computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
+                    computers.add(computer);
+                }
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            CrudServiceConstant.jdbcConnection.closeConnection();
+        }
+
+        return computers;
+    }
+
 }
