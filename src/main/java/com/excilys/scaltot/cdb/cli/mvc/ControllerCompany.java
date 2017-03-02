@@ -1,12 +1,13 @@
-package com.excilys.scaltot.cdb.cli;
+package com.excilys.scaltot.cdb.cli.mvc;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.excilys.scaltot.cdb.cli.ViewCli;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceCompanyImpl;
+import com.excilys.scaltot.cdb.services.CrudCompanyService;
 
 /**
  * @author Caltot Stéphan
@@ -16,7 +17,6 @@ import com.excilys.scaltot.cdb.repository.impl.CrudServiceCompanyImpl;
 public class ControllerCompany {
 
     private static ViewCompany viewCli;
-    private static CrudServiceCompanyImpl crudServiceCompany = CrudServiceCompanyImpl.INSTANCE;
     private static List<Company> companies;
     private static long numberForEachpPage = 10;
     private static long offsetCompany = 0;
@@ -32,7 +32,7 @@ public class ControllerCompany {
 
         String choice = null;
 
-        companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
+        companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -58,14 +58,14 @@ public class ControllerCompany {
                 break;
             case "n":
                 offsetCompany += 10;
-                companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
+                companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
                 viewCli.displayAllCompanies(companies);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
                 if (offsetCompany - 10 >= 0) {
                     offsetCompany -= 10;
-                    companies = crudServiceCompany.findByPage(offsetCompany, numberForEachpPage);
+                    companies = CrudCompanyService.findByPage(offsetCompany, numberForEachpPage);
                     viewCli.displayAllCompanies(companies);
                 } else {
                     viewCli.displayInfo(Optional.of("Index is too low you have to 'next'"));

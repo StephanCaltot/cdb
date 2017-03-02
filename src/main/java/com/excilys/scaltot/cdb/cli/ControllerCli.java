@@ -229,7 +229,7 @@ public class ControllerCli {
                 listingOfComputers();
                 break;
             case "2":
-                ControllerCompany.listingOfCompanies();
+                listingOfCompanies();
                 break;
             case "3":
                 showComputersDetails();

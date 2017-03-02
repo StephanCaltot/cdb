@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.cli;
+package com.excilys.scaltot.cdb.cli.mvc;
 
 /**
  * @author Caltot Stéphan
