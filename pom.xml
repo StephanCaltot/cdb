@@ -14,13 +14,26 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<checkstyle.config.location>config/checkstyle/checkstyle.xml</checkstyle.config.location>
+		<maven.compiler>3.5.1</maven.compiler>
+		<maven.war>2.6</maven.war>
+		<maven.site>3.4</maven.site>
+		<maven.checkstyle>2.17</maven.checkstyle>
+		<maven.surefire>2.19.1</maven.surefire>
+		<maven.javadoc>2.10.3</maven.javadoc>
+		<maven.codehaus>2.7</maven.codehaus>
+		<maven.jxr>2.3</maven.jxr>
+		<mysql>5.1.38</mysql>
+		<slf4j>1.7.23</slf4j>
+		<junit>4.12</junit>
+		<mockito>1.9.5</mockito>
+		<servlet>3.1.0</servlet>
 	</properties>
 
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>${maven.compiler}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -28,7 +41,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
+				<version>${maven.war}</version>
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -38,7 +51,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.4</version>
+				<version>${maven.site}</version>
 				<configuration>
 					<locales>en,fr</locales>
 				</configuration>
@@ -46,7 +59,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.17</version>
+				<version>${maven.checkstyle}</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -58,7 +71,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.19.1</version>
+				<version>${maven.surefire}</version>
 				<configuration>
 				</configuration>
 			</plugin>
@@ -66,7 +79,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.17</version>
+				<version>${maven.checkstyle}</version>
 
 				<reportSets>
 					<reportSet>
@@ -91,7 +104,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.7</version>
+				<version>${maven.codehaus}</version>
 				<configuration>
 					<formats>
 						<format>html</format>
@@ -103,7 +116,7 @@
 	        <plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-jxr-plugin</artifactId>
-	            <version>2.3</version>
+	            <version>${maven.jxr}</version>
 	        </plugin>
 	        
 		</plugins>
@@ -113,26 +126,26 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.38</version>
+			<version>${mysql}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.23</version>
+			<version>${slf4j}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.23</version>
+			<version>${slf4j}</version>
 		</dependency>
 		
 		<!-- Dependances de Tests -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -140,8 +153,15 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
+			<version>${mockito}</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>${servlet}</version>
+		    <scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
