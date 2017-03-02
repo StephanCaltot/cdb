@@ -1,5 +1,5 @@
-Training: computer-database    
-===========================  
+# computer-database
+Excilys formation's first project
 
 #Content
 This training material holds a sequence of steps and features to implement in a Computer Database webapp.  
