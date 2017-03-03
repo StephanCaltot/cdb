@@ -13,7 +13,7 @@ import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.repository.CrudService;
 import com.excilys.scaltot.cdb.repository.CrudServiceConstant;
-import com.excilys.scaltot.cdb.repository.MapperCompany;
+import com.excilys.scaltot.cdb.repository.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.utils.DaoProperties;
 

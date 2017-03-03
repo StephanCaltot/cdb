@@ -1,12 +1,13 @@
 package com.excilys.scaltot.cdb;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
-import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.services.CrudCompanyService;
+import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
 
 /**
  * @author Caltot Stéphan
@@ -29,12 +30,20 @@ public class Test {
 
         //System.out.println("\n" + DateCheck.formatIsValid(Optional.of("2012-01-01")));
 
-        //Optional<Computer> computer = CrudServiceComputerImpl.INSTANCE.find(503);
+        Optional<Computer> computer = CrudServiceComputerImpl.INSTANCE.find(503);
         //computer.get().getManufacturer().setName("MDR");
-        List<Company> companies =  new CrudCompanyService().findByPage(new Pagination.PaginationBuilder().withPageSize(10).withOffset(10).build());
-        for (Company company : companies) {
-            System.out.println(company.toString());
-        }
+        System.out.println(computer.get().getDateWichIsDiscontinued());
+        LocalDate localDate = computer.get().getDateWichIsDiscontinued();
+        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
+        String text = localDate.format(formatters);
+        System.out.println(text);
+        
+//        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(5).withOffset(0).withFilter("apple").build();
+//        new CrudComputerService();
+//        List<Computer> computers =  CrudComputerService.findByPageFilter(pagination);
+//        for (Computer computer : computers) {
+//            System.out.println(computer.toString());
+//        }
 //        if (computer.isPresent()) {
 //            System.out.println(computer.toString());
 //        }

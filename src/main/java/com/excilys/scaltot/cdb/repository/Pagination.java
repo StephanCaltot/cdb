@@ -3,8 +3,6 @@ package com.excilys.scaltot.cdb.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.scaltot.cdb.managers.ComputerManagerBean;
-
 /**
  * @author Caltot Stéphan
  *
@@ -12,11 +10,12 @@ import com.excilys.scaltot.cdb.managers.ComputerManagerBean;
  */
 public class Pagination {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ComputerManagerBean.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(Pagination.class);
 
     private long pageSize = 10;
     private long currentPage = 0;
-    private long numberOfElements = 0;
+    private long numberOfElements;
+    private long numberOfPages;
     private long offset = 0;
     private String filter = "";
 
@@ -39,6 +38,8 @@ public class Pagination {
      */
     public void setPageSize(long pageSize) {
         this.pageSize = pageSize;
+        this.currentPage = 0;
+        this.numberOfPages = this.numberOfElements / this.pageSize;
     }
 
     /**
@@ -51,8 +52,9 @@ public class Pagination {
     /**
      * @param currentPage : the currentPage to set
      */
-    public void setCurrentPage(int currentPage) {
+    public void setCurrentPage(long currentPage) {
         this.currentPage = currentPage;
+        this.offset = currentPage * pageSize;
     }
 
     /**
@@ -87,7 +89,7 @@ public class Pagination {
      * @return the offset
      */
     public long getOffset() {
-        return offset;
+        return currentPage * pageSize;
     }
 
     /**
@@ -98,13 +100,36 @@ public class Pagination {
     }
 
     /**
+     * @param numberOfPages : the numberOfPages to set
+     */
+    public void setNumberOfPages(long numberOfPages) {
+        this.numberOfPages = numberOfPages;
+    }
+
+    /**
      * @return the numberOfPages
      */
     public long getNumberOfPages() {
-        return numberOfElements / pageSize;
+        this.numberOfPages = numberOfElements / pageSize;
+        return numberOfPages;
     }
 
-    
+    /**
+    * Switch to previous page.
+    */
+   public void previousPage() {
+       this.currentPage = (currentPage - 1) >= 0 ? (offset - 1) * pageSize : 0;
+       this.offset = currentPage * pageSize;
+   }
+   
+   /**
+    * Switch to next page.
+    */
+   public void nextPage() {
+       this.currentPage = currentPage + 1;
+       this.offset = currentPage * pageSize;
+   }
+
     /**
      * Builder Pattern for pagination.
      *

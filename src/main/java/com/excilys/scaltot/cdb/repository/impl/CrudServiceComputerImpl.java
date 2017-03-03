@@ -14,7 +14,7 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.repository.CrudService;
 import com.excilys.scaltot.cdb.repository.CrudServiceConstant;
-import com.excilys.scaltot.cdb.repository.MapperComputer;
+import com.excilys.scaltot.cdb.repository.mappers.MapperComputer;
 import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.utils.DaoProperties;
 

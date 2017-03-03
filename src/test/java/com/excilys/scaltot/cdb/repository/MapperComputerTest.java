@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.mockito.Mockito;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.repository.mappers.MapperComputer;
 
 import org.junit.Test;
 

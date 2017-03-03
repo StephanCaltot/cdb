@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
 
 /**
@@ -58,8 +59,8 @@ public class ComputerManagerBean {
      *
      * @return list of computers
      */
-    public List<Computer> getDisplayedComputers() {
-        return CrudComputerService.findByPageFilter(Pagination pagination);
+    public List<Computer> getDisplayedComputers(Pagination pagination) {
+        return CrudComputerService.findByPageFilter(pagination);
     }
 
     /**

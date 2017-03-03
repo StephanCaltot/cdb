@@ -6,6 +6,7 @@ package com.excilys.scaltot.cdb.entities.company;
  * 1 mars 2017
  */
 public class CompanyDto {
+
     private long id;
     private String name;
 
