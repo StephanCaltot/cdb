@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * Class allows jdbc connection ( initialization, opening and closing ).
@@ -22,12 +23,19 @@ public class JdbcConnection {
     private Connection connection;
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnection.class.getName());
     private Properties properties = PropertiesFile.INSTANCE.getProperties();
+    private HikariDataSource dataSource;
 
     /**
      * Singleton's private constructor.
      */
     private JdbcConnection() {
         initDriver();
+        properties.setFileName("hikari.properties");
+        loadProperties.initLoadProperties();
+        properties = loadProperties.getProperties();
+        HikariConfig config = new HikariConfig(properties);
+        config.setConnectionTestQuery("show tables");
+        dataSource = new HikariDataSource(config);
     }
 
     /**
@@ -83,6 +91,7 @@ public class JdbcConnection {
         try {
             connection = DriverManager.getConnection(properties.getProperty("URL"), properties.getProperty("DB_LOGIN"),
                     properties.getProperty("DB_PASSWORD"));
+            connection.setAutoCommit(false);
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Connection can't be etablished and retrieved... (check your connection's properties)", e);
@@ -104,4 +113,26 @@ public class JdbcConnection {
             e.printStackTrace();
         }
     }
+    
+    /**
+    *
+    */
+   public void commit() {
+       try {
+           connection.commit();
+       } catch (SQLException e) {
+           throw new PersistenceException("Error on commit on database " + e);
+       }
+   }
+
+   /**
+    *
+    */
+   public void rollback() {
+       try {
+           connection.rollback();
+       } catch (SQLException e) {
+           throw new PersistenceException("Error for rollback on database " + e);
+       }
+   }
 }

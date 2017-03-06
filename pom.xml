@@ -33,6 +33,7 @@
 		<jstl>1.2</jstl>
 		<tomcat7.version>2.2</tomcat7.version>
 		<commons.version>3.0</commons.version>
+		<hikari>1.1.3</hikari>
 	</properties>
 
 	<build>
@@ -193,5 +194,12 @@
 		    <artifactId>jstl</artifactId>
 		    <version>${jstl}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+		<dependency>
+		    <groupId>com.zaxxer</groupId>
+		    <artifactId>HikariCP</artifactId>
+		    <version>${hikari}</version>
+		</dependency>
+		
 	</dependencies>
 </project>
