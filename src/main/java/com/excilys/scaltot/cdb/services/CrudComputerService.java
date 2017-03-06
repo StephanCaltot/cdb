@@ -68,8 +68,7 @@ public class CrudComputerService {
     /**
      * Retrieves computers paginated by limit ( 10 here ).
      *
-     * @param offset : begin's value of current page
-     * @param numberForEachpPage : number of elements for each page
+     * @param pagination : page
      * @return list of computers paginated
      * @throws PersistenceException : PersistenceException
      * @throws Exception

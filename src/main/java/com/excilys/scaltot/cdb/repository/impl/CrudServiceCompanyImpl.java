@@ -102,7 +102,8 @@ public enum CrudServiceCompanyImpl implements CrudService<Company> {
 
     /**
      * Allows pagination for findAll companies.
-     *
+     * @param pagination : page
+     * @return List of companies
      */
     public List<Company> findByPage(Pagination pagination) {
 
@@ -110,7 +111,7 @@ public enum CrudServiceCompanyImpl implements CrudService<Company> {
         companies = new ArrayList<>();
         long offset = pagination.getOffset();
         long pageSize = pagination.getPageSize();
-                
+
         if (pageSize <= 0) {
             pageSize = CrudServiceConstant.LIMIT_DEFAULT;
         }

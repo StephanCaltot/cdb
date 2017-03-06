@@ -12,10 +12,10 @@ public class MapperPaginationDto {
 
     /**
      * Changes computer to computer DTO.
-     * @param computer
+     * @param computer :
      * @return computerDto
      */
-    public static ComputerDto PaginationToDto(Computer computer){
+    public static ComputerDto paginationToDto(Computer computer) {
         ComputerDto computerDto = new ComputerDto();
 
         computerDto.setId(computer.getId());

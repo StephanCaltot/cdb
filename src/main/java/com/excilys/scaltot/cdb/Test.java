@@ -3,11 +3,14 @@ package com.excilys.scaltot.cdb;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
+import com.excilys.scaltot.cdb.services.CrudComputerService;
 
 /**
  * @author Caltot Stéphan
@@ -30,20 +33,24 @@ public class Test {
 
         //System.out.println("\n" + DateCheck.formatIsValid(Optional.of("2012-01-01")));
 
-        Optional<Computer> computer = CrudServiceComputerImpl.INSTANCE.find(503);
-        //computer.get().getManufacturer().setName("MDR");
-        System.out.println(computer.get().getDateWichIsDiscontinued());
-        LocalDate localDate = computer.get().getDateWichIsDiscontinued();
-        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
-        String text = localDate.format(formatters);
-        System.out.println(text);
-        
-//        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(5).withOffset(0).withFilter("apple").build();
+//        Optional<Computer> computer = CrudServiceComputerImpl.INSTANCE.find(503);
+//        //computer.get().getManufacturer().setName("MDR");
+//        System.out.println(computer.get().getDateWichIsDiscontinued());
+//        LocalDate localDate = computer.get().getDateWichIsDiscontinued();
+//        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
+//        String text = localDate.format(formatters);
+//        System.out.println(text);
+
+
+
+        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(10).withOffset(0).build();
+        pagination.setFilter("apple");
+
 //        new CrudComputerService();
-//        List<Computer> computers =  CrudComputerService.findByPageFilter(pagination);
-//        for (Computer computer : computers) {
-//            System.out.println(computer.toString());
-//        }
+        List<Computer> computers =  CrudComputerService.findByPageFilter(pagination);
+        for (Computer computer : computers) {
+            System.out.println(computer.toString());
+        }
 //        if (computer.isPresent()) {
 //            System.out.println(computer.toString());
 //        }

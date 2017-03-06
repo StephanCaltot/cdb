@@ -1,7 +1,22 @@
 package com.excilys.scaltot.cdb.repository;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.repository.mappers.MapperComputer;
+import com.excilys.scaltot.cdb.utils.DaoProperties;
+
+
+
 
 /**
  * @author Caltot Stéphan
@@ -18,12 +33,16 @@ public class Pagination {
     private long numberOfPages;
     private long offset = 0;
     private String filter = "";
+    private List<Computer> computers;
+    private ResultSet resultSet;
+    private Computer computer;
+    private Connection connection;
 
     /**
      * Empty constructor.
      */
     public Pagination() {
-        
+
     }
 
     /**
@@ -79,7 +98,8 @@ public class Pagination {
     }
 
     /**
-     * @param numberOfComputers : the numberOfComputers to set
+     * Set number of elements .
+     * @param numberOfElements : the numberOfComputers to set
      */
     public void setNumberOfElements(long numberOfElements) {
         this.numberOfElements = numberOfElements;
@@ -116,18 +136,63 @@ public class Pagination {
 
     /**
     * Switch to previous page.
+    * @return list of Computers
     */
-   public void previousPage() {
+   public List<Computer> previousPage() {
        this.currentPage = (currentPage - 1) >= 0 ? (offset - 1) * pageSize : 0;
        this.offset = currentPage * pageSize;
+       this.computers = findByPageFilter();
+       return computers;
    }
-   
+
    /**
     * Switch to next page.
+    * @return list of Computers
     */
-   public void nextPage() {
+   public List<Computer> nextPage() {
        this.currentPage = currentPage + 1;
        this.offset = currentPage * pageSize;
+       this.computers = findByPageFilter();
+       return computers;
+   }
+
+   /**
+    * Retrieves computers paginated by limit ( 10 here ).
+    *
+    * @return list of computers paginated
+    * @throws PersistenceException : PersistenceException
+    * @throws Exception
+    */
+   public List<Computer> findByPageFilter() {
+
+       connection = CrudServiceConstant.jdbcConnection.getConnection();
+       computers = new ArrayList<>();
+
+       if (this.pageSize <= 0) {
+           this.pageSize = CrudServiceConstant.LIMIT_DEFAULT;
+       }
+       if (this.offset < 0) {
+           this.offset = 0;
+       }
+       try {
+           CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER_FILTERED);
+           CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + this.filter + "%");
+           CrudServiceConstant.preparedStatementFindByPage.setLong(2, this.pageSize);
+           CrudServiceConstant.preparedStatementFindByPage.setLong(3, this.offset);
+           resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
+           while (resultSet.next()) {
+               if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
+                   computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
+                   computers.add(computer);
+               }
+           }
+       } catch (SQLException e) {
+           throw new PersistenceException(e);
+       } finally {
+           CrudServiceConstant.jdbcConnection.closeConnection();
+       }
+
+       return computers;
    }
 
     /**
@@ -147,55 +212,55 @@ public class Pagination {
         }
 
         /**
-         * Set builder parameter numberOfElements. 
+         * Set builder parameter numberOfElements.
          * @param numberOfElements : numberOfElements
          * @return paginationBuilder
          */
-        public PaginationBuilder withNumberOfElements(long numberOfElements){
+        public PaginationBuilder withNumberOfElements(long numberOfElements) {
             pagination.numberOfElements = numberOfElements;
             return this;
         }
 
         /**
-         * Set builder parameter offset. 
+         * Set builder parameter offset.
          * @param offset : offset
          * @return paginationBuilder
          */
-        public PaginationBuilder withOffset(long offset){
+        public PaginationBuilder withOffset(long offset) {
             pagination.offset = offset;
             return this;
         }
 
         /**
-         * Set builder parameter currentPage. 
+         * Set builder parameter currentPage.
          * @param currentPage : currentPage
          * @return paginationBuilder
          */
-        public PaginationBuilder withCurrentPage(long currentPage){
+        public PaginationBuilder withCurrentPage(long currentPage) {
             pagination.currentPage = currentPage;
             return this;
         }
 
         /**
-         * Set builder parameter pageSize. 
+         * Set builder parameter pageSize.
          * @param pageSize : pageSize
          * @return paginationBuilder
          */
-        public PaginationBuilder withPageSize(long pageSize){
+        public PaginationBuilder withPageSize(long pageSize) {
             pagination.pageSize = pageSize;
             return this;
         }
 
         /**
-         * Set builder parameter filter. 
+         * Set builder parameter filter.
          * @param filter : filter
          * @return paginationBuilder
          */
-        public PaginationBuilder withFilter(String filter){
+        public PaginationBuilder withFilter(String filter) {
             pagination.filter = filter;
             return this;
         }
-        
+
         /**
          * Build pagination.
          * @return Pagination

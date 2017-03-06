@@ -30,6 +30,7 @@
 		<url>http://localhost:8080/manager/text</url>
 		<username>admin</username>
 		<password>admin</password>
+		<jstl>1.2</jstl>
 		<tomcat7.version>2.2</tomcat7.version>
 		<commons.version>3.0</commons.version>
 	</properties>
@@ -187,6 +188,10 @@
 		    <artifactId>commons-lang3</artifactId>
 		    <version>${commons.version}</version>
 		</dependency>
-				
+		<dependency>
+		    <groupId>jstl</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>${jstl}</version>
+		</dependency>
 	</dependencies>
 </project>

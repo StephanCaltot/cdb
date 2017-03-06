@@ -6,13 +6,14 @@ package com.excilys.scaltot.cdb.repository;
  * 3 mars 2017
  */
 public class PaginationDto {
-    
+
     private long pageSize = 10;
     private long currentPage = 0;
     private long numberOfElements = 0;
     private long offset = 0;
-    /**
     private String filter = "";
+
+    /**
      * @return the pageSize
      */
     public long getPageSize() {
@@ -60,5 +61,17 @@ public class PaginationDto {
     public void setOffset(long offset) {
         this.offset = offset;
     }
-    
+
+    /**
+     * @return the filter
+     */
+    public String getFilter() {
+        return filter;
+    }
+    /**
+     * @param filter : the filter to set
+     */
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
 }

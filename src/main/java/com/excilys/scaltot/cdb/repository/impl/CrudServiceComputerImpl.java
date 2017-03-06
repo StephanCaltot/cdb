@@ -247,8 +247,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
     /**
      * Retrieves computers paginated by limit ( 10 here ).
      *
-     * @param offset : begin's value of current page
-     * @param numberForEachpPage : number of elements for each page
+     * @param pagination : page
      * @return list of computers paginated
      * @throws PersistenceException : PersistenceException
      * @throws Exception
@@ -261,7 +260,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
         long pageSize = pagination.getPageSize();
         long offset = pagination.getOffset();
 
-        if ( pageSize <= 0) {
+        if (pageSize <= 0) {
              pageSize = CrudServiceConstant.LIMIT_DEFAULT;
         }
         if (offset < 0) {
@@ -338,9 +337,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
     /**
      * Retrieves computers paginated by limit ( 10 here ).
      *
-     * @param offset : begin's value of current page
-     * @param numberForEachpPage : number of elements for each page
-     * @param filter : name filter
+     * @param pagination : page
      * @return list of computers paginated
      * @throws PersistenceException : PersistenceException
      * @throws Exception
@@ -352,7 +349,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
         long offset = pagination.getOffset();
         long pageSize = pagination.getPageSize();
         String filter = pagination.getFilter();
-        
+
         if (pageSize <= 0) {
             pageSize = CrudServiceConstant.LIMIT_DEFAULT;
         }

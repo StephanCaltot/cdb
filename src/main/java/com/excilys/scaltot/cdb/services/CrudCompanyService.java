@@ -28,8 +28,7 @@ public class CrudCompanyService {
 
     /**
      * Return list of companies paginated.
-     * @param offset :offset
-     * @param numberForEachPage : numberForEachPage
+     * @param pagination : page
      * @return list of companies
      */
     public List<Company> findByPage(Pagination pagination) {
