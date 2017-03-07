@@ -36,10 +36,6 @@ public class ServletComputer extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServletComputer.class);
     private static final long serialVersionUID = 1L;
     private String pageToForward;
-    @SuppressWarnings("unused")
-    private List<Computer> computers;
-    @SuppressWarnings("unused")
-    private List<Company> companies;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -57,9 +53,11 @@ public class ServletComputer extends HttpServlet {
      * @throws IOException :
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        List<Company> companies;
+        List<Computer> computers;
         pageToForward = "/views/dashboard.jsp";
         Pagination page = getPage(request);
-        String filter = "";
+        String filter = "apple";
         Computer computer;
         page.setNumberOfElements(CrudComputerService.getCountOfComputers());
 
@@ -99,7 +97,7 @@ public class ServletComputer extends HttpServlet {
                 }
                 break;
             case "add":
-                List<Company> companies = CrudCompanyService.findAll();
+                companies = CrudCompanyService.findAll();
                 request.getSession().setAttribute("companies", companies);
                 pageToForward = "/views/addComputer.jsp";
                 break;
@@ -122,8 +120,7 @@ public class ServletComputer extends HttpServlet {
             }
         }
         if (pageToForward.equals("/views/dashboard.jsp")) {
-            List<Computer> computers = page.findByPageFilter();
-
+            computers = page.findByPageFilter();
             request.getSession().setAttribute("computers", computers);
             request.getSession().setAttribute("filter", filter);
             request.getSession().setAttribute("numberOfPages", page.getNumberOfPages());
@@ -229,6 +226,15 @@ public class ServletComputer extends HttpServlet {
 
                 } catch (NumberFormatException e) {
                     System.out.println(e);
+                }
+
+            case "delete":
+                
+                String selection = request.getParameter("selection");
+                String[] selections = selection.split(",");
+                for (String computerId : selections) {
+                    LOGGER.info("DELETION ID" + Long.parseLong(computerId));
+                    CrudComputerService.delete(Long.parseLong(computerId)); 
                 }
 
             default:

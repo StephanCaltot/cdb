@@ -43,14 +43,19 @@ public class Test {
 
 
 
-        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(10).withOffset(0).build();
-        pagination.setFilter("apple");
+//        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(10).withOffset(0).build();
+//        pagination.setFilter("apple");
 
+        
+        
+        CrudComputerService.delete(85); 
+
+        
 //        new CrudComputerService();
-        List<Computer> computers =  CrudComputerService.findByPageFilter(pagination);
-        for (Computer computer : computers) {
-            System.out.println(computer.toString());
-        }
+//        List<Computer> computers =  CrudComputerService.findByPageFilter(pagination);
+//        for (Computer computer : computers) {
+//            System.out.println(computer.toString());
+//        }
 //        if (computer.isPresent()) {
 //            System.out.println(computer.toString());
 //        }

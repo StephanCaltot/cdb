@@ -14,6 +14,7 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.repository.mappers.MapperComputer;
 import com.excilys.scaltot.cdb.utils.DaoProperties;
+import com.excilys.scaltot.cdb.utils.JdbcConnection;
 
 
 
@@ -37,6 +38,7 @@ public class Pagination {
     private ResultSet resultSet;
     private Computer computer;
     private Connection connection;
+    private JdbcConnection jdbcConnection = JdbcConnection.INSTANCE;
 
     /**
      * Empty constructor.
@@ -165,7 +167,7 @@ public class Pagination {
     */
    public List<Computer> findByPageFilter() {
 
-       connection = CrudServiceConstant.jdbcConnection.getConnection();
+       connection = jdbcConnection.getConnection();
        computers = new ArrayList<>();
 
        if (this.pageSize <= 0) {
@@ -176,9 +178,9 @@ public class Pagination {
        }
        try {
            CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER_FILTERED);
-           CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + this.filter + "%");
-           CrudServiceConstant.preparedStatementFindByPage.setLong(2, this.pageSize);
-           CrudServiceConstant.preparedStatementFindByPage.setLong(3, this.offset);
+           CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + filter + "%");
+           CrudServiceConstant.preparedStatementFindByPage.setLong(2, pageSize);
+           CrudServiceConstant.preparedStatementFindByPage.setLong(3, offset);
            resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
            while (resultSet.next()) {
                if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
@@ -186,7 +188,9 @@ public class Pagination {
                    computers.add(computer);
                }
            }
+           jdbcConnection.commit();
        } catch (SQLException e) {
+           jdbcConnection.rollback();
            throw new PersistenceException(e);
        } finally {
            CrudServiceConstant.jdbcConnection.closeConnection();

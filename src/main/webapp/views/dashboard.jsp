@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 <!-- Bootstrap -->
@@ -22,9 +22,9 @@
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
-
-						<input type="search" id="searchbox" name="filter" class="form-control" placeholder="Search name" /> <input type="submit"
-							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+                    	<input name="action" type="hidden" value="filter"/>
+						<input type="search" id="searchbox" name="filter" class="form-control" placeholder="Search name" /> 
+						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
@@ -35,9 +35,9 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
-			<input type="hidden" name="selection" value="">
-		</form>
+        <form id="deleteForm" action="?action=delete" method="POST">
+            <input type="hidden" name="selection" value="">
+        </form>
 
 		<div class="container" style="margin-top: 10px;">
 			<table class="table table-striped table-bordered">
@@ -66,7 +66,7 @@
 					<c:forEach items="${computers}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
+								class="cb" value="${computer.id}"></td>
 							<td><a href="?action=edit&id=${computer.id}" onclick="">${computer.name}</a></td>
 							<td>${computer.dateWichIsIntroduced}</td>
 							<td>${computer.dateWichIsDiscontinued}</td>

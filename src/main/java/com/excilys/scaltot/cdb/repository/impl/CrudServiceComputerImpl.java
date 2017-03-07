@@ -36,7 +36,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
     private Computer computer;
     private List<Computer> computers;
     private Connection connection;
-    private JdbcConnection jdbcConnection = JdbcConnection.getInstance();
+    private JdbcConnection jdbcConnection = JdbcConnection.INSTANCE;
 
     /**
      * Create CRUD's operation.

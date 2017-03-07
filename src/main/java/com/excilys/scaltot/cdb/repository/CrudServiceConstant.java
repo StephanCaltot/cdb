@@ -22,7 +22,7 @@ public class CrudServiceConstant {
      */
     public static final int LIMIT_DEFAULT = 10;
 
-    public static JdbcConnection jdbcConnection = JdbcConnection.getInstance();
+    public static JdbcConnection jdbcConnection = JdbcConnection.INSTANCE;
     public static Statement statement;
     public static ResultSet resultSet;
     public static PreparedStatement preparedStatementInsert;

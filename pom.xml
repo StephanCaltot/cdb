@@ -33,7 +33,7 @@
 		<jstl>1.2</jstl>
 		<tomcat7.version>2.2</tomcat7.version>
 		<commons.version>3.0</commons.version>
-		<hikari>1.1.3</hikari>
+		<hikari>2.6.0</hikari>
 	</properties>
 
 	<build>
