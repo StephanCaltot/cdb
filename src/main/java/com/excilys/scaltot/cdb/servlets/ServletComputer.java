@@ -230,7 +230,7 @@ public class ServletComputer extends HttpServlet {
 
             case "delete":
                 
-                String selection = request.getParameter("selection");
+            	String selection = request.getParameter("selection");
                 String[] selections = selection.split(",");
                 for (String computerId : selections) {
                     LOGGER.info("DELETION ID" + Long.parseLong(computerId));

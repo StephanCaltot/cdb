@@ -1,15 +1,8 @@
 package com.excilys.scaltot.cdb;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
 
-import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
 
 /**

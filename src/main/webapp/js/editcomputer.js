@@ -36,8 +36,8 @@ $(function() {
 function validate() {
 
 	if (name && date) {
-        $("#addComputerButton").removeClass("disabled");
+        $("#editComputerButton").removeClass("disabled");
     } else {
-        $("#addComputerButton").addClass("disabled");
+        $("#editComputerButton").addClass("disabled");
     }
 }
