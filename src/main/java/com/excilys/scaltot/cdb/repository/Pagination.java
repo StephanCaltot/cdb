@@ -141,7 +141,7 @@ public class Pagination {
     * @return list of Computers
     */
    public List<Computer> previousPage() {
-       this.currentPage = (currentPage - 1) >= 0 ? (offset - 1) * pageSize : 0;
+       this.currentPage = (currentPage - 1) >= 0 ? (currentPage - 1) * pageSize : 0;
        this.offset = currentPage * pageSize;
        this.computers = findByPageFilter();
        return computers;

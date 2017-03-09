@@ -33,7 +33,7 @@
                                 <input type="hidden" class="form-control" id="id" name="id" value="${computer.id}" />
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="name" value="${computer.name}" />
+                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" value="${computer.name}" />
                                 <span id="inputName">Name have to matches letters, numbers or '-' , '_', '.', '&', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">

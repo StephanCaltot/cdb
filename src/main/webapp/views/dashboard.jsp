@@ -67,7 +67,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
-							<td><a href="?action=edit&id=${computer.id}" onclick="">${computer.name}</a></td>
+							<td><a href="computerdatabase?action=edit&id=${computer.id}" onclick="">${computer.name}</a></td>
 							<td>${computer.dateWichIsIntroduced}</td>
 							<td>${computer.dateWichIsDiscontinued}</td>
 							<td>${computer.manufacturer.name}</td>

@@ -13,14 +13,16 @@ object Delete {
 
   val delete = exec(http("Delete: Search for delete")
     .get(config.getString("application.urls.dashboardPage"))
+    .queryParam("action","filter")
     .queryParam(config.getString("application.urls.param.search").toString(), "${addComputerName}_edited")
     .check(
       status.is(200),
       css("#results input", "value").saveAs("computerId")
     ))
     .pause(3, 10)
-    .exec(http("Delete: Delete post")
+    .exec(http("Deletepost${addComputerName}${computerId}")
       .post(config.getString("application.urls.deletePost").get)
+      .formParam("action","delete")
       .formParam(config.getString("application.urls.form.delete.selection").get, "${computerId}"))
     .pause(3, 10)
 }

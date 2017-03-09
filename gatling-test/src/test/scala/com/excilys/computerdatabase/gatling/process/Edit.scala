@@ -11,8 +11,9 @@ import io.gatling.http.Predef._
 object Edit {
   val config = ConfigFactory.load()
 
-  val edit = exec(http("Edit: Search for edit")
+  val edit = exec(http("EditSearch")
     .get(config.getString("application.urls.dashboardPage"))
+    .queryParam("action","filter")
     .queryParam(config.getString("application.urls.param.search").toString(), "${addComputerName}")
     .check(
       status.is(200),
@@ -20,14 +21,14 @@ object Edit {
     )
   )
     .pause(3, 10)
-    .exec(http("Edit: Select for edit")
+    .exec(http("Editsel ${computerURL}")
       .get(config.getString("application.baseUrl").get + "${computerURL}")
       .check(
         status.is(200),
         css(config.getString("application.urls.idElement.edit.id").get, "value").saveAs("computer_id")
       )
     )
-    .exec(http("Edit: Edit Post")
+    .exec(http("Edit ${application.baseUrl}")
       .post(config.getString("application.urls.editPost").get)
       .formParam(config.getString("application.urls.form.edit.id").get, "${computer_id}")
       .formParam(config.getString("application.urls.form.edit.name").get, "${addComputerName}_edited")

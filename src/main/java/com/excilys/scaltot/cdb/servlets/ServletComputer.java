@@ -190,12 +190,11 @@ public class ServletComputer extends HttpServlet {
                 } catch (NumberFormatException e) {
                     System.out.println(e);
                 }
-
+                break;
             case "edit":
                 try {
-
                     long id = Long.parseLong(request.getParameter("id"));
-                    String name = request.getParameter("name");
+                    String name = request.getParameter("computerName");
                     LOGGER.info("voila le nom récupéré : " + name);
                     Computer.ComputerBuilder computerBuilder = new Computer.ComputerBuilder().withId(id).withName(name);
                     LocalDate introduced = null;
@@ -227,16 +226,15 @@ public class ServletComputer extends HttpServlet {
                 } catch (NumberFormatException e) {
                     System.out.println(e);
                 }
-
+                break;
             case "delete":
-                
             	String selection = request.getParameter("selection");
                 String[] selections = selection.split(",");
                 for (String computerId : selections) {
                     LOGGER.info("DELETION ID" + Long.parseLong(computerId));
                     CrudComputerService.delete(Long.parseLong(computerId)); 
                 }
-
+                break;
             default:
                 break;
             }
