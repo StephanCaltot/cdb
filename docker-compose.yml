@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+   db:
+     image: mysql:latest
+     ports:
+       - "3306:3306"
+     container_name: mysql_for_cdb
+     volumes:
+       - ./config/db/.:/docker-entrypoint-initdb.d
+       - ./mysql_for_cdb_data:/var/lib/mysql
+     environment:  
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: computer-database-db
+       MYSQL_USER: admincdb
+       MYSQL_PASSWORD: qwerty1234
+     networks:
+       - unitTest
+
+   maven:
+     image: maven:3.3.9-jdk-8-onbuild
+     container_name: maven_for_cdb
+     networks:
+       - unitTest
+     command: sleep 50
+
+networks:
+     unitTest:
