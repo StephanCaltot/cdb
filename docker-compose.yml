@@ -1,14 +1,33 @@
-version: '2'
+version: '3'
 
 services:
-   db:
-     image: mysql:latest
+   jenkins-data:
+     image: debian
+     container_name: jenkins_data
+     command: bash -c  "useradd -d '/var/jenkins_home' -u 1000 -m -s /bin/bash jenkins && mkdir -p /var/log/jenkins && chown -R jenkins:jenkins /var/log/jenkins"            
+     volumes:
+           - shared_jenkins:/var/log/jenkins
+
+   jenkins:
+     image: jenkins:2.32.3
      ports:
-       - "3306:3306"
-     container_name: mysql_for_cdb
+       - "8080:8080"
+     container_name: jenkins_for_cdb
+     user: root
+     command: bash -c "mkdir -p /var/cache/jenkins && mkdir -p /var/log/jenkins && chown -R jenkins:jenkins /var/log/jenkins && chown -R jenkins:jenkins /var/cache/jenkins && tini  -- /usr/local/bin/jenkins.sh"
+     volumes:
+        - shared_jenkins:/var
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /usr/bin/docker:/usr/bin/docker
+        - maven_jenkins:/var/jenkins_home/workspace/cdb
+   db_test:
+     image: mysql:8.0.0
+     ports:
+       - "3308:3306"
+     container_name: mysql_for_cdb_test
      volumes:
        - ./config/db/.:/docker-entrypoint-initdb.d
-       - ./mysql_for_cdb_data:/var/lib/mysql
+       - mysql_volume:/var/lib/mysql
      environment:  
        MYSQL_ROOT_PASSWORD: root
        MYSQL_DATABASE: computer-database-db
@@ -16,13 +35,45 @@ services:
        MYSQL_PASSWORD: qwerty1234
      networks:
        - unitTest
-
    maven:
      image: maven:3.3.9-jdk-8-onbuild
-     container_name: maven_for_cdb
+     container_name: maven_for_cdb_test
+     command: bash -c "cd /usr/src/mymaven && mvn test"
+     volumes:
+       - maven_jenkins:/usr/src/mymaven
+
      networks:
        - unitTest
-     command: sleep 50
+   db_prod:
+     image: mysql:8.0.0
+     ports:
+       - "3307:3306"
+     container_name: mysql_for_cdb_prod
+     volumes:
+       - ./config/db/.:/docker-entrypoint-initdb.d
+       - mysql_volume:/var/lib/mysql
+     environment:  
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: computer-database-db
+       MYSQL_USER: admincdb
+       MYSQL_PASSWORD: qwerty1234
+     networks:
+       - unitProd
+   tomcat:
+     image: tomcat:7-jre8
+     ports:
+       - "8081:8080"
+     container_name: tomcat_for_cdb_prod
+     command: bash -c "cd bin && ./catalina.sh run"
+     networks:
+       - unitProd
 
 networks:
      unitTest:
+     unitProd:
+
+volumes:
+   mysql_volume:
+   docker_socket:
+   shared_jenkins:
+   maven_jenkins:
