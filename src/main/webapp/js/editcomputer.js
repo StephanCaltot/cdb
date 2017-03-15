@@ -1,43 +1,43 @@
-//var name = false;
-//var date = false;
-//
-//$(function() {
-//	$('#computerName').on('input', function() {
-//		var input=$(this);
-//		var regex = /^[a-zA-Z0-9\\s._ -/]+$/;
-//		var is_valid = regex.test(input.val());
-//		if(is_valid) {
-//			$("#inputName").css("display", "none");
-//	         name = true;
-//	    }
-//		else {
-//			$("#inputName").css("display", "inline");
-//			$("#inputName").css("color", "red");
-//			name = false;
-//		}
-//		validate();
-//	});
-//	
-//	$('#discontinued').on('input', function() {
-//		var input=$(this);
-//		if(!($('#introduced').val()) || new Date($('#introduced').val()).getTime() > new Date($('#discontinued').val()).getTime()) {
-//				$("#inputIntroduced").css("display", "inline");
-//				$("#inputIntroduced").css("color", "red");
-//				date = false;
-//			}
-//			else {
-//				$("#inputIntroduced").css("display", "none");
-//				date = true;
-//			}
-//		validate();
-//	});
-//});
-//
-//function validate() {
-//
-//	if (name && date) {
-//        $("#editComputerButton").removeClass("disabled");
-//    } else {
-//        $("#editComputerButton").addClass("disabled");
-//    }
-//}
+//On load
+var nameIsValid = false;
+var dateIsValid = true;
+$(function() { 
+	$('#computerName').on('input', function() {
+		var input=$(this);
+		var regex = /^[a-zA-Z0-9\\s._ -]+$/;
+		var is_valid = regex.test(input.val());
+		if(is_valid) {
+			$("#nameError").css("display", "none");
+	         nameIsValid = true;
+	    }
+		else {
+			$("#nameError").css("display", "inline");
+			$("#nameError").css("color", "red");
+			nameIsValid = false;
+		}
+		validate();
+	});
+	
+	$('#discontinued').on('input', function() {
+		var input=$(this);
+		if(!$('#introduced').val() || new Date($('#introduced').val()).getTime() > new Date($('#discontinued').val()).getTime()) {
+				$("#dateError").css("display", "inline");
+				$("#dateError").css("color", "red");
+				dateIsValid = false;
+			}
+			else {
+				$("#dateError").css("display", "none");
+				dateIsValid = true;
+			}
+		validate();
+	});
+});
+
+function validate() {
+    console.log(nameIsValid);
+    if (nameIsValid && dateIsValid) {
+        $("#editComputerButton").removeClass("disabled");
+    } else {
+        $("#editComputerButton").addClass("disabled");
+    }
+}

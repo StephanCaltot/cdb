@@ -34,12 +34,12 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" value="${computer.name}" />
-                                <span id="inputName">Name have to matches letters, numbers or '-' , '_', '.', '&', '*' and '/' characters.</span>
+                                <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '&', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
                                 <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computer.dateWichIsIntroduced}" />
-								<span id="inputIntroduced">Date have to matches dd/mm/aaaa format.</span>
+								<span id="dateError">Date have to matches dd/mm/aaaa format.</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
@@ -65,13 +65,14 @@
                         <div class="actions pull-right">
                             <input id="editComputerButton" type="submit" value="Edit" class="btn btn-primary">
                             or
-                            <a href="dashboard.html" class="btn btn-default">Cancel</a>
+                            <a href="computerdatabase" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+<script src="js/jquery.min.js"></script>
 <script src="js/editcomputer.js"></script>
 </body>
 </html>

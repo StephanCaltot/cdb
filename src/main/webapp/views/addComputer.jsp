@@ -29,12 +29,12 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" >
-                                <span id="inputName">Name have to matches letters, numbers or '-' , '_', '.', '&', '*' and '/' characters.</span>
+                                <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '&', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
                                 <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced">
-								<span id="inputIntroduced">Date have to matches dd/mm/aaaa format.</span>
+								<span id="dateError">Date have to matches dd/mm/aaaa format.</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
@@ -52,7 +52,7 @@
                         <div class="actions pull-right">
                             <input id="addComputerButton" type="submit" value="Add" class="btn btn-primary">
                             or
-                            <a href="dashboard.html" class="btn btn-default">Cancel</a>
+                            <a href="computerdatabase" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>
