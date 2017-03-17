@@ -1,9 +1,11 @@
 package com.excilys.scaltot.cdb;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.services.CrudComputerService;
+import com.excilys.scaltot.cdb.repository.Pagination;
 
 /**
  * @author Caltot Stéphan
@@ -35,14 +37,15 @@ public class Test {
 //        System.out.println(text);
 
 
+        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(10).withOffset(0).build();
 
-//        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(10).withOffset(0).build();
-//        pagination.setFilter("apple");
+        List<Computer> computers = pagination.findByPageFilter();
 
+        for (Computer computer : computers){
+            System.out.println(computer.toString());
+        }
         
         
-        CrudComputerService.delete(85); 
-
         
 //        new CrudComputerService();
 //        List<Computer> computers =  CrudComputerService.findByPageFilter(pagination);

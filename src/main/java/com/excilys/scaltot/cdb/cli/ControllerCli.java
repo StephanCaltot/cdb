@@ -9,6 +9,7 @@ import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.repository.Pagination;
+import com.excilys.scaltot.cdb.repository.impl.CrudServiceCompanyImpl;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
 
@@ -24,11 +25,11 @@ public class ControllerCli {
     private ViewCli viewCli;
     private List<Computer> computers;
     private List<Company> companies;
-    private long offset = 0;
-    private static long numberForEachpPage = 10;
     private long offsetCompany = 0;
     private Scanner scan;
-    private Pagination pagination = new Pagination.PaginationBuilder().build();
+    private Pagination<Computer> paginationComputer = new Pagination.PaginationBuilder().withOffset(10).build();
+    private Pagination<Company> paginationCompany = new Pagination.PaginationBuilder().withOffset(10).build();
+    private long offset = 0;
 
     /**
      * Controler's constructor setting crudService for company and computer.
@@ -36,6 +37,8 @@ public class ControllerCli {
      * @throws SQLException :
      */
     public ControllerCli() {
+        paginationCompany.setNumberOfElements(CrudServiceCompanyImpl.INSTANCE.getCountOfCompanies());
+        paginationCompany.setNumberOfPages(paginationCompany.getNumberOfElements() / paginationCompany.getPageSize());
         scan = ScannerSystemIn.getInstance();
     }
 
@@ -56,7 +59,7 @@ public class ControllerCli {
 
         String choice = null;
 
-        computers = CrudComputerService.findByPageFilter(pagination);
+        computers = CrudComputerService.findByPageFilter(paginationComputer);
         viewCli.displayAllComputers(computers);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -81,21 +84,13 @@ public class ControllerCli {
                 viewCli.displayMenu();
                 break;
             case "n":
-                offset += 10;
-                pagination.setOffset(offset);
-                computers = CrudComputerService.findByPageFilter(pagination);
+                computers = paginationComputer.nextPage();
                 viewCli.displayAllComputers(computers);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                if (offset - 10 >= 0) {
-                    offset -= 10;
-                    pagination.setOffset(offset);
-                    computers = CrudComputerService.findByPage(pagination);
+                    computers = paginationComputer.previousPage();
                     viewCli.displayAllComputers(computers);
-                } else {
-                    viewCli.displayInfo(Optional.of("Index too low you have to 'next'"));
-                }
                 break;
             case "q":
                 offset = -1;
@@ -121,9 +116,7 @@ public class ControllerCli {
     public void listingOfCompanies() {
 
         String choice = null;
-        pagination.setOffset(offset);
-        pagination.setPageSize(numberForEachpPage);
-        companies = new CrudCompanyService().findByPage(pagination);
+        companies = new CrudCompanyService().findByPage(paginationComputer);
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -148,21 +141,15 @@ public class ControllerCli {
                 viewCli.displayMenu();
                 break;
             case "n":
-                offsetCompany += 10;
-                pagination.setOffset(offsetCompany);
-                companies = new CrudCompanyService().findByPage(pagination);
+                paginationCompany.nextPage();
+                companies = paginationCompany.findByPageFilterCompany();
                 viewCli.displayAllCompanies(companies);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                if (offsetCompany - 10 >= 0) {
-                    offsetCompany -= 10;
-                    pagination.setOffset(offsetCompany);
-                    companies = new CrudCompanyService().findByPage(pagination);
-                    viewCli.displayAllCompanies(companies);
-                } else {
-                    viewCli.displayInfo(Optional.of("Index too low you have to 'next'"));
-                }
+                paginationCompany.previousPage();
+                companies = paginationCompany.findByPageFilterCompany();
+                viewCli.displayAllCompanies(companies);
                 break;
             case "q":
                 offsetCompany = -1;

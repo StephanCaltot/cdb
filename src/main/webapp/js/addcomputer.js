@@ -4,7 +4,7 @@ var dateIsValid = true;
 $(function() { 
 	$('#computerName').on('input', function() {
 		var input=$(this);
-		var regex = /^[a-zA-Z0-9\\s._ -]+$/;
+		var regex = /^[a-zA-Z0-9\\s._ -/+]+$/;
 		var is_valid = regex.test(input.val());
 		if(is_valid) {
 			$("#nameError").css("display", "none");

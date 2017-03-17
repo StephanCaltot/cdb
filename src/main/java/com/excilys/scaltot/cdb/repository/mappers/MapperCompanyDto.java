@@ -1,5 +1,7 @@
 package com.excilys.scaltot.cdb.repository.mappers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
@@ -12,16 +14,34 @@ import com.excilys.scaltot.cdb.entities.company.CompanyDto;
  */
 public class MapperCompanyDto {
     /**
-     * Changes computer to computer DTO.
+     * Changes company to company DTO.
      * @param company : company
      * @return computerDto
      */
-    public static CompanyDto computerToComputerDto(Optional<Company> company) {
+    public static CompanyDto comanyToCompanyDto(Optional<Company> company) {
         CompanyDto companyDto = new CompanyDto();
 
         companyDto.setId(company.get().getId());
         companyDto.setName(company.get().getName());
 
         return companyDto;
+    };
+
+    /**
+     * Changes companies list to company DTO.
+     * @param companyList : companies
+     * @return computerDto
+     */
+    public static List<CompanyDto> companyListToCompanyDto(List<Company> companies) {
+        List<CompanyDto> companiesDto = new ArrayList<>();
+        CompanyDto companyDto = new CompanyDto();
+
+        for (Company company : companies) {
+            companyDto.setId(company.getId());
+            companyDto.setName(company.getName());
+            companiesDto.add(companyDto);
+        }
+
+        return companiesDto;
     };
 }

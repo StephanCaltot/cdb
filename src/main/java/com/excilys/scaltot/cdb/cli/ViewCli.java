@@ -82,6 +82,7 @@ public class ViewCli {
      *            :
      */
     public void displayAllComputers(List<Computer> computers) {
+
         System.out.println("\n");
         System.out.printf(FORMAT_COMPUTER, "ID", "NAME", "INTRODUCED", "DISCONTINUED", "COMPANY_ID");
         for (Computer computer : computers) {

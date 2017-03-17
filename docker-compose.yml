@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
    db_test:
@@ -6,6 +6,8 @@ services:
      ports:
        - "3308:3306"
      container_name: mysql_for_cdb_test
+     volumes:
+       - ./config/db/.:/docker-entrypoint-initdb.d
      environment:  
        MYSQL_ROOT_PASSWORD: root
        MYSQL_DATABASE: computer-database-db
@@ -16,7 +18,9 @@ services:
    maven:
      image: maven:3.3.9-jdk-8
      container_name: maven_for_cdb_test
-     command: bash -c "cd /usr/src/mymaven && mvn clean package && ls target"
+     command: bash -c "cd /usr/src/mymaven && mvn clean package && ls target echo 'SALUT WALID' "
+     volumes:
+       - maven_jenkins:/usr/src/mymaven
      networks:
        - unitTest
    db_prod:
@@ -24,6 +28,8 @@ services:
      ports:
        - "3307:3306"
      container_name: mysql_for_cdb_prod
+     volumes:
+       - ./config/db/.:/docker-entrypoint-initdb.d
      environment:  
        MYSQL_ROOT_PASSWORD: root
        MYSQL_DATABASE: computer-database-db
@@ -35,6 +41,8 @@ services:
      image: tomcat:7-jre8
      ports:
        - "8081:8080"
+     volumes:
+       - tomcat_jenkins:/usr/local/tomcat/webapps/
      container_name: tomcat_for_cdb_prod
      command: bash -c "cd bin && ./catalina.sh run"
      networks:
@@ -43,3 +51,13 @@ services:
 networks:
      unitTest:
      unitProd:
+
+volumes:
+   maven_jenkins:
+     external:
+        name: documents_maven_jenkins
+   tomcat_jenkins:
+     external:
+        name: documents_tomcat_jenkins
+
+

@@ -32,7 +32,7 @@ public class StringCheckTest {
         assertTrue(StringCheck.isFormed(Optional.ofNullable(" . _ - TESTtest")));
         assertTrue(StringCheck.isFormed(Optional.ofNullable(" 05")));
         assertTrue(StringCheck.isFormed(Optional.ofNullable("05_")));
-        assertTrue(StringCheck.isFormed(Optional.ofNullable("05test-")));
+        assertTrue(StringCheck.isFormed(Optional.ofNullable("05test-+")));
         assertTrue(StringCheck.isFormed(Optional.ofNullable("  0 test1D_-. ")));
     }
 
@@ -44,7 +44,6 @@ public class StringCheckTest {
         assertFalse(StringCheck.isFormed(Optional.ofNullable("")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("  ")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("*")));
-        assertFalse(StringCheck.isFormed(Optional.ofNullable("+")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("&")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("'")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("é")));
@@ -52,8 +51,6 @@ public class StringCheckTest {
         assertFalse(StringCheck.isFormed(Optional.ofNullable(")")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("{")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("f5_-.*")));
-        assertFalse(StringCheck.isFormed(Optional.ofNullable("f5-_ +")));
-        assertFalse(StringCheck.isFormed(Optional.ofNullable("t+")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("test& @")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("&")));
         assertFalse(StringCheck.isFormed(Optional.ofNullable("@")));
