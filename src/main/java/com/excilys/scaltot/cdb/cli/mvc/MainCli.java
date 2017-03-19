@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.cli;
+package com.excilys.scaltot.cdb.cli.mvc;
 
 import java.util.Optional;
 

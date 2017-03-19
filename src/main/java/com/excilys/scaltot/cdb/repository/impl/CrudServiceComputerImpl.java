@@ -105,7 +105,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
             LOGGER.warn("You are trying to find a computer with null or negative id !\n");
             return Optional.empty();
         }
-        connection = CrudServiceConstant.jdbcConnection.getConnection();
+        connection = jdbcConnection.getConnection();
 
         try {
             CrudServiceConstant.preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPUTER);
@@ -217,7 +217,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
             jdbcConnection.rollback();
             throw new PersistenceException(e);
         } finally {
-            CrudServiceConstant.jdbcConnection.closeConnection();
+            jdbcConnection.closeConnection();
         }
     }
 
@@ -246,53 +246,12 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
         } catch (SQLException e) {
             throw new PersistenceException(e);
         } finally {
-            CrudServiceConstant.jdbcConnection.closeConnection();
+            jdbcConnection.closeConnection();
         }
 
         return computers;
     }
 
-    /**
-     * Retrieves computers paginated by limit ( 10 here ).
-     *
-     * @param pagination : page
-     * @return list of computers paginated
-     * @throws PersistenceException : PersistenceException
-     * @throws Exception
-     */
-    public List<Computer> findByPage(Pagination pagination) {
-
-        connection = jdbcConnection.getConnection();
-        computers = new ArrayList<>();
-
-        long pageSize = pagination.getPageSize();
-        long offset = pagination.getOffset();
-
-        if (pageSize <= 0) {
-             pageSize = CrudServiceConstant.LIMIT_DEFAULT;
-        }
-        if (offset < 0) {
-            offset = 0;
-        }
-        try {
-            CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER);
-            CrudServiceConstant.preparedStatementFindByPage.setLong(1, pageSize);
-            CrudServiceConstant.preparedStatementFindByPage.setLong(2, offset);
-            resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
-            while (resultSet.next()) {
-                if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                    computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
-                    computers.add(computer);
-                }
-            }
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            CrudServiceConstant.jdbcConnection.closeConnection();
-        }
-
-        return computers;
-    }
 
     /**
      * Return the number of computer in database.
@@ -310,7 +269,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
         } catch (SQLException e) {
             throw new PersistenceException(e);
         } finally {
-            CrudServiceConstant.jdbcConnection.closeConnection();
+            jdbcConnection.closeConnection();
         }
     }
 
@@ -337,7 +296,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
         } catch (SQLException e) {
             throw new PersistenceException(e);
         } finally {
-            CrudServiceConstant.jdbcConnection.closeConnection();
+            jdbcConnection.closeConnection();
         }
         return computers;
     }
@@ -379,7 +338,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
         } catch (SQLException e) {
             throw new PersistenceException(e);
         } finally {
-            CrudServiceConstant.jdbcConnection.closeConnection();
+            jdbcConnection.closeConnection();
         }
 
         return computers;

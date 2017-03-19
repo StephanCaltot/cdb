@@ -17,14 +17,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.entities.company.CompanyDto;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.repository.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.repository.mappers.MapperComputerDto;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
+import com.excilys.scaltot.cdb.services.PaginationComputerService;
 import com.excilys.scaltot.cdb.validation.DateCheck;
 
 
@@ -57,12 +56,12 @@ public class ServletComputer extends HttpServlet {
      * @throws IOException :
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        List<CompanyDto> companies;
+        List<Company> companies;
         List<ComputerDto> computers;
         pageToForward = "/views/dashboard.jsp";
         Pagination page = getPage(request);
-        String filter = "apple";
-        ComputerDto computer;
+        String filter = "";
+        ComputerDto computerDto;
         page.setNumberOfElements(CrudComputerService.getCountOfComputers());
 
         if (request.getParameter("action") != null) {
@@ -71,7 +70,7 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("numOfPage") != null) {
                     try {
                         int numOfPage = Integer.parseInt(request.getParameter("numOfPage"));
-                        page.setCurrentPage(numOfPage);
+                        PaginationComputerService.setCurrentPage(page, numOfPage);
                     } catch (NumberFormatException e) {
                   }
                 }
@@ -80,28 +79,28 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("filter") != null) {
                     try {
                         filter = request.getParameter("filter");
-                        page.setFilter(filter);
+                        PaginationComputerService.setFilter(page, filter);
                     } catch (NumberFormatException e) {
                   }
                 }
                 break;
             case "nextPage":
-                page.nextPage();
+                PaginationComputerService.nextPage(page);
                 break;
             case "previousPage":
-                page.previousPage();
+                PaginationComputerService.previousPage(page);
                 break;
             case "size":
                 if (request.getParameter("size") != null) {
                     try {
                         int size = Integer.parseInt(request.getParameter("size"));
-                        page.setPageSize(size);
+                        PaginationComputerService.setPageSize(page, size);
                     } catch (NumberFormatException e) {
                   }
                 }
                 break;
             case "add":
-                companies = MapperCompanyDto.companyListToCompanyDto(CrudCompanyService.findAll());
+                companies = CrudCompanyService.findAll();
                 request.getSession().setAttribute("companies", companies);
                 pageToForward = "/views/addComputer.jsp";
                 break;
@@ -109,10 +108,10 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("id") != null) {
                     try {
                         long id = Long.parseLong(request.getParameter("id"));
-                        companies = MapperCompanyDto.companyListToCompanyDto(CrudCompanyService.findAll());
-                        computer = MapperComputerDto.computerToComputerDto(CrudComputerService.find(id));
+                        companies = CrudCompanyService.findAll();
+                        computerDto = MapperComputerDto.computerToComputerDto(CrudComputerService.find(id));
                         request.getSession().setAttribute("companies", companies);
-                        request.getSession().setAttribute("computer", computer);
+                        request.getSession().setAttribute("computerDto", computerDto);
                         pageToForward = "/views/editComputer.jsp";
                     } catch (NumberFormatException numberFormatException) {
 
@@ -124,7 +123,7 @@ public class ServletComputer extends HttpServlet {
             }
         }
         if (pageToForward.equals("/views/dashboard.jsp")) {
-            computers = page.findByPageFilter();
+            computers = MapperComputerDto.computerListToComputerDto(PaginationComputerService.findByPage(page));
             request.getSession().setAttribute("computers", computers);
             request.getSession().setAttribute("filter", filter);
             request.getSession().setAttribute("numberOfPages", page.getNumberOfPages());
@@ -141,12 +140,12 @@ public class ServletComputer extends HttpServlet {
      * @param request : request
      * @return page attribute
      */
-    public Pagination<Computer> getPage(HttpServletRequest request) {
+    public Pagination getPage(HttpServletRequest request) {
         if (request.getSession().getAttribute("page") == null) {
-            Pagination<Computer> page = new Pagination.PaginationBuilder().build();
+            Pagination page = new Pagination.PaginationBuilder().build();
             request.getSession().setAttribute("page", page);
         }
-        return (Pagination<Computer>) request.getSession().getAttribute("page");
+        return (Pagination) request.getSession().getAttribute("page");
     }
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

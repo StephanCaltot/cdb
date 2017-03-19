@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository;
+package com.excilys.scaltot.cdb.repository.mappers;
 
 import static org.junit.Assert.assertEquals;
 

@@ -3,9 +3,11 @@ package com.excilys.scaltot.cdb;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.repository.Pagination;
+import com.excilys.scaltot.cdb.repository.mappers.MapperComputerDto;
+import com.excilys.scaltot.cdb.services.PaginationComputerService;
 
 /**
  * @author Caltot Stéphan
@@ -37,11 +39,10 @@ public class Test {
 //        System.out.println(text);
 
 
-        Pagination pagination = new Pagination.PaginationBuilder().withPageSize(10).withOffset(0).build();
 
-        List<Computer> computers = pagination.findByPageFilter();
+        List<ComputerDto> computers = MapperComputerDto.computerListToComputerDto(PaginationComputerService.findByPage(new Pagination()));
 
-        for (Computer computer : computers){
+        for (ComputerDto computer : computers){
             System.out.println(computer.toString());
         }
         

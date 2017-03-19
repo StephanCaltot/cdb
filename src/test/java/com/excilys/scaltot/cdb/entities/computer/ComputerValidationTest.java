@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.entities;
+package com.excilys.scaltot.cdb.entities.computer;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.entities.computer.ComputerValidator;
+import com.excilys.scaltot.cdb.validation.ComputerValidator;
 
 /**
  * @author Caltot Stéphan

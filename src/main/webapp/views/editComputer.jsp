@@ -23,34 +23,34 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <div class="label label-default pull-right">
-                        id: ${computer.id}
+                        id: ${computerDto.id}
                     </div>
                     <h1>Edit Computer</h1>
 
                     <form action="computerdatabase" method="POST">
                         <input name="action" type="hidden" value="edit"/>
                         <fieldset>
-                                <input type="hidden" class="form-control" id="id" name="id" value="${computer.id}" />
+                                <input type="hidden" class="form-control" id="id" name="id" value="${computerDto.id}" />
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" value="${computer.name}" />
-                                <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '&', '*' and '/' characters.</span>
+                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" value="${computerDto.name}" />
+                                <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computer.dateWichIsIntroduced}" />
+                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computerDto.dateWichIsIntroduced}" />
 								<span id="dateError">Date have to matches dd/mm/aaaa format.</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" value="${computer.dateWichIsDiscontinued}"/>
+                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" value="${computerDto.dateWichIsDiscontinued}"/>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select name="companyId" class="form-control" id="companyId" >                                   
                                     <c:forEach var="company" items="${companies}">
                                     <c:choose>
-                                    	<c:when test="${computer.manufacturer.id == company.id}">
+                                    	<c:when test="${computerDto.companyId == company.id}">
                                     		<option value="${company.id}" selected="selected" >${company.name}</option>
                                     	</c:when>
                                     	

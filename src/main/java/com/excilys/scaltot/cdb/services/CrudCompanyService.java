@@ -32,7 +32,7 @@ public class CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findByPage(Pagination pagination) {
-        return CrudServiceCompanyImpl.INSTANCE.findByPage(pagination);
+        return CrudServiceCompanyImpl.INSTANCE.findByPageFilter(pagination);
     }
 
     /**
@@ -41,5 +41,14 @@ public class CrudCompanyService {
      */
     public static long getCountOfCompanies() {
         return CrudServiceCompanyImpl.INSTANCE.getCountOfCompanies();
+    }
+
+    /**
+     * Delete one company with computer associated.
+     * @param companyId
+     * @return boolean
+     */
+    public static boolean delete(long companyId){
+    	return CrudServiceCompanyImpl.INSTANCE.delete(companyId);
     }
 }

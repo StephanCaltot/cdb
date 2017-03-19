@@ -1,21 +1,7 @@
 package com.excilys.scaltot.cdb.repository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.mappers.MapperCompany;
-import com.excilys.scaltot.cdb.repository.mappers.MapperComputer;
-import com.excilys.scaltot.cdb.services.CrudComputerService;
-import com.excilys.scaltot.cdb.utils.DaoProperties;
-import com.excilys.scaltot.cdb.utils.JdbcConnection;
 
 
 
@@ -25,7 +11,7 @@ import com.excilys.scaltot.cdb.utils.JdbcConnection;
  *
  * 2 mars 2017
  */
-public class Pagination<E> {
+public class Pagination {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Pagination.class);
 
@@ -35,18 +21,11 @@ public class Pagination<E> {
     private long numberOfPages;
     private long offset = 0;
     private String filter = "";
-    private List<E> elements;
-    private ResultSet resultSet;
-    private E e;
-    private Connection connection;
-    private JdbcConnection jdbcConnection = JdbcConnection.INSTANCE;
 
     /**
      * Empty constructor.
      */
     public Pagination() {
-        this.numberOfElements = CrudComputerService.getCountOfComputers();
-        this.numberOfPages = this.numberOfElements / this.pageSize;
     }
 
     /**
@@ -113,7 +92,7 @@ public class Pagination<E> {
      * @return the offset
      */
     public long getOffset() {
-        return currentPage * pageSize;
+        return offset;
     }
 
     /**
@@ -142,112 +121,20 @@ public class Pagination<E> {
     * Switch to previous page.
     * @return list of Computers
     */
-   public List<E> previousPage() {
+   public void previousPage() {
        this.currentPage = (currentPage - 1) >= 0 ? (currentPage - 1) : 0;
        this.offset = currentPage * pageSize;
-       this.elements = (List<E>) findByPageFilter();
-       return elements;
    }
 
    /**
     * Switch to next page.
     * @return list of Computers
     */
-   public List<E> nextPage() {
+   public void nextPage() {
        this.currentPage = (currentPage + 1) <= numberOfPages ? (currentPage + 1) : numberOfPages;
        this.offset = currentPage * pageSize;
-       this.elements = (List<E>) findByPageFilter();
-       return elements;
    }
 
-   
-   /**
-    * Retrieves computers paginated by limit ( 10 here ).
-    *
-    * @return list of computers paginated
-    * @throws PersistenceException : PersistenceException
-    * @throws Exception
-    */
-   public List<E> findByPageFilter() {
-
-       connection = jdbcConnection.getConnection();
-       elements = new ArrayList<E>();
-
-       if (this.pageSize <= 0) {
-           this.pageSize = CrudServiceConstant.LIMIT_DEFAULT;
-       }
-       if (this.offset < 0) {
-           this.offset = 0;
-       }
-       try {
-           CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER_FILTERED);
-           CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + filter + "%");
-           CrudServiceConstant.preparedStatementFindByPage.setLong(2, pageSize);
-           CrudServiceConstant.preparedStatementFindByPage.setLong(3, offset);
-           resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
-
-           while (resultSet.next()) {
-
-               if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                   e = (E) MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
-                   elements.add(e);
-               }
-           }
-
-           jdbcConnection.commit();
-       } catch (SQLException e) {
-           jdbcConnection.rollback();
-           throw new PersistenceException(e);
-       } finally {
-           CrudServiceConstant.jdbcConnection.closeConnection();
-       }
-
-       return elements;
-   }
-
-   /**
-    * Retrieves companies paginated by limit ( 10 here ).
-    *
-    * @return list of companies paginated
-    * @throws PersistenceException : PersistenceException
-    * @throws Exception
-    */
-   public List<E> findByPageFilterCompany() {
-
-       connection = jdbcConnection.getConnection();
-       elements = new ArrayList<E>();
-
-       if (this.pageSize <= 0) {
-           this.pageSize = CrudServiceConstant.LIMIT_DEFAULT;
-       }
-       if (this.offset < 0) {
-           this.offset = 0;
-       }
-       try {
-           CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPANY_FILTERED);
-           CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + filter + "%");
-           CrudServiceConstant.preparedStatementFindByPage.setLong(2, pageSize);
-           CrudServiceConstant.preparedStatementFindByPage.setLong(3, offset);
-           resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
-
-           while (resultSet.next()) {
-
-               if (MapperCompany.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                   e = (E) MapperCompany.resultSetToEntity(Optional.of(resultSet)).get();
-                   elements.add(e);
-               }
-           }
-
-           jdbcConnection.commit();
-       } catch (SQLException e) {
-           jdbcConnection.rollback();
-           throw new PersistenceException(e);
-       } finally {
-           CrudServiceConstant.jdbcConnection.closeConnection();
-       }
-
-       return elements;
-   }
 
     /**
      * Builder Pattern for pagination.

@@ -30,6 +30,6 @@ public interface CrudService<T> {
      * @return List<T>
      * @throws Exception :
      */
-    List<T> findByPage(Pagination pagination);
+    List<T> findByPageFilter(Pagination pagination);
 
 }

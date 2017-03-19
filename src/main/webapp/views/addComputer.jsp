@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" >
-                                <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '&', '*' and '/' characters.</span>
+                                <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>

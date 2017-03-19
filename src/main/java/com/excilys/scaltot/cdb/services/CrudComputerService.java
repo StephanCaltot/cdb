@@ -66,18 +66,6 @@ public class CrudComputerService {
     }
 
     /**
-     * Retrieves computers paginated by limit ( 10 here ).
-     *
-     * @param pagination : page
-     * @return list of computers paginated
-     * @throws PersistenceException : PersistenceException
-     * @throws Exception
-     */
-    public static List<Computer> findByPage(Pagination pagination) {
-        return CrudServiceComputerImpl.INSTANCE.findByPage(pagination);
-    }
-
-    /**
      * Return the number of computer in database.
      * @return long
      */

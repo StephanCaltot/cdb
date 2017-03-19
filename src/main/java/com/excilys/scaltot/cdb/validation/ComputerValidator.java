@@ -1,13 +1,11 @@
-package com.excilys.scaltot.cdb.entities.computer;
+package com.excilys.scaltot.cdb.validation;
 
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.scaltot.cdb.entities.company.CompanyValidator;
-import com.excilys.scaltot.cdb.validation.DateCheck;
-import com.excilys.scaltot.cdb.validation.StringCheck;
+import com.excilys.scaltot.cdb.entities.computer.Computer;
 
 /**
  * @author Caltot Stéphan

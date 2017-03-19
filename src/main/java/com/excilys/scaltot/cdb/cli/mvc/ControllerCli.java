@@ -1,17 +1,19 @@
-package com.excilys.scaltot.cdb.cli;
+package com.excilys.scaltot.cdb.cli.mvc;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceCompanyImpl;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
+import com.excilys.scaltot.cdb.services.PaginationCompanyService;
+import com.excilys.scaltot.cdb.services.PaginationComputerService;
 
 /**
  * Controler for Command line interface.
@@ -27,8 +29,8 @@ public class ControllerCli {
     private List<Company> companies;
     private long offsetCompany = 0;
     private Scanner scan;
-    private Pagination<Computer> paginationComputer = new Pagination.PaginationBuilder().withOffset(10).build();
-    private Pagination<Company> paginationCompany = new Pagination.PaginationBuilder().withOffset(10).build();
+    private Pagination paginationComputer = new Pagination();
+    private Pagination paginationCompany = new Pagination();
     private long offset = 0;
 
     /**
@@ -37,8 +39,8 @@ public class ControllerCli {
      * @throws SQLException :
      */
     public ControllerCli() {
-        paginationCompany.setNumberOfElements(CrudServiceCompanyImpl.INSTANCE.getCountOfCompanies());
-        paginationCompany.setNumberOfPages(paginationCompany.getNumberOfElements() / paginationCompany.getPageSize());
+        PaginationComputerService.paginationInitialisation(paginationComputer);
+        PaginationCompanyService.paginationInitialisation(paginationCompany);
         scan = ScannerSystemIn.getInstance();
     }
 
@@ -59,7 +61,7 @@ public class ControllerCli {
 
         String choice = null;
 
-        computers = CrudComputerService.findByPageFilter(paginationComputer);
+        computers = PaginationComputerService.findByPage(paginationComputer);
         viewCli.displayAllComputers(computers);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -80,17 +82,21 @@ public class ControllerCli {
             case "6":
                 deleteComputer();
                 break;
+            case "7":
+            	deleteCompany();
             case "d":
                 viewCli.displayMenu();
                 break;
             case "n":
-                computers = paginationComputer.nextPage();
+            	PaginationComputerService.nextPage(paginationComputer);
+                computers = PaginationComputerService.findByPage(paginationComputer);
                 viewCli.displayAllComputers(computers);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                    computers = paginationComputer.previousPage();
-                    viewCli.displayAllComputers(computers);
+            	PaginationComputerService.previousPage(paginationComputer);
+                computers = PaginationComputerService.findByPage(paginationComputer);
+                viewCli.displayAllComputers(computers);
                 break;
             case "q":
                 offset = -1;
@@ -99,7 +105,6 @@ public class ControllerCli {
                 offset = -1;
                 break;
             default:
-                //viewCli.displayInfo(Optional.of("You have to press (n) or (p) or (q) to quit"));
                 break;
             }
 
@@ -116,7 +121,7 @@ public class ControllerCli {
     public void listingOfCompanies() {
 
         String choice = null;
-        companies = new CrudCompanyService().findByPage(paginationComputer);
+        companies = PaginationCompanyService.findByPage(paginationCompany);
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -137,18 +142,20 @@ public class ControllerCli {
             case "6":
                 deleteComputer();
                 break;
+            case "7":
+            	deleteCompany();
             case "d":
                 viewCli.displayMenu();
                 break;
             case "n":
-                paginationCompany.nextPage();
-                companies = paginationCompany.findByPageFilterCompany();
+                PaginationCompanyService.nextPage(paginationCompany);
+                companies = PaginationCompanyService.findByPage(paginationCompany);
                 viewCli.displayAllCompanies(companies);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                paginationCompany.previousPage();
-                companies = paginationCompany.findByPageFilterCompany();
+                PaginationCompanyService.previousPage(paginationCompany);
+                companies = PaginationCompanyService.findByPage(paginationCompany);
                 viewCli.displayAllCompanies(companies);
                 break;
             case "q":
@@ -158,7 +165,6 @@ public class ControllerCli {
                 offsetCompany = -1;
                 break;
             default:
-                //viewCli.displayInfo(Optional.of("You have to press (n) or (p) or (q) to quit"));
                 break;
             }
 
@@ -208,6 +214,27 @@ public class ControllerCli {
     }
 
     /**
+     * Method : deleting one company and all computer associated.
+     *
+     * @throws SQLException
+     *             :
+     * @throws PersistenceException
+     *             :
+     */
+    public void deleteCompany() {
+
+        long companyId = 0;
+        do {
+            viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
+            companyId = scan.nextInt();
+        } while (companyId <= 0);
+        if (CrudCompanyService.delete(companyId)) {
+            viewCli.displayInfo(Optional.of("\nComputer (" + companyId + ") deleted successfully !\n\n"));
+        }
+        viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
+    }
+
+    /**
      * Method : handling menu execution.
      *
      * @throws Exception
@@ -237,6 +264,8 @@ public class ControllerCli {
             case "6":
                 deleteComputer();
                 break;
+            case "7":
+            	deleteCompany();
             case "q":
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 viewCli.displayInfo(Optional.of("\n     CLI closed, good bye !\n"));

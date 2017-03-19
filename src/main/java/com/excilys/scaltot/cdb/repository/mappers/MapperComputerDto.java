@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.scaltot.cdb.entities.company.CompanyDto;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 
@@ -24,10 +23,18 @@ public class MapperComputerDto {
 
         computerDto.setId(computer.get().getId());
         computerDto.setName(computer.get().getName());
-        computerDto.setDateWichIsIntroduced(computer.get().getDateWichIsIntroduced().toString());
-        computerDto.setDateWichIsDiscontinued(computer.get().getDateWichIsDiscontinued().toString());
-        computerDto.setCompanyId(computer.get().getManufacturer().getId());
-        computerDto.setCompanyName(computer.get().getManufacturer().getName());
+        if(computer.get().getDateWichIsIntroduced() != null) {
+            computerDto.setDateWichIsIntroduced(computer.get().getDateWichIsIntroduced().toString());
+        }
+
+        if (computer.get().getDateWichIsDiscontinued() != null) {
+            computerDto.setDateWichIsDiscontinued(computer.get().getDateWichIsDiscontinued().toString());
+        }
+
+        if (computer.get().getManufacturer().getId() != 0) {
+            computerDto.setCompanyId(computer.get().getManufacturer().getId());
+            computerDto.setCompanyName(computer.get().getManufacturer().getName());	
+        }
 
         return computerDto;
     };
@@ -37,17 +44,27 @@ public class MapperComputerDto {
      * @param computers : computers
      * @return computerDtolist
      */
-    public static List<ComputerDto> computerListToComputerDto(List<Optional<Computer>> computers) {
+    public static List<ComputerDto> computerListToComputerDto(List<Computer> computers) {
         List<ComputerDto> computersDto = new ArrayList<>();
-        ComputerDto computerDto = new ComputerDto();
+        ComputerDto computerDto;
 
-        for (Optional<Computer> computer: computers) {
-            computerDto.setId(computer.get().getId());
-            computerDto.setName(computer.get().getName());
-            computerDto.setDateWichIsIntroduced(computer.get().getDateWichIsIntroduced().toString());
-            computerDto.setDateWichIsDiscontinued(computer.get().getDateWichIsDiscontinued().toString());
-            computerDto.setCompanyId(computer.get().getManufacturer().getId());
-            computerDto.setCompanyName(computer.get().getManufacturer().getName());
+        
+        for (Computer computer: computers) {
+        	computerDto = new ComputerDto();
+            computerDto.setId(computer.getId());
+            computerDto.setName(computer.getName());
+            if(computer.getDateWichIsIntroduced() != null) {
+                computerDto.setDateWichIsIntroduced(computer.getDateWichIsIntroduced().toString());
+            }
+
+            if (computer.getDateWichIsDiscontinued() != null) {
+                computerDto.setDateWichIsDiscontinued(computer.getDateWichIsDiscontinued().toString());
+            }
+
+            if (computer.getManufacturer().getId() != 0) {
+                computerDto.setCompanyId(computer.getManufacturer().getId());
+                computerDto.setCompanyName(computer.getManufacturer().getName());	
+            }
             computersDto.add(computerDto);
         }
 

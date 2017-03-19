@@ -18,7 +18,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${numberOfElements}Computers found</h1>
+			<h1 id="homeTitle">${numberOfElements} computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -63,14 +63,14 @@
 					</tr>
 				</thead>
 				<tbody id="results">
-					<c:forEach items="${computers}" var="computer">
+					<c:forEach items="${computers}" var="computerDto">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${computer.id}"></td>
-							<td><a href="computerdatabase?action=edit&id=${computer.id}" onclick="">${computer.name}</a></td>
-							<td>${computer.dateWichIsIntroduced}</td>
-							<td>${computer.dateWichIsDiscontinued}</td>
-							<td>${computer.manufacturer.name}</td>
+								class="cb" value="${computerDto.id}"></td>
+							<td><a href="computerdatabase?action=edit&id=${computerDto.id}" onclick="">${computerDto.name}</a></td>
+							<td>${computerDto.dateWichIsIntroduced}</td>
+							<td>${computerDto.dateWichIsDiscontinued}</td>
+							<td>${computerDto.companyName}</td>
 						</tr>
 					</c:forEach>
 
