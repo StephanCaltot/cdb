@@ -3,8 +3,8 @@ package com.excilys.scaltot.cdb.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.scaltot.cdb.dao.impl.CrudCompanyImpl;
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.persistence.impl.CrudCompanyImpl;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 public enum CrudCompanyService {

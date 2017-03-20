@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dao.impl;
+package com.excilys.scaltot.cdb.persistence.impl;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,14 +9,17 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
-import com.excilys.scaltot.cdb.dao.CrudServiceConstant;
-import com.excilys.scaltot.cdb.dao.DaoProperties;
-import com.excilys.scaltot.cdb.dao.interfaces.CrudService;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.mappers.MapperComputer;
-import com.excilys.scaltot.cdb.utils.JdbcConnectionManager;
+import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
+import com.excilys.scaltot.cdb.persistence.DaoProperties;
+import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
+import com.excilys.scaltot.cdb.utils.DatabaseManager;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
@@ -26,9 +29,9 @@ import com.excilys.scaltot.cdb.utils.Pagination;
  *
  *         20 févr. 2017
  */
-public enum CrudComputerImpl implements CrudService<Computer> {
-
-    INSTANCE;
+@Repository
+@Scope("singleton")
+public class CrudComputerImpl implements CrudComputer {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudComputerImpl.class);
 
@@ -36,7 +39,8 @@ public enum CrudComputerImpl implements CrudService<Computer> {
     private Computer computer;
     private List<Computer> computers;
     private Connection connection;
-    private JdbcConnectionManager jdbcConnection = JdbcConnectionManager.INSTANCE;
+    @Autowired
+    private DatabaseManager jdbcConnection;
 
     /**
      * Create CRUD's operation.

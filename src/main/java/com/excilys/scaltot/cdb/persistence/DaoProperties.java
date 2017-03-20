@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dao;
+package com.excilys.scaltot.cdb.persistence;
 
 /**
  * Class contains all needed constant for dao request.

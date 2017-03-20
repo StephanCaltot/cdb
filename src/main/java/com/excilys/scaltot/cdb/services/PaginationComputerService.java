@@ -2,8 +2,8 @@ package com.excilys.scaltot.cdb.services;
 
 import java.util.List;
 
-import com.excilys.scaltot.cdb.dao.impl.CrudComputerImpl;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.persistence.impl.CrudComputerImpl;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 public enum PaginationComputerService {
@@ -18,8 +18,7 @@ public enum PaginationComputerService {
      */
     public static void paginationInitialisation(Pagination paginationComputer) {
         paginationComputer.setNumberOfElements(CrudComputerService.INSTANCE.getCountOfComputers());
-        paginationComputer
-                .setNumberOfPages(paginationComputer.getNumberOfElements() / paginationComputer.getPageSize());
+        paginationComputer.setNumberOfPages(paginationComputer.getNumberOfElements() / paginationComputer.getPageSize());
     }
 
     /**

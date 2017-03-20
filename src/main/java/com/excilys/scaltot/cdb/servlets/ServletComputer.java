@@ -191,7 +191,7 @@ public class ServletComputer extends HttpServlet {
                     CrudComputerService.INSTANCE.create(Optional.ofNullable(computerBuilder.build()));
 
                 } catch (NumberFormatException e) {
-                    System.out.println(e);
+                    throw new NumberFormatException();
                 }
                 break;
             case "edit":
@@ -227,7 +227,7 @@ public class ServletComputer extends HttpServlet {
                     CrudComputerService.INSTANCE.update(Optional.ofNullable(computerBuilder.build()));
 
                 } catch (NumberFormatException e) {
-                    System.out.println(e);
+                    throw new NumberFormatException();
                 }
                 break;
             case "delete":

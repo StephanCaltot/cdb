@@ -225,11 +225,11 @@ public class ControllerCli {
 
         long companyId = 0;
         do {
-            viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
+            viewCli.displayInfo(Optional.of("\nPlease enter the company's id you want delete : "));
             companyId = scan.nextInt();
         } while (companyId <= 0);
         if (CrudCompanyService.INSTANCE.delete(companyId)) {
-            viewCli.displayInfo(Optional.of("\nComputer (" + companyId + ") deleted successfully !\n\n"));
+            viewCli.displayInfo(Optional.of("\nCompany (" + companyId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
     }

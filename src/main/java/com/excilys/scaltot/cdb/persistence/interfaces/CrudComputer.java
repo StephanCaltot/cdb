@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dao.interfaces;
+package com.excilys.scaltot.cdb.persistence.interfaces;
 
 import java.util.List;
 import java.util.Optional;

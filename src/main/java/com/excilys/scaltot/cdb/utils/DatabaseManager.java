@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.zaxxer.hikari.HikariConfig;
@@ -18,11 +20,11 @@ import com.zaxxer.hikari.HikariDataSource;
  *
  *         20 févr. 2017
  */
-public enum JdbcConnectionManager {
+@Repository
+public class DatabaseManager {
 
-    INSTANCE;
     private Connection connection;
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionManager.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class.getName());
     private PropertiesLoader propertiesToLoad = PropertiesLoader.INSTANCE;
     private Properties properties;
     private HikariDataSource dataSource;
@@ -31,7 +33,7 @@ public enum JdbcConnectionManager {
     /**
      * Singleton's private constructor.
      */
-    JdbcConnectionManager() {
+    public DatabaseManager() {
         propertiesToLoad.setFileName("hikari.properties");
         propertiesToLoad.initProperties();
         properties = propertiesToLoad.getProperties();
