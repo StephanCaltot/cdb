@@ -26,11 +26,10 @@ public interface CrudService<T> {
 
     /**
      *
-     * @param offset :
-     * @param numberForEachpPage :
+     * @param pagination : pahe
      * @return List<T>
      * @throws Exception :
      */
-    List<T> findByPage(long offset, long numberForEachpPage);
+    List<T> findByPageFilter(Pagination pagination);
 
 }

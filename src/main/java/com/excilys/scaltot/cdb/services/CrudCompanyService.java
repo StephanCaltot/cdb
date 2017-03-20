@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.repository.impl.CrudServiceCompanyImpl;
 
 public class CrudCompanyService {
@@ -27,12 +28,11 @@ public class CrudCompanyService {
 
     /**
      * Return list of companies paginated.
-     * @param offset :offset
-     * @param numberForEachPage : numberForEachPage
+     * @param pagination : page
      * @return list of companies
      */
-    public static List<Company> findByPage(long offset, long numberForEachPage) {
-        return CrudServiceCompanyImpl.INSTANCE.findByPage(offset, numberForEachPage);
+    public List<Company> findByPage(Pagination pagination) {
+        return CrudServiceCompanyImpl.INSTANCE.findByPageFilter(pagination);
     }
 
     /**
@@ -41,5 +41,14 @@ public class CrudCompanyService {
      */
     public static long getCountOfCompanies() {
         return CrudServiceCompanyImpl.INSTANCE.getCountOfCompanies();
+    }
+
+    /**
+     * Delete one company with computer associated.
+     * @param companyId
+     * @return boolean
+     */
+    public static boolean delete(long companyId){
+    	return CrudServiceCompanyImpl.INSTANCE.delete(companyId);
     }
 }

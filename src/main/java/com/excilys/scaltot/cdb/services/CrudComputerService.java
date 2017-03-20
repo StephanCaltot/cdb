@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
 
 public class CrudComputerService {
@@ -65,19 +66,6 @@ public class CrudComputerService {
     }
 
     /**
-     * Retrieves computers paginated by limit ( 10 here ).
-     *
-     * @param offset : begin's value of current page
-     * @param numberForEachpPage : number of elements for each page
-     * @return list of computers paginated
-     * @throws PersistenceException : PersistenceException
-     * @throws Exception
-     */
-    public static List<Computer> findByPage(long offset, long numberForEachpPage) {
-        return CrudServiceComputerImpl.INSTANCE.findByPage(offset, numberForEachpPage);
-    }
-
-    /**
      * Return the number of computer in database.
      * @return long
      */
@@ -97,14 +85,12 @@ public class CrudComputerService {
     /**
      * Retrieves computers paginated by limit ( 10 here ).
      *
-     * @param offset : begin's value of current page
-     * @param numberForEachpPage : number of elements for each page
-     * @param filter : name filter
+     * @param pagination : pagination
      * @return list of computers paginated
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
-    public static List<Computer> findByPageFilter(long offset, long numberForEachpPage, String filter) {
-        return CrudServiceComputerImpl.INSTANCE.findByPageFilter(offset, numberForEachpPage, filter);
+    public static List<Computer> findByPageFilter(Pagination pagination) {
+        return CrudServiceComputerImpl.INSTANCE.findByPageFilter(pagination);
     }
 }

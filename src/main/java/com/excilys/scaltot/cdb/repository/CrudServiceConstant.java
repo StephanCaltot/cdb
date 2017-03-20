@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.utils.JdbcConnection;
 
 /**
  * Class contains all needed constant for crudService operation.
@@ -15,16 +14,16 @@ import com.excilys.scaltot.cdb.utils.JdbcConnection;
  * @author screetts
  *
  */
-public class CrudServiceConstant {
+public abstract class CrudServiceConstant {
 
     /**
      * Default Limit of pagination.
      */
     public static final int LIMIT_DEFAULT = 10;
 
-    public static JdbcConnection jdbcConnection = JdbcConnection.getInstance();
     public static Statement statement;
     public static ResultSet resultSet;
+
     public static PreparedStatement preparedStatementInsert;
     public static PreparedStatement preparedStatementFind;
     public static PreparedStatement preparedStatementDelete;
