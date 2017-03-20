@@ -9,11 +9,11 @@ import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.Pagination;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
 import com.excilys.scaltot.cdb.services.PaginationCompanyService;
 import com.excilys.scaltot.cdb.services.PaginationComputerService;
+import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
  * Controler for Command line interface.
@@ -83,18 +83,18 @@ public class ControllerCli {
                 deleteComputer();
                 break;
             case "7":
-            	deleteCompany();
+                deleteCompany();
             case "d":
                 viewCli.displayMenu();
                 break;
             case "n":
-            	PaginationComputerService.nextPage(paginationComputer);
+                PaginationComputerService.nextPage(paginationComputer);
                 computers = PaginationComputerService.findByPage(paginationComputer);
                 viewCli.displayAllComputers(computers);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-            	PaginationComputerService.previousPage(paginationComputer);
+                PaginationComputerService.previousPage(paginationComputer);
                 computers = PaginationComputerService.findByPage(paginationComputer);
                 viewCli.displayAllComputers(computers);
                 break;
@@ -143,7 +143,7 @@ public class ControllerCli {
                 deleteComputer();
                 break;
             case "7":
-            	deleteCompany();
+                deleteCompany();
             case "d":
                 viewCli.displayMenu();
                 break;
@@ -186,7 +186,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id : "));
             computerId = scan.nextInt();
         } while (computerId == 0);
-        Optional<Computer> computerOptional = CrudComputerService.find(computerId);
+        Optional<Computer> computerOptional = CrudComputerService.INSTANCE.find(computerId);
         if (computerOptional.isPresent()) {
             viewCli.displayComputersDetails(computerOptional);
         }
@@ -207,7 +207,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
             computerId = scan.nextInt();
         } while (computerId <= 0);
-        if (CrudComputerService.delete(computerId)) {
+        if (CrudComputerService.INSTANCE.delete(computerId)) {
             viewCli.displayInfo(Optional.of("\nComputer (" + computerId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -228,7 +228,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
             companyId = scan.nextInt();
         } while (companyId <= 0);
-        if (CrudCompanyService.delete(companyId)) {
+        if (CrudCompanyService.INSTANCE.delete(companyId)) {
             viewCli.displayInfo(Optional.of("\nComputer (" + companyId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -265,7 +265,7 @@ public class ControllerCli {
                 deleteComputer();
                 break;
             case "7":
-            	deleteCompany();
+                deleteCompany();
             case "q":
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 viewCli.displayInfo(Optional.of("\n     CLI closed, good bye !\n"));

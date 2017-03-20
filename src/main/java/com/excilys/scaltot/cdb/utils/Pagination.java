@@ -1,15 +1,12 @@
-package com.excilys.scaltot.cdb.repository;
+package com.excilys.scaltot.cdb.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
-
 /**
  * @author Caltot Stéphan
  *
- * 2 mars 2017
+ *         2 mars 2017
  */
 public class Pagination {
 
@@ -36,7 +33,8 @@ public class Pagination {
     }
 
     /**
-     * @param pageSize : the pageSize to set
+     * @param pageSize
+     *            : the pageSize to set
      */
     public void setPageSize(long pageSize) {
         this.pageSize = pageSize;
@@ -52,7 +50,8 @@ public class Pagination {
     }
 
     /**
-     * @param currentPage : the currentPage to set
+     * @param currentPage
+     *            : the currentPage to set
      */
     public void setCurrentPage(long currentPage) {
         this.currentPage = currentPage;
@@ -67,7 +66,8 @@ public class Pagination {
     }
 
     /**
-     * @param filter : the filter to set
+     * @param filter
+     *            : the filter to set
      */
     public void setFilter(String filter) {
         this.filter = filter;
@@ -82,7 +82,9 @@ public class Pagination {
 
     /**
      * Set number of elements .
-     * @param numberOfElements : the numberOfComputers to set
+     *
+     * @param numberOfElements
+     *            : the numberOfComputers to set
      */
     public void setNumberOfElements(long numberOfElements) {
         this.numberOfElements = numberOfElements;
@@ -96,14 +98,16 @@ public class Pagination {
     }
 
     /**
-     * @param offset : the offset to set
+     * @param offset
+     *            : the offset to set
      */
     public void setOffset(long offset) {
         this.offset = offset;
     }
 
     /**
-     * @param numberOfPages : the numberOfPages to set
+     * @param numberOfPages
+     *            : the numberOfPages to set
      */
     public void setNumberOfPages(long numberOfPages) {
         this.numberOfPages = numberOfPages;
@@ -118,23 +122,20 @@ public class Pagination {
     }
 
     /**
-    * Switch to previous page.
-    * @return list of Computers
-    */
-   public void previousPage() {
-       this.currentPage = (currentPage - 1) >= 0 ? (currentPage - 1) : 0;
-       this.offset = currentPage * pageSize;
-   }
+     * Switch to previous page.
+     */
+    public void previousPage() {
+        this.currentPage = (currentPage - 1) >= 0 ? (currentPage - 1) : 0;
+        this.offset = currentPage * pageSize;
+    }
 
-   /**
-    * Switch to next page.
-    * @return list of Computers
-    */
-   public void nextPage() {
-       this.currentPage = (currentPage + 1) <= numberOfPages ? (currentPage + 1) : numberOfPages;
-       this.offset = currentPage * pageSize;
-   }
-
+    /**
+     * Switch to next page.
+     */
+    public void nextPage() {
+        this.currentPage = (currentPage + 1) <= numberOfPages ? (currentPage + 1) : numberOfPages;
+        this.offset = currentPage * pageSize;
+    }
 
     /**
      * Builder Pattern for pagination.
@@ -154,7 +155,9 @@ public class Pagination {
 
         /**
          * Set builder parameter numberOfElements.
-         * @param numberOfElements : numberOfElements
+         *
+         * @param numberOfElements
+         *            : numberOfElements
          * @return paginationBuilder
          */
         public PaginationBuilder withNumberOfElements(long numberOfElements) {
@@ -164,7 +167,9 @@ public class Pagination {
 
         /**
          * Set builder parameter offset.
-         * @param offset : offset
+         *
+         * @param offset
+         *            : offset
          * @return paginationBuilder
          */
         public PaginationBuilder withOffset(long offset) {
@@ -174,7 +179,9 @@ public class Pagination {
 
         /**
          * Set builder parameter currentPage.
-         * @param currentPage : currentPage
+         *
+         * @param currentPage
+         *            : currentPage
          * @return paginationBuilder
          */
         public PaginationBuilder withCurrentPage(long currentPage) {
@@ -184,7 +191,9 @@ public class Pagination {
 
         /**
          * Set builder parameter pageSize.
-         * @param pageSize : pageSize
+         *
+         * @param pageSize
+         *            : pageSize
          * @return paginationBuilder
          */
         public PaginationBuilder withPageSize(long pageSize) {
@@ -194,7 +203,9 @@ public class Pagination {
 
         /**
          * Set builder parameter filter.
-         * @param filter : filter
+         *
+         * @param filter
+         *            : filter
          * @return paginationBuilder
          */
         public PaginationBuilder withFilter(String filter) {
@@ -204,6 +215,7 @@ public class Pagination {
 
         /**
          * Build pagination.
+         *
          * @return Pagination
          */
         public Pagination build() {
@@ -212,5 +224,5 @@ public class Pagination {
 
         }
     }
-    
+
 }

@@ -27,19 +27,19 @@ public interface ComputerValidator {
         if (computer.get().getId() > 0) {
             if (computer.get().getManufacturer() == null) {
                 if (!computer.get().getName().equals(null)
-                        && StringCheck.isFormed(Optional.of(computer.get().getName()))
-                        && DateCheck.bothDatesNotNull(Optional.of(computer.get().getDateWichIsIntroduced()),
+                        && StringValidator.isFormed(Optional.of(computer.get().getName()))
+                        && DateValidator.bothDatesNotNull(Optional.of(computer.get().getDateWichIsIntroduced()),
                                 Optional.of(computer.get().getDateWichIsDiscontinued()))) {
-                    return DateCheck.isRealTime(Optional.of(computer.get().getDateWichIsIntroduced()),
+                    return DateValidator.isRealTime(Optional.of(computer.get().getDateWichIsIntroduced()),
                             Optional.of(computer.get().getDateWichIsDiscontinued()));
                 }
             } else {
                 if (!computer.get().getName().equals(null)
-                        && StringCheck.isFormed(Optional.of(computer.get().getName()))
+                        && StringValidator.isFormed(Optional.of(computer.get().getName()))
                         && CompanyValidator.check(Optional.of(computer.get().getManufacturer()))
-                        && DateCheck.bothDatesNotNull(Optional.of(computer.get().getDateWichIsIntroduced()),
+                        && DateValidator.bothDatesNotNull(Optional.of(computer.get().getDateWichIsIntroduced()),
                                 Optional.of(computer.get().getDateWichIsDiscontinued()))) {
-                    return DateCheck.isRealTime(Optional.of(computer.get().getDateWichIsIntroduced()),
+                    return DateValidator.isRealTime(Optional.of(computer.get().getDateWichIsIntroduced()),
                             Optional.of(computer.get().getDateWichIsDiscontinued()));
                 }
             }

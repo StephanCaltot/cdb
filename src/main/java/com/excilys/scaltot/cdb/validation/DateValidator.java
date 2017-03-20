@@ -13,12 +13,12 @@ import org.slf4j.LoggerFactory;
  *
  *         20 févr. 2017
  */
-public class DateCheck {
+public class DateValidator {
 
     /**
      * Logger for Date check class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DateCheck.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateValidator.class.getName());
 
     /**
      * Check if first date is before second date and throws an exception.

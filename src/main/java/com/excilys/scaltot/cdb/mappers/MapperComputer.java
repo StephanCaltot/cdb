@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository.mappers;
+package com.excilys.scaltot.cdb.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

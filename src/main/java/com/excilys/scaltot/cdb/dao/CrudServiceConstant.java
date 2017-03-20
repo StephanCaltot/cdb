@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository;
+package com.excilys.scaltot.cdb.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

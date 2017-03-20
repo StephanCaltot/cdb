@@ -27,7 +27,7 @@ public interface CompanyValidator {
      */
     static Boolean check(Optional<Company> company) {
         if (company.get().getId() > 0) {
-            if ((company.get().getName() != null && StringCheck.isFormed(Optional.of(company.get().getName())))) {
+            if ((company.get().getName() != null && StringValidator.isFormed(Optional.of(company.get().getName())))) {
                 return true;
             } else {
                 LOGGER.warn("The company's name is null or doesn't matches with authorized characters");

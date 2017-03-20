@@ -4,19 +4,21 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.scaltot.cdb.dao.impl.CrudComputerImpl;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceComputerImpl;
+import com.excilys.scaltot.cdb.utils.Pagination;
 
-public class CrudComputerService {
+public enum CrudComputerService {
+
+    INSTANCE;
 
     /**
      * Create computer.
      * @param computer : computer
      */
-    public static void create(Optional<Computer> computer) {
-        CrudServiceComputerImpl.INSTANCE.create(computer);
+    public void create(Optional<Computer> computer) {
+        CrudComputerImpl.INSTANCE.create(computer);
     }
 
     /**
@@ -27,8 +29,8 @@ public class CrudComputerService {
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
-    public static Optional<Computer> find(long id) {
-        return CrudServiceComputerImpl.INSTANCE.find(id);
+    public Optional<Computer> find(long id) {
+        return CrudComputerImpl.INSTANCE.find(id);
     }
 
     /**
@@ -39,8 +41,8 @@ public class CrudComputerService {
      * @throws SQLException
      * @return boolean
      */
-    public static Boolean delete(long id) {
-        return CrudServiceComputerImpl.INSTANCE.delete(id);
+    public Boolean delete(long id) {
+        return CrudComputerImpl.INSTANCE.delete(id);
     }
 
     /**
@@ -50,8 +52,8 @@ public class CrudComputerService {
      * @throws PersistenceException : PersistenceException
      * @throws Exception : Exception
      */
-    public static void update(Optional<Computer> computer) {
-        CrudServiceComputerImpl.INSTANCE.update(computer);
+    public void update(Optional<Computer> computer) {
+        CrudComputerImpl.INSTANCE.update(computer);
     }
 
     /**
@@ -61,16 +63,16 @@ public class CrudComputerService {
      * @throws PersistenceException :PersistenceException
      * @throws Exception : Exception
      */
-    public static List<Computer> findAll() {
-        return CrudServiceComputerImpl.INSTANCE.findAll();
+    public List<Computer> findAll() {
+        return CrudComputerImpl.INSTANCE.findAll();
     }
 
     /**
      * Return the number of computer in database.
      * @return long
      */
-    public static long getCountOfComputers() {
-        return CrudServiceComputerImpl.INSTANCE.getCountOfComputers();
+    public long getCountOfComputers() {
+        return CrudComputerImpl.INSTANCE.getCountOfElements();
     }
 
     /**
@@ -78,8 +80,8 @@ public class CrudComputerService {
      * @param nameFilter : filter
      * @return list of computers
      */
-    public static List<Computer> getComputersFiltered(String nameFilter) {
-        return CrudServiceComputerImpl.INSTANCE.getComputersFiltered(nameFilter);
+    public List<Computer> getComputersFiltered(String nameFilter) {
+        return CrudComputerImpl.INSTANCE.getComputersFiltered(nameFilter);
     }
 
     /**
@@ -90,7 +92,7 @@ public class CrudComputerService {
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
-    public static List<Computer> findByPageFilter(Pagination pagination) {
-        return CrudServiceComputerImpl.INSTANCE.findByPageFilter(pagination);
+    public List<Computer> findByPageFilter(Pagination pagination) {
+        return CrudComputerImpl.INSTANCE.findByPageFilter(pagination);
     }
 }

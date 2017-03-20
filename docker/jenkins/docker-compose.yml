@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+   jenkins-data:
+     image: debian
+     container_name: jenkins_data
+     command: bash -c  "useradd -d '/var/jenkins_home' -u 1000 -m -s /bin/bash jenkins && mkdir -p /var/log/jenkins && chown -R jenkins:jenkins /var/log/jenkins"            
+     volumes:
+           - shared_jenkins:/var/log/jenkins
+
+   jenkins:
+     image: jenkins:2.32.3
+     ports:
+       - "8082:8080"
+     container_name: jenkins_for_cdb
+     user: root
+     command: bash -c "mkdir -p /var/cache/jenkins && mkdir -p /var/log/jenkins && chown -R jenkins:jenkins /var/log/jenkins && chown -R jenkins:jenkins /var/cache/jenkins && tini  -- /usr/local/bin/jenkins.sh"
+     volumes:
+        - shared_jenkins:/var
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /usr/bin/docker:/usr/bin/docker
+        - maven_jenkins:/var/jenkins_home/workspace/cdb
+        - tomcat_jenkins:/var/jenkins_home/deploy
+volumes:
+   shared_jenkins:
+   tomcat_jenkins:
+   maven_jenkins:

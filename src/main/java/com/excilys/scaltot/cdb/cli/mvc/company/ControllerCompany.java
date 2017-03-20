@@ -1,3 +1,4 @@
+package com.excilys.scaltot.cdb.cli.mvc.company;
 //package com.excilys.scaltot.cdb.cli.mvc;
 //
 //import java.util.List;

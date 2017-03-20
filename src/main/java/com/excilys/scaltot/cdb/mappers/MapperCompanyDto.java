@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository.mappers;
+package com.excilys.scaltot.cdb.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class MapperCompanyDto {
 
     /**
      * Changes companies list to company DTO.
-     * @param companyList : companies
+     * @param companies : companies
      * @return computerDto
      */
     public static List<CompanyDto> companyListToCompanyDto(List<Company> companies) {

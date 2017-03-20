@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository.impl;
+package com.excilys.scaltot.cdb.dao.impl;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -10,14 +10,14 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.scaltot.cdb.dao.CrudServiceConstant;
+import com.excilys.scaltot.cdb.dao.DaoProperties;
+import com.excilys.scaltot.cdb.dao.interfaces.CrudService;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.CrudService;
-import com.excilys.scaltot.cdb.repository.CrudServiceConstant;
-import com.excilys.scaltot.cdb.repository.mappers.MapperComputer;
-import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.utils.DaoProperties;
-import com.excilys.scaltot.cdb.utils.JdbcConnection;
+import com.excilys.scaltot.cdb.mappers.MapperComputer;
+import com.excilys.scaltot.cdb.utils.JdbcConnectionManager;
+import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
  * CRUD service allows CRUD operations on Computer entities.
@@ -26,17 +26,17 @@ import com.excilys.scaltot.cdb.utils.JdbcConnection;
  *
  *         20 févr. 2017
  */
-public enum CrudServiceComputerImpl implements CrudService<Computer> {
+public enum CrudComputerImpl implements CrudService<Computer> {
 
     INSTANCE;
 
-    Logger LOGGER = LoggerFactory.getLogger(CrudServiceComputerImpl.class);
+    Logger LOGGER = LoggerFactory.getLogger(CrudComputerImpl.class);
 
     private ResultSet resultSet;
     private Computer computer;
     private List<Computer> computers;
     private Connection connection;
-    private JdbcConnection jdbcConnection = JdbcConnection.INSTANCE;
+    private JdbcConnectionManager jdbcConnection = JdbcConnectionManager.INSTANCE;
 
     /**
      * Create CRUD's operation.
@@ -84,8 +84,8 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
             jdbcConnection.commit();
 
         } catch (SQLException e) {
-        	jdbcConnection.rollback();
-        	throw new PersistenceException(e);
+            jdbcConnection.rollback();
+            throw new PersistenceException(e);
         } finally {
             jdbcConnection.closeConnection();
         }
@@ -138,7 +138,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
      * @throws SQLException
      * @return boolean
      */
-    public Boolean delete(long id) {
+    public boolean delete(long id) {
         if (id <= 0) {
             LOGGER.warn("You are trying to delete a computer with null or negative id !\n");
             return false;
@@ -257,7 +257,7 @@ public enum CrudServiceComputerImpl implements CrudService<Computer> {
      * Return the number of computer in database.
      * @return long
      */
-    public long getCountOfComputers() {
+    public long getCountOfElements() {
 
         connection = jdbcConnection.getConnection();
 

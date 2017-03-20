@@ -97,4 +97,86 @@ public class ComputerDto {
     public void setCompanyId(long companyId) {
         this.companyId = companyId;
     }
+
+    /**
+     * Displays one "Computer" entity.
+     */
+    @Override
+    public String toString() {
+        return "Computer (" + getId() + ") - " + getName()
+                + ((getDateWichIsIntroduced() == null) ? ", not introduced yet "
+                        : ", introduced in " + getDateWichIsIntroduced())
+                + ((getDateWichIsDiscontinued() == null) ? ", not discontinued yet "
+                        : ", diconstinued in " + getDateWichIsDiscontinued())
+                + ((getCompanyId() == 0) ? ". No company available"
+                        : ". Manufactured by company number " + getCompanyId() + " named " + getCompanyName() + " .");
+    }
+
+    /**
+     * HashCode method for Computer DTO.
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (companyId ^ (companyId >>> 32));
+        result = prime * result + ((companyName == null) ? 0 : companyName.hashCode());
+        result = prime * result + ((dateWichIsDiscontinued == null) ? 0 : dateWichIsDiscontinued.hashCode());
+        result = prime * result + ((dateWichIsIntroduced == null) ? 0 : dateWichIsIntroduced.hashCode());
+        result = prime * result + (int) (id ^ (id >>> 32));
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    /**
+     * Equals method for Computer DTO.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ComputerDto other = (ComputerDto) obj;
+        if (companyId != other.companyId) {
+            return false;
+        }
+        if (companyName == null) {
+            if (other.companyName != null) {
+                return false;
+            }
+        } else if (!companyName.equals(other.companyName)) {
+            return false;
+        }
+        if (dateWichIsDiscontinued == null) {
+            if (other.dateWichIsDiscontinued != null) {
+                return false;
+            }
+        } else if (!dateWichIsDiscontinued.equals(other.dateWichIsDiscontinued)) {
+            return false;
+        }
+        if (dateWichIsIntroduced == null) {
+            if (other.dateWichIsIntroduced != null) {
+                return false;
+            }
+        } else if (!dateWichIsIntroduced.equals(other.dateWichIsIntroduced)) {
+            return false;
+        }
+        if (id != other.id) {
+            return false;
+        }
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
 }

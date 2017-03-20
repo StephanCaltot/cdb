@@ -3,27 +3,29 @@ package com.excilys.scaltot.cdb.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.scaltot.cdb.dao.impl.CrudCompanyImpl;
 import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.repository.impl.CrudServiceCompanyImpl;
+import com.excilys.scaltot.cdb.utils.Pagination;
 
-public class CrudCompanyService {
+public enum CrudCompanyService {
+
+    INSTANCE;
 
     /**
      * Return company find by id.
      * @param id : id
      * @return company
      */
-    public static Optional<Company> find(long id) {
-        return CrudServiceCompanyImpl.INSTANCE.find(id);
+    public Optional<Company> find(long id) {
+        return CrudCompanyImpl.INSTANCE.find(id);
     }
 
     /**
      * Return all companies.
      * @return list of companies
      */
-    public static List<Company> findAll() {
-        return CrudServiceCompanyImpl.INSTANCE.findAll();
+    public List<Company> findAll() {
+        return CrudCompanyImpl.INSTANCE.findAll();
     }
 
     /**
@@ -32,23 +34,23 @@ public class CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findByPage(Pagination pagination) {
-        return CrudServiceCompanyImpl.INSTANCE.findByPageFilter(pagination);
+        return CrudCompanyImpl.INSTANCE.findByPageFilter(pagination);
     }
 
     /**
      * Return number of companies.
      * @return long
      */
-    public static long getCountOfCompanies() {
-        return CrudServiceCompanyImpl.INSTANCE.getCountOfCompanies();
+    public long getCountOfCompanies() {
+        return CrudCompanyImpl.INSTANCE.getCountOfElements();
     }
 
     /**
      * Delete one company with computer associated.
-     * @param companyId
+     * @param companyId : id of company
      * @return boolean
      */
-    public static boolean delete(long companyId){
-    	return CrudServiceCompanyImpl.INSTANCE.delete(companyId);
+    public boolean delete(long companyId) {
+        return CrudCompanyImpl.INSTANCE.delete(companyId);
     }
 }

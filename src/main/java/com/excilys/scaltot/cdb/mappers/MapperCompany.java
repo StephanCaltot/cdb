@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository.mappers;
+package com.excilys.scaltot.cdb.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,8 +19,7 @@ public class MapperCompany {
     /**
      * Transforms result retrieved in new company entity.
      *
-     * @param resultSet
-     *            :
+     * @param resultSet : resultSet
      * @return Optional company entity
      * @throws PersistenceException
      *             :

@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository.impl;
+package com.excilys.scaltot.cdb.dao.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,14 +9,14 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.scaltot.cdb.dao.CrudServiceConstant;
+import com.excilys.scaltot.cdb.dao.DaoProperties;
+import com.excilys.scaltot.cdb.dao.interfaces.CrudService;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.repository.CrudService;
-import com.excilys.scaltot.cdb.repository.CrudServiceConstant;
-import com.excilys.scaltot.cdb.repository.mappers.MapperCompany;
-import com.excilys.scaltot.cdb.repository.Pagination;
-import com.excilys.scaltot.cdb.utils.DaoProperties;
-import com.excilys.scaltot.cdb.utils.JdbcConnection;
+import com.excilys.scaltot.cdb.mappers.MapperCompany;
+import com.excilys.scaltot.cdb.utils.JdbcConnectionManager;
+import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
  * Crud service allows CRUD's operations on Company entities.
@@ -25,17 +25,17 @@ import com.excilys.scaltot.cdb.utils.JdbcConnection;
  *
  *         20 févr. 2017
  */
-public enum CrudServiceCompanyImpl implements CrudService<Company> {
+public enum CrudCompanyImpl implements CrudService<Company> {
 
     INSTANCE;
 
-    Logger LOGGER = LoggerFactory.getLogger(CrudServiceCompanyImpl.class.getName());
+    Logger LOGGER = LoggerFactory.getLogger(CrudCompanyImpl.class.getName());
 
     private ResultSet resultSet;
     private Company company;
     private List<Company> companies;
     private Connection connection;
-    private JdbcConnection jdbcConnection = JdbcConnection.INSTANCE;
+    private JdbcConnectionManager jdbcConnection = JdbcConnectionManager.INSTANCE;
 
     /**
      * Find CRUD's operation.
@@ -147,7 +147,7 @@ public enum CrudServiceCompanyImpl implements CrudService<Company> {
      * Return the number of computer in database.
      * @return long
      */
-    public long getCountOfCompanies() {
+    public long getCountOfElements() {
 
         connection = jdbcConnection.getConnection();
 
@@ -163,11 +163,11 @@ public enum CrudServiceCompanyImpl implements CrudService<Company> {
         }
     }
 
-	/**
-	 * Delete one company with computer associated.
-	 * @param id : id of company
-	 * @return boolean
-	 */
+    /**
+     * Delete one company with computer associated.
+     * @param id : id of company
+     * @return boolean
+     */
     public boolean delete(long id) {
         if (id <= 0) {
             LOGGER.warn("You are trying to delete a computer with null or negative id !\n");
@@ -185,7 +185,7 @@ public enum CrudServiceCompanyImpl implements CrudService<Company> {
             CrudServiceConstant.preparedStatementDelete = connection.prepareStatement(DaoProperties.DELETE_COMPANY);
             CrudServiceConstant.preparedStatementDelete.setLong(1, id);
             CrudServiceConstant.preparedStatementDelete.executeUpdate();
-            
+
             jdbcConnection.commit();
             return true;
         } catch (SQLException e) {

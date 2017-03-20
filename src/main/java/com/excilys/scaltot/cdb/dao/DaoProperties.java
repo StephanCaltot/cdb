@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.utils;
+package com.excilys.scaltot.cdb.dao;
 
 /**
  * Class contains all needed constant for dao request.
@@ -26,7 +26,7 @@ public class DaoProperties {
     public static final String FIND_COMPUTER = "select computer.id, computer.name, computer.introduced, computer.discontinued,"
             + " computer.company_id, company.name company_name from computer"
             + " left join company on company.id = computer.company_id where computer.id = ?;";
-    
+
     public static final String FIND_COMPANY = "select id, name from company where id= ?;";
 
     public static final String FIND_ALL_COMPUTERS = "select id, name, introduced, discontinued, company_id from computer limit ? offset ?;";

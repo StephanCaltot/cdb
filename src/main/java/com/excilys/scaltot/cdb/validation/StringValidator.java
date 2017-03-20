@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
  *
  *         20 févr. 2017
  */
-public class StringCheck {
+public class StringValidator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DateCheck.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateValidator.class.getName());
 
     /**
      * Check if the string is null or empty.

@@ -8,11 +8,11 @@ package com.excilys.scaltot.cdb.exceptions;
 public class FileNotFoundException extends RuntimeException {
 
     /**
-    *
-    */
+     * serialVersionUID number for exception.
+     */
     private static final long serialVersionUID = 1L;
 
-/**
+   /**
     * Empty constructor.
     */
    public FileNotFoundException() {

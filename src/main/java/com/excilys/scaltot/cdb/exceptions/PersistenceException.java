@@ -3,7 +3,7 @@ package com.excilys.scaltot.cdb.exceptions;
 public class PersistenceException extends RuntimeException {
 
     /**
-     *
+     * serialVersionUID number for exception.
      */
     private static final long serialVersionUID = 1L;
 

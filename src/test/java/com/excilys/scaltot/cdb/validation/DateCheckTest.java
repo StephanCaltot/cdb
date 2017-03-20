@@ -21,11 +21,11 @@ public class DateCheckTest {
     @Test
     public void isRealTime() {
         assertTrue(
-                DateCheck.isRealTime(Optional.of(LocalDate.of(2000, 01, 01)), Optional.of(LocalDate.of(2001, 01, 01))));
+                DateValidator.isRealTime(Optional.of(LocalDate.of(2000, 01, 01)), Optional.of(LocalDate.of(2001, 01, 01))));
         assertTrue(
-                DateCheck.isRealTime(Optional.of(LocalDate.of(2000, 01, 01)), Optional.of(LocalDate.of(2000, 02, 01))));
+                DateValidator.isRealTime(Optional.of(LocalDate.of(2000, 01, 01)), Optional.of(LocalDate.of(2000, 02, 01))));
         assertTrue(
-                DateCheck.isRealTime(Optional.of(LocalDate.of(2000, 01, 01)), Optional.of(LocalDate.of(2000, 01, 02))));
+                DateValidator.isRealTime(Optional.of(LocalDate.of(2000, 01, 01)), Optional.of(LocalDate.of(2000, 01, 02))));
     }
 
     /**
@@ -34,11 +34,11 @@ public class DateCheckTest {
     @Test
     public void isNotRealTime() {
         assertFalse(
-                DateCheck.isRealTime(Optional.of(LocalDate.of(2001, 01, 01)), Optional.of(LocalDate.of(2000, 01, 01))));
+                DateValidator.isRealTime(Optional.of(LocalDate.of(2001, 01, 01)), Optional.of(LocalDate.of(2000, 01, 01))));
         assertFalse(
-                DateCheck.isRealTime(Optional.of(LocalDate.of(2001, 02, 01)), Optional.of(LocalDate.of(2001, 01, 01))));
+                DateValidator.isRealTime(Optional.of(LocalDate.of(2001, 02, 01)), Optional.of(LocalDate.of(2001, 01, 01))));
         assertFalse(
-                DateCheck.isRealTime(Optional.of(LocalDate.of(2001, 01, 02)), Optional.of(LocalDate.of(2000, 01, 01))));
+                DateValidator.isRealTime(Optional.of(LocalDate.of(2001, 01, 02)), Optional.of(LocalDate.of(2000, 01, 01))));
     }
 
     /**
@@ -46,7 +46,7 @@ public class DateCheckTest {
      */
     @Test
     public void isWellFormed() {
-        assertTrue(DateCheck.formatIsValid(Optional.of("2012-01-01")));
+        assertTrue(DateValidator.formatIsValid(Optional.of("2012-01-01")));
     }
 
     /**
@@ -54,15 +54,15 @@ public class DateCheckTest {
      */
     @Test
     public void isWrongFormed() {
-        assertFalse(DateCheck.formatIsValid(Optional.of("00-0000-00")));
-        assertFalse(DateCheck.formatIsValid(Optional.of("00-00-0000")));
-        assertFalse(DateCheck.formatIsValid(Optional.of("00-000-00")));
-        assertFalse(DateCheck.formatIsValid(Optional.of("0000.0-00-00")));
-        assertFalse(DateCheck.formatIsValid(Optional.of("00-000-00")));
-        assertFalse(DateCheck.formatIsValid(Optional.empty()));
-        assertFalse(DateCheck.formatIsValid(Optional.of("")));
-        assertFalse(DateCheck.formatIsValid(Optional.of("yyyy-mm-dd")));
-        assertFalse(DateCheck.formatIsValid(Optional.of("0000 - 00 - 00 ")));
+        assertFalse(DateValidator.formatIsValid(Optional.of("00-0000-00")));
+        assertFalse(DateValidator.formatIsValid(Optional.of("00-00-0000")));
+        assertFalse(DateValidator.formatIsValid(Optional.of("00-000-00")));
+        assertFalse(DateValidator.formatIsValid(Optional.of("0000.0-00-00")));
+        assertFalse(DateValidator.formatIsValid(Optional.of("00-000-00")));
+        assertFalse(DateValidator.formatIsValid(Optional.empty()));
+        assertFalse(DateValidator.formatIsValid(Optional.of("")));
+        assertFalse(DateValidator.formatIsValid(Optional.of("yyyy-mm-dd")));
+        assertFalse(DateValidator.formatIsValid(Optional.of("0000 - 00 - 00 ")));
 
 
     }

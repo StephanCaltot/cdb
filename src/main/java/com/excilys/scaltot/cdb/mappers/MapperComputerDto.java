@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.repository.mappers;
+package com.excilys.scaltot.cdb.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
  * 3 mars 2017
  */
 public class MapperComputerDto {
+
     /**
      * Changes computer to computer DTO.
      * @param computer :
@@ -23,7 +24,7 @@ public class MapperComputerDto {
 
         computerDto.setId(computer.get().getId());
         computerDto.setName(computer.get().getName());
-        if(computer.get().getDateWichIsIntroduced() != null) {
+        if (computer.get().getDateWichIsIntroduced() != null) {
             computerDto.setDateWichIsIntroduced(computer.get().getDateWichIsIntroduced().toString());
         }
 
@@ -33,7 +34,7 @@ public class MapperComputerDto {
 
         if (computer.get().getManufacturer().getId() != 0) {
             computerDto.setCompanyId(computer.get().getManufacturer().getId());
-            computerDto.setCompanyName(computer.get().getManufacturer().getName());	
+            computerDto.setCompanyName(computer.get().getManufacturer().getName());
         }
 
         return computerDto;
@@ -48,12 +49,12 @@ public class MapperComputerDto {
         List<ComputerDto> computersDto = new ArrayList<>();
         ComputerDto computerDto;
 
-        
+
         for (Computer computer: computers) {
-        	computerDto = new ComputerDto();
+            computerDto = new ComputerDto();
             computerDto.setId(computer.getId());
             computerDto.setName(computer.getName());
-            if(computer.getDateWichIsIntroduced() != null) {
+            if (computer.getDateWichIsIntroduced() != null) {
                 computerDto.setDateWichIsIntroduced(computer.getDateWichIsIntroduced().toString());
             }
 
@@ -63,7 +64,7 @@ public class MapperComputerDto {
 
             if (computer.getManufacturer().getId() != 0) {
                 computerDto.setCompanyId(computer.getManufacturer().getId());
-                computerDto.setCompanyName(computer.getManufacturer().getName());	
+                computerDto.setCompanyName(computer.getManufacturer().getName());
             }
             computersDto.add(computerDto);
         }

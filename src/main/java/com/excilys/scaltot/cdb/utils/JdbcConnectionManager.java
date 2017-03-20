@@ -18,12 +18,12 @@ import com.zaxxer.hikari.HikariDataSource;
  *
  *         20 févr. 2017
  */
-public enum JdbcConnection {
+public enum JdbcConnectionManager {
 
     INSTANCE;
     private Connection connection;
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnection.class.getName());
-    private PropertiesToLoad propertiesToLoad = PropertiesToLoad.INSTANCE;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionManager.class.getName());
+    private PropertiesLoader propertiesToLoad = PropertiesLoader.INSTANCE;
     private Properties properties;
     private HikariDataSource dataSource;
     private ThreadLocal<Connection> myThreadLocal = new ThreadLocal<Connection>();
@@ -31,7 +31,7 @@ public enum JdbcConnection {
     /**
      * Singleton's private constructor.
      */
-    private JdbcConnection() {
+    JdbcConnectionManager() {
         propertiesToLoad.setFileName("hikari.properties");
         propertiesToLoad.initProperties();
         properties = propertiesToLoad.getProperties();
@@ -81,12 +81,12 @@ public enum JdbcConnection {
             connection.close();
             LOGGER.info("Connection closed");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new PersistenceException("Error on close connection " + e);
         }
     }
-    
-    /**
-    *
+
+   /**
+    * Commit method for connection.
     */
    public void commit() {
        try {
@@ -97,7 +97,7 @@ public enum JdbcConnection {
    }
 
    /**
-    *
+    * Roll back method for connection.
     */
    public void rollback() {
        try {
