@@ -3,13 +3,21 @@ package com.excilys.scaltot.cdb.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.persistence.impl.CrudCompanyImpl;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
-public enum CrudCompanyService {
+@Service
+public class CrudCompanyService {
 
-    INSTANCE;
+    @Autowired
+    private CrudCompanyImpl crudCompanyImpl;// = new AnnotationConfigApplicationContext(BeanConfig.class).getBean(CrudCompanyImpl.class);
 
     /**
      * Return company find by id.
@@ -17,7 +25,7 @@ public enum CrudCompanyService {
      * @return company
      */
     public Optional<Company> find(long id) {
-        return CrudCompanyImpl.INSTANCE.find(id);
+        return crudCompanyImpl.find(id);
     }
 
     /**
@@ -25,7 +33,7 @@ public enum CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findAll() {
-        return CrudCompanyImpl.INSTANCE.findAll();
+        return crudCompanyImpl.findAll();
     }
 
     /**
@@ -34,7 +42,7 @@ public enum CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findByPage(Pagination pagination) {
-        return CrudCompanyImpl.INSTANCE.findByPageFilter(pagination);
+        return crudCompanyImpl.findByPageFilter(pagination);
     }
 
     /**
@@ -42,7 +50,7 @@ public enum CrudCompanyService {
      * @return long
      */
     public long getCountOfCompanies() {
-        return CrudCompanyImpl.INSTANCE.getCountOfElements();
+        return crudCompanyImpl.getCountOfElements();
     }
 
     /**
@@ -51,6 +59,6 @@ public enum CrudCompanyService {
      * @return boolean
      */
     public boolean delete(long companyId) {
-        return CrudCompanyImpl.INSTANCE.delete(companyId);
+        return crudCompanyImpl.delete(companyId);
     }
 }

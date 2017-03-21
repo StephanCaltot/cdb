@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,7 @@ import com.excilys.scaltot.cdb.mappers.MapperComputer;
 import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
 import com.excilys.scaltot.cdb.persistence.DaoProperties;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.DatabaseManager;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
@@ -30,7 +32,6 @@ import com.excilys.scaltot.cdb.utils.Pagination;
  *         20 févr. 2017
  */
 @Repository
-@Scope("singleton")
 public class CrudComputerImpl implements CrudComputer {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudComputerImpl.class);
@@ -39,6 +40,7 @@ public class CrudComputerImpl implements CrudComputer {
     private Computer computer;
     private List<Computer> computers;
     private Connection connection;
+
     @Autowired
     private DatabaseManager jdbcConnection;
 
@@ -238,8 +240,7 @@ public class CrudComputerImpl implements CrudComputer {
         computers = new ArrayList<>();
 
         try {
-            CrudServiceConstant.preparedStatementFindAll = connection
-                    .prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
+            CrudServiceConstant.preparedStatementFindAll = connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
             resultSet = CrudServiceConstant.preparedStatementFindAll.executeQuery();
             while (resultSet.next()) {
                 if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {

@@ -5,16 +5,21 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.persistence.impl.CrudComputerImpl;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
+@Service
 public class CrudComputerService {
 
     @Autowired
-    CrudComputerImpl crudComputerImpl;
+    private CrudComputerImpl crudComputerImpl;// = new AnnotationConfigApplicationContext(BeanConfig.class).getBean(CrudComputerImpl.class);
 
     /**
      * Create computer.

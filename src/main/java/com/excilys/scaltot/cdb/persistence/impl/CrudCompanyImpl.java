@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ import com.excilys.scaltot.cdb.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
 import com.excilys.scaltot.cdb.persistence.DaoProperties;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.DatabaseManager;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
@@ -29,10 +31,7 @@ import com.excilys.scaltot.cdb.utils.Pagination;
  *         20 févr. 2017
  */
 @Repository
-@Scope("singleton")
-public enum CrudCompanyImpl implements CrudCompany {
-
-    INSTANCE;
+public class CrudCompanyImpl implements CrudCompany {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudCompanyImpl.class.getName());
 
@@ -40,6 +39,7 @@ public enum CrudCompanyImpl implements CrudCompany {
     private Company company;
     private List<Company> companies;
     private Connection connection;
+
     @Autowired
     private DatabaseManager jdbcConnection;
 
@@ -176,7 +176,7 @@ public enum CrudCompanyImpl implements CrudCompany {
      */
     public boolean delete(long id) {
         if (id <= 0) {
-            LOGGER.warn("You are trying to delete a computer with null or negative id !\n");
+            LOGGER.warn("You are trying to delete a company with null or negative id !\n");
             return false;
         }
         connection = jdbcConnection.getConnection();

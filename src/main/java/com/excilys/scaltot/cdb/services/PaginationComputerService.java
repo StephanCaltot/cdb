@@ -2,13 +2,20 @@ package com.excilys.scaltot.cdb.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.persistence.impl.CrudComputerImpl;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
-public enum PaginationComputerService {
+@Repository
+public class PaginationComputerService {
 
-    INSTANCE;
+    @Autowired
+    private CrudComputerService crudComputerService;// = new AnnotationConfigApplicationContext(BeanConfig.class).getBean(CrudComputerService.class);
 
     /**
      * Initialize number of elements and pages.
@@ -16,8 +23,8 @@ public enum PaginationComputerService {
      * @param paginationComputer
      *            : page
      */
-    public static void paginationInitialisation(Pagination paginationComputer) {
-        paginationComputer.setNumberOfElements(CrudComputerService.INSTANCE.getCountOfComputers());
+    public void paginationInitialisation(Pagination paginationComputer) {
+        paginationComputer.setNumberOfElements(crudComputerService.getCountOfComputers());
         paginationComputer.setNumberOfPages(paginationComputer.getNumberOfElements() / paginationComputer.getPageSize());
     }
 
@@ -28,8 +35,8 @@ public enum PaginationComputerService {
      *            : page
      * @return list of computers
      */
-    public static List<Computer> findByPage(Pagination paginationComputer) {
-        return CrudComputerImpl.INSTANCE.findByPageFilter(paginationComputer);
+    public List<Computer> findByPage(Pagination paginationComputer) {
+        return crudComputerService.findByPageFilter(paginationComputer);
     }
 
     /**
@@ -38,7 +45,7 @@ public enum PaginationComputerService {
      * @param paginationComputer
      *            : page
      */
-    public static void nextPage(Pagination paginationComputer) {
+    public void nextPage(Pagination paginationComputer) {
         paginationComputer.nextPage();
     }
 
@@ -48,7 +55,7 @@ public enum PaginationComputerService {
      * @param paginationComputer
      *            : page
      */
-    public static void previousPage(Pagination paginationComputer) {
+    public void previousPage(Pagination paginationComputer) {
         paginationComputer.previousPage();
     }
 
@@ -60,7 +67,7 @@ public enum PaginationComputerService {
      * @param numOfPage
      *            : number of current page
      */
-    public static void setCurrentPage(Pagination paginationComputer, int numOfPage) {
+    public void setCurrentPage(Pagination paginationComputer, int numOfPage) {
         paginationComputer.setCurrentPage(numOfPage);
     }
 
@@ -72,7 +79,7 @@ public enum PaginationComputerService {
      * @param pageSize
      *            : size of page
      */
-    public static void setPageSize(Pagination paginationComputer, int pageSize) {
+    public void setPageSize(Pagination paginationComputer, int pageSize) {
         paginationComputer.setPageSize(pageSize);
     }
 
@@ -84,7 +91,7 @@ public enum PaginationComputerService {
      * @param filter
      *            : filter
      */
-    public static void setFilter(Pagination paginationComputer, String filter) {
+    public void setFilter(Pagination paginationComputer, String filter) {
         paginationComputer.setFilter(filter);
     }
 }

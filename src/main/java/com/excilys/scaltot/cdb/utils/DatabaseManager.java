@@ -6,8 +6,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.zaxxer.hikari.HikariConfig;
@@ -20,7 +19,7 @@ import com.zaxxer.hikari.HikariDataSource;
  *
  *         20 févr. 2017
  */
-@Repository
+@Component
 public class DatabaseManager {
 
     private Connection connection;

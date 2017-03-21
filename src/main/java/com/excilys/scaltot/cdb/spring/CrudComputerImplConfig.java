@@ -3,16 +3,17 @@
 //import org.springframework.context.annotation.Bean;
 //
 //import com.excilys.scaltot.cdb.persistence.impl.CrudCompanyImpl;
+//import com.excilys.scaltot.cdb.persistence.impl.CrudComputerImpl;
 //
 ///**
 // * @author Caltot Stéphan
 // *
 // * 20 mars 2017
 // */
-//public class CrudCompanyImplConfig {
+//public class CrudComputerImplConfig {
 //
 //    @Bean
-//    public CrudCompanyImpl crudCompanyImpl(){
-//        return new CrudCompanyImpl();
+//    public CrudComputerImpl crudCompanyImpl(){
+//        return new CrudComputerImpl();
 //    }
 //}
