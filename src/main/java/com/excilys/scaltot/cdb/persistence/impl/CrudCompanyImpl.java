@@ -9,8 +9,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
@@ -19,7 +17,6 @@ import com.excilys.scaltot.cdb.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
 import com.excilys.scaltot.cdb.persistence.DaoProperties;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
-import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.DatabaseManager;
 import com.excilys.scaltot.cdb.utils.Pagination;
 

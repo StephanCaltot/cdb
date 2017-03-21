@@ -4,20 +4,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.persistence.impl.CrudCompanyImpl;
-import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 public class CrudCompanyService {
 
     @Autowired
-    private CrudCompanyImpl crudCompanyImpl;// = new AnnotationConfigApplicationContext(BeanConfig.class).getBean(CrudCompanyImpl.class);
+    private CrudCompanyImpl crudCompanyImpl;
 
     /**
      * Return company find by id.
