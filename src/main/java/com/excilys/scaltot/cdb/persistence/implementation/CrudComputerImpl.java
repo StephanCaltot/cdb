@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.persistence.impl;
+package com.excilys.scaltot.cdb.persistence.implementation;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -47,8 +47,6 @@ public class CrudComputerImpl implements CrudComputer {
      * Create CRUD's operation.
      *
      * @param computer : computer
-     * @throws PersistenceException : persistence exception
-     * @throws SQLException : SQLException
      */
     public void create(Optional<Computer> computer) {
         if (!computer.isPresent()) {
@@ -101,8 +99,6 @@ public class CrudComputerImpl implements CrudComputer {
      *
      * @param id : id
      * @return computer entity find with id gave in parameter
-     * @throws PersistenceException : PersistenceException
-     * @throws Exception
      */
     public Optional<Computer> find(long id) {
 

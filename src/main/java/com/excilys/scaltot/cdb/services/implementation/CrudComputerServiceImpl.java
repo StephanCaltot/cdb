@@ -1,6 +1,5 @@
-package com.excilys.scaltot.cdb.services;
+package com.excilys.scaltot.cdb.services.implementation;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,16 +8,16 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.persistence.impl.CrudComputerImpl;
+import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
+import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
-public class CrudComputerService {
+public class CrudComputerServiceImpl implements CrudComputerService {
 
     @Autowired
-    private CrudComputerImpl crudComputerImpl;
+    private CrudComputer crudComputerImpl;
 
     /**
      * Create computer.
@@ -33,8 +32,6 @@ public class CrudComputerService {
      *
      * @param id : id
      * @return computer entity find with id gave in parameter
-     * @throws PersistenceException : PersistenceException
-     * @throws Exception
      */
     public Optional<Computer> find(long id) {
         return crudComputerImpl.find(id);
@@ -44,8 +41,6 @@ public class CrudComputerService {
      * Delete CRUD's operation.
      *
      * @param id : id
-     * @throws PersistenceException : PersistenceException
-     * @throws SQLException
      * @return boolean
      */
     public Boolean delete(long id) {
@@ -56,8 +51,6 @@ public class CrudComputerService {
      * Update CRUD's operation.
      *
      * @param computer : computer
-     * @throws PersistenceException : PersistenceException
-     * @throws Exception : Exception
      */
     public void update(Optional<Computer> computer) {
         crudComputerImpl.update(computer);
@@ -67,8 +60,6 @@ public class CrudComputerService {
      * Retrieves all computers without any pagination.
      *
      * @return list of computers
-     * @throws PersistenceException :PersistenceException
-     * @throws Exception : Exception
      */
     public List<Computer> findAll() {
         return crudComputerImpl.findAll();
@@ -96,8 +87,6 @@ public class CrudComputerService {
      *
      * @param pagination : pagination
      * @return list of computers paginated
-     * @throws PersistenceException : PersistenceException
-     * @throws Exception
      */
     public List<Computer> findByPageFilter(Pagination pagination) {
         return crudComputerImpl.findByPageFilter(pagination);

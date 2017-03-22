@@ -24,9 +24,12 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.mappers.MapperComputerDto;
-import com.excilys.scaltot.cdb.services.CrudCompanyService;
-import com.excilys.scaltot.cdb.services.CrudComputerService;
-import com.excilys.scaltot.cdb.services.PaginationComputerService;
+import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
+import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
+import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
+import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
 import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 import com.excilys.scaltot.cdb.validation.DateValidator;
@@ -45,9 +48,9 @@ public class ServletComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private String pageToForward;
     private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
-    private CrudComputerService crudComputerService = context.getBean(CrudComputerService.class);
-    private CrudCompanyService crudCompanyService = context.getBean(CrudCompanyService.class);
-    private PaginationComputerService paginationComputerService = context.getBean(PaginationComputerService.class);
+    private CrudComputerService crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
+    private CrudCompanyService crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
+    private PaginationService paginationServiceImpl = context.getBean(PaginationServiceImpl.class);
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -57,12 +60,11 @@ public class ServletComputer extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     * @param request :
-     * @param response :
-     * @throws ServletException :
-     * @throws IOException :
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     * @param request : request
+     * @param response : response
+     * @throws ServletException : ServletException
+     * @throws IOException : IOException
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         List<CompanyDto> companies;
@@ -71,7 +73,7 @@ public class ServletComputer extends HttpServlet {
         Pagination page = getPage(request);
         String filter = "";
         ComputerDto computerDto;
-        page.setNumberOfElements(crudComputerService.getCountOfComputers());
+        page.setNumberOfElements(crudComputerServiceImpl.getCountOfComputers());
 
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
@@ -79,8 +81,9 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("numOfPage") != null) {
                     try {
                         int numOfPage = Integer.parseInt(request.getParameter("numOfPage"));
-                        paginationComputerService.setCurrentPage(page, numOfPage);
+                        paginationServiceImpl.setCurrentPage(page, numOfPage);
                     } catch (NumberFormatException e) {
+                        throw new NumberFormatException();
                   }
                 }
                 break;
@@ -88,28 +91,30 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("filter") != null) {
                     try {
                         filter = request.getParameter("filter");
-                        paginationComputerService.setFilter(page, filter);
+                        paginationServiceImpl.setFilter(page, filter);
                     } catch (NumberFormatException e) {
+                        throw new NumberFormatException();
                   }
                 }
                 break;
             case "nextPage":
-                paginationComputerService.nextPage(page);
+                paginationServiceImpl.nextPage(page);
                 break;
             case "previousPage":
-                paginationComputerService.previousPage(page);
+                paginationServiceImpl.previousPage(page);
                 break;
             case "size":
                 if (request.getParameter("size") != null) {
                     try {
                         int size = Integer.parseInt(request.getParameter("size"));
-                        paginationComputerService.setPageSize(page, size);
+                        paginationServiceImpl.setPageSize(page, size);
                     } catch (NumberFormatException e) {
+                        throw new NumberFormatException();
                   }
                 }
                 break;
             case "add":
-                companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyService.findAll());
+                companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
                 request.getSession().setAttribute("companies", companies);
                 pageToForward = "/views/addComputer.jsp";
                 break;
@@ -117,13 +122,13 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("id") != null) {
                     try {
                         long id = Long.parseLong(request.getParameter("id"));
-                        companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyService.findAll());
-                        computerDto = MapperComputerDto.computerToComputerDto(crudComputerService.find(id));
+                        companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
+                        computerDto = MapperComputerDto.computerToComputerDto(crudComputerServiceImpl.find(id));
                         request.getSession().setAttribute("companies", companies);
                         request.getSession().setAttribute("computerDto", computerDto);
                         pageToForward = "/views/editComputer.jsp";
                     } catch (NumberFormatException numberFormatException) {
-
+                        throw new NumberFormatException();
                     }
                 }
                 break;
@@ -132,7 +137,7 @@ public class ServletComputer extends HttpServlet {
             }
         }
         if (pageToForward.equals("/views/dashboard.jsp")) {
-            computers = MapperComputerDto.computerListToComputerDto(paginationComputerService.findByPage(page));
+            computers = MapperComputerDto.computerListToComputerDto(paginationServiceImpl.findComputerByPage(page));
             request.getSession().setAttribute("computers", computers);
             request.getSession().setAttribute("filter", filter);
             request.getSession().setAttribute("numberOfPages", page.getNumberOfPages());
@@ -157,12 +162,11 @@ public class ServletComputer extends HttpServlet {
         return (Pagination) request.getSession().getAttribute("page");
     }
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     * @param request :
-     * @param response :
-     * @throws ServletException :
-     * @throws IOException :
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     * @param request : request
+     * @param response : response
+     * @throws ServletException : ServletException
+     * @throws IOException : IOException
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -194,7 +198,7 @@ public class ServletComputer extends HttpServlet {
                         company = new Company.CompanyBuilder().withId(companyId).build();
                         computerBuilder.withManufacturer(company);
                     }
-                    crudComputerService.create(Optional.ofNullable(computerBuilder.build()));
+                    crudComputerServiceImpl.create(Optional.ofNullable(computerBuilder.build()));
 
                 } catch (NumberFormatException e) {
                     throw new NumberFormatException();
@@ -227,7 +231,7 @@ public class ServletComputer extends HttpServlet {
                         company = new Company.CompanyBuilder().withId(companyId).build();
                         computerBuilder.withManufacturer(company);
                     }
-                    crudComputerService.update(Optional.ofNullable(computerBuilder.build()));
+                    crudComputerServiceImpl.update(Optional.ofNullable(computerBuilder.build()));
 
                 } catch (NumberFormatException e) {
                     throw new NumberFormatException();
@@ -238,7 +242,7 @@ public class ServletComputer extends HttpServlet {
                 String[] selections = selection.split(",");
                 for (String computerId : selections) {
                     LOGGER.info("DELETION ID" + Long.parseLong(computerId));
-                    crudComputerService.delete(Long.parseLong(computerId));
+                    crudComputerServiceImpl.delete(Long.parseLong(computerId));
                 }
                 break;
             default:

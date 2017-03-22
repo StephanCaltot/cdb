@@ -25,7 +25,6 @@ public class DateValidator {
      *
      * @param firstDate : introduced date
      * @param secondDate : discontinued date
-     * @throws DateTimeException
      * @return boolean
      */
     public static boolean isRealTime(final Optional<LocalDate> firstDate, final Optional<LocalDate> secondDate) {

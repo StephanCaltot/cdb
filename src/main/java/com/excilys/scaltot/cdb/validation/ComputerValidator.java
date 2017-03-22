@@ -12,18 +12,17 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
  *
  *         20 févr. 2017
  */
-public interface ComputerValidator {
+public abstract class ComputerValidator {
 
-    Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
+    static Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
 
     /**
      * Static method checking all form's rules for computer.
      *
-     * @param computer
-     *            :
+     * @param computer : computer
      * @return boolean
      */
-    static Boolean check(Optional<Computer> computer) {
+    public static Boolean check(Optional<Computer> computer) {
         if (computer.get().getId() > 0) {
             if (computer.get().getManufacturer() == null) {
                 if (!computer.get().getName().equals(null)

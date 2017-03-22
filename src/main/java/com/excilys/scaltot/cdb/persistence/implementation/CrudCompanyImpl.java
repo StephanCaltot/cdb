@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.persistence.impl;
+package com.excilys.scaltot.cdb.persistence.implementation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,11 +46,7 @@ public class CrudCompanyImpl implements CrudCompany {
      * Find CRUD's operation.
      *
      * @param id : id
-     *            :
      * @return company entity find with id gave in parameter
-     * @throws PersistenceException
-     *             :
-     * @throws SQLException
      */
     public Optional<Company> find(long id) {
 

@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.services;
+package com.excilys.scaltot.cdb.services.implementation;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,15 +8,16 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.persistence.impl.CrudCompanyImpl;
+import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
+import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
-public class CrudCompanyService {
+public class CrudCompanyServiceImpl implements CrudCompanyService {
 
     @Autowired
-    private CrudCompanyImpl crudCompanyImpl;
+    private CrudCompany crudCompanyImpl;
 
     /**
      * Return company find by id.

@@ -19,9 +19,7 @@ public class StringValidator {
     /**
      * Check if the string is null or empty.
      *
-     * @param string
-     *            :
-     * @throws Exception
+     * @param string : string
      * @return boolean
      */
     public static Boolean isFormed(Optional<String> string) {

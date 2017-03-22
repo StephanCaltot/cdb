@@ -16,7 +16,7 @@ public class MapperComputerDto {
 
     /**
      * Changes computer to computer DTO.
-     * @param computer :
+     * @param computer : computer
      * @return computerDto
      */
     public static ComputerDto computerToComputerDto(Optional<Computer> computer) {

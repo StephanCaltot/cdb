@@ -5,16 +5,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.services.CrudCompanyService;
-import com.excilys.scaltot.cdb.services.CrudComputerService;
-import com.excilys.scaltot.cdb.services.PaginationCompanyService;
-import com.excilys.scaltot.cdb.services.PaginationComputerService;
+import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
@@ -31,26 +32,22 @@ public class ControllerCli {
     private List<Company> companies;
     private long offsetCompany = 0;
     private Scanner scan;
-    private Pagination paginationComputer = new Pagination();
-    private Pagination paginationCompany = new Pagination();
-    @Autowired
-    private CrudComputerService crudComputerService;
-    @Autowired
-    private CrudCompanyService crudCompanyService;
-    @Autowired
-    private PaginationComputerService paginationComputerService;
-    @Autowired
-    private PaginationCompanyService paginationCompanyService;
+    private Pagination paginationComputer = new Pagination.PaginationBuilder().build();
+    private Pagination paginationCompany = new Pagination.PaginationBuilder().build();
     private long offset = 0;
+
+    private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+    private CrudComputerServiceImpl crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
+    private CrudCompanyServiceImpl crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
+    private PaginationServiceImpl paginationComputerServiceImpl = context.getBean(PaginationServiceImpl.class);
+    private PaginationServiceImpl paginationServiceImpl = context.getBean(PaginationServiceImpl.class);
 
     /**
      * Controler's constructor setting crudService for company and computer.
-     *
-     * @throws SQLException :
      */
     public ControllerCli() {
-        paginationComputerService.paginationInitialisation(paginationComputer);
-        paginationCompanyService.paginationInitialisation(paginationCompany);
+        paginationServiceImpl.paginationInitialisation(paginationComputer);
+        paginationServiceImpl.paginationInitialisation(paginationCompany);
         scan = ScannerSystemIn.getInstance();
     }
 
@@ -63,15 +60,12 @@ public class ControllerCli {
 
     /**
      * Method : listing computers paginated.
-     *
-     * @throws Exception :
-     * @throws PersistenceException :
      */
     public void listingOfComputers() {
 
         String choice = null;
 
-        computers = paginationComputerService.findByPage(paginationComputer);
+        computers = paginationComputerServiceImpl.findComputerByPage(paginationComputer);
         viewCli.displayAllComputers(computers);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -98,14 +92,14 @@ public class ControllerCli {
                 viewCli.displayMenu();
                 break;
             case "n":
-                paginationComputerService.nextPage(paginationComputer);
-                computers = paginationComputerService.findByPage(paginationComputer);
+                paginationComputerServiceImpl.nextPage(paginationComputer);
+                computers = paginationComputerServiceImpl.findComputerByPage(paginationComputer);
                 viewCli.displayAllComputers(computers);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                paginationComputerService.previousPage(paginationComputer);
-                computers = paginationComputerService.findByPage(paginationComputer);
+                paginationComputerServiceImpl.previousPage(paginationComputer);
+                computers = paginationComputerServiceImpl.findComputerByPage(paginationComputer);
                 viewCli.displayAllComputers(computers);
                 break;
             case "q":
@@ -124,14 +118,11 @@ public class ControllerCli {
 
     /**
      * Method : listing companies paginated.
-     *
-     * @throws Exception :
-     * @throws PersistenceException :
      */
     public void listingOfCompanies() {
 
         String choice = null;
-        companies = paginationCompanyService.findByPage(paginationCompany);
+        companies = paginationServiceImpl.findCompanyByPage(paginationCompany);
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -158,14 +149,14 @@ public class ControllerCli {
                 viewCli.displayMenu();
                 break;
             case "n":
-                paginationCompanyService.nextPage(paginationCompany);
-                companies = paginationCompanyService.findByPage(paginationCompany);
+                paginationServiceImpl.nextPage(paginationCompany);
+                companies = paginationServiceImpl.findCompanyByPage(paginationCompany);
                 viewCli.displayAllCompanies(companies);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                paginationCompanyService.previousPage(paginationCompany);
-                companies = paginationCompanyService.findByPage(paginationCompany);
+                paginationServiceImpl.previousPage(paginationCompany);
+                companies = paginationServiceImpl.findCompanyByPage(paginationCompany);
                 viewCli.displayAllCompanies(companies);
                 break;
             case "q":
@@ -184,11 +175,6 @@ public class ControllerCli {
 
     /**
      * Method : showing details for one computer.
-     *
-     * @throws Exception
-     *             :
-     * @throws PersistenceException
-     *             :
      */
     public void showComputersDetails() {
         long computerId = 0;
@@ -196,7 +182,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id : "));
             computerId = scan.nextInt();
         } while (computerId == 0);
-        Optional<Computer> computerOptional = crudComputerService.find(computerId);
+        Optional<Computer> computerOptional = crudComputerServiceImpl.find(computerId);
         if (computerOptional.isPresent()) {
             viewCli.displayComputersDetails(computerOptional);
         }
@@ -204,11 +190,6 @@ public class ControllerCli {
 
     /**
      * Method : deleting one computer.
-     *
-     * @throws SQLException
-     *             :
-     * @throws PersistenceException
-     *             :
      */
     public void deleteComputer() {
 
@@ -217,7 +198,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
             computerId = scan.nextInt();
         } while (computerId <= 0);
-        if (crudComputerService.delete(computerId)) {
+        if (crudComputerServiceImpl.delete(computerId)) {
             viewCli.displayInfo(Optional.of("\nComputer (" + computerId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -238,7 +219,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the company's id you want delete : "));
             companyId = scan.nextInt();
         } while (companyId <= 0);
-        if (crudCompanyService.delete(companyId)) {
+        if (crudCompanyServiceImpl.delete(companyId)) {
             viewCli.displayInfo(Optional.of("\nCompany (" + companyId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -246,11 +227,7 @@ public class ControllerCli {
 
     /**
      * Method : handling menu execution.
-     *
-     * @throws Exception
-     *             :
-     * @throws PersistenceException
-     *             :
+     * @throws Exception : Exception
      */
     public void execute() throws Exception {
 
