@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
@@ -20,11 +21,12 @@ import com.zaxxer.hikari.HikariDataSource;
  *         20 févr. 2017
  */
 @Component
+@Scope("singleton")
 public class DatabaseManager {
 
     private Connection connection;
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class.getName());
-    private PropertiesLoader propertiesToLoad = PropertiesLoader.INSTANCE;
+    private PropertiesLoader propertiesLoader = PropertiesLoader.INSTANCE;
     private Properties properties;
     private HikariDataSource dataSource;
     private ThreadLocal<Connection> myThreadLocal = new ThreadLocal<Connection>();
@@ -33,9 +35,9 @@ public class DatabaseManager {
      * Singleton's private constructor.
      */
     public DatabaseManager() {
-        propertiesToLoad.setFileName("hikari.properties");
-        propertiesToLoad.initProperties();
-        properties = propertiesToLoad.getProperties();
+        propertiesLoader.setFileName("hikari.properties");
+        propertiesLoader.initProperties();
+        properties = propertiesLoader.getProperties();
         HikariConfig config = new HikariConfig(properties);
         config.setConnectionTestQuery("show tables");
         dataSource = new HikariDataSource(config);

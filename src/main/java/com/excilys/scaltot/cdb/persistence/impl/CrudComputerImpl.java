@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
@@ -29,6 +30,7 @@ import com.excilys.scaltot.cdb.utils.Pagination;
  *         20 févr. 2017
  */
 @Repository
+@Scope("singleton")
 public class CrudComputerImpl implements CrudComputer {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudComputerImpl.class);

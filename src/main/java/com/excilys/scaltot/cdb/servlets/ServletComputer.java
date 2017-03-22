@@ -19,8 +19,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.company.CompanyDto;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
+import com.excilys.scaltot.cdb.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.mappers.MapperComputerDto;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
@@ -63,7 +65,7 @@ public class ServletComputer extends HttpServlet {
      * @throws IOException :
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        List<Company> companies;
+        List<CompanyDto> companies;
         List<ComputerDto> computers;
         pageToForward = "/views/dashboard.jsp";
         Pagination page = getPage(request);
@@ -107,7 +109,7 @@ public class ServletComputer extends HttpServlet {
                 }
                 break;
             case "add":
-                companies = crudCompanyService.findAll();
+                companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyService.findAll());
                 request.getSession().setAttribute("companies", companies);
                 pageToForward = "/views/addComputer.jsp";
                 break;
@@ -115,7 +117,7 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("id") != null) {
                     try {
                         long id = Long.parseLong(request.getParameter("id"));
-                        companies = crudCompanyService.findAll();
+                        companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyService.findAll());
                         computerDto = MapperComputerDto.computerToComputerDto(crudComputerService.find(id));
                         request.getSession().setAttribute("companies", companies);
                         request.getSession().setAttribute("computerDto", computerDto);
@@ -172,17 +174,14 @@ public class ServletComputer extends HttpServlet {
                     String name = request.getParameter("computerName");
                     Computer.ComputerBuilder computerBuilder = new Computer.ComputerBuilder().withName(name);
                     LocalDate introduced = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced")))
-                            && StringUtils.isNotBlank(request.getParameter("introduced"))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced"))) && StringUtils.isNotBlank(request.getParameter("introduced"))) {
                         introduced = LocalDate.parse(request.getParameter("introduced"));
                         computerBuilder.withDateWichIsIntroduced(introduced);
                     }
 
                     LocalDate discontinued = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued")))
-                            && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
-                        if (DateValidator.isRealTime(Optional.ofNullable(introduced),
-                                Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued"))) && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
+                        if (DateValidator.isRealTime(Optional.ofNullable(introduced), Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
                             discontinued = LocalDate.parse(request.getParameter("discontinued"));
                             computerBuilder.withDateWichIsDiscontinued(discontinued);
                         }
@@ -208,17 +207,14 @@ public class ServletComputer extends HttpServlet {
                     LOGGER.info("voila le nom récupéré : " + name);
                     Computer.ComputerBuilder computerBuilder = new Computer.ComputerBuilder().withId(id).withName(name);
                     LocalDate introduced = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced")))
-                            && StringUtils.isNotBlank(request.getParameter("introduced"))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced"))) && StringUtils.isNotBlank(request.getParameter("introduced"))) {
                         introduced = LocalDate.parse(request.getParameter("introduced"));
                         computerBuilder.withDateWichIsIntroduced(introduced);
                     }
 
                     LocalDate discontinued = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued")))
-                            && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
-                        if (DateValidator.isRealTime(Optional.ofNullable(introduced),
-                                Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued"))) && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
+                        if (DateValidator.isRealTime(Optional.ofNullable(introduced), Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
                             discontinued = LocalDate.parse(request.getParameter("discontinued"));
                             computerBuilder.withDateWichIsDiscontinued(discontinued);
                         }

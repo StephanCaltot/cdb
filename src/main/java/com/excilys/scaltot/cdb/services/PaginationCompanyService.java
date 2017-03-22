@@ -3,15 +3,19 @@ package com.excilys.scaltot.cdb.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
+@Scope("singleton")
 public class PaginationCompanyService {
+
     @Autowired
     private CrudCompanyService crudCompanyService;
+
     /**
      * Initialize number of elements and pages.
      *

@@ -3,12 +3,14 @@ package com.excilys.scaltot.cdb.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Repository
+@Scope("singleton")
 public class PaginationComputerService {
 
     @Autowired
