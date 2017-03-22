@@ -14,7 +14,7 @@ import com.excilys.scaltot.cdb.entities.company.Company;
  */
 public abstract class CompanyValidator {
 
-    static Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
 
     /**
      * Method checking Company's entity .

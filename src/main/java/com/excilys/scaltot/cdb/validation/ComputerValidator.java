@@ -14,7 +14,7 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
  */
 public abstract class ComputerValidator {
 
-    static Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
 
     /**
      * Static method checking all form's rules for computer.

@@ -15,8 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.company.CompanyDto;
@@ -24,13 +23,9 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.mappers.MapperComputerDto;
-import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
-import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
-import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
 import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
 import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
-import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 import com.excilys.scaltot.cdb.validation.DateValidator;
 
@@ -42,15 +37,18 @@ import com.excilys.scaltot.cdb.validation.DateValidator;
  * 3 mars 2017
  */
 @WebServlet(name = "ServletComputer", urlPatterns = "/computerdatabase")
-public class ServletComputer extends HttpServlet {
+public class ServletComputer extends Servlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServletComputer.class);
     private static final long serialVersionUID = 1L;
     private String pageToForward;
-    private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
-    private CrudComputerService crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
-    private CrudCompanyService crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
-    private PaginationService paginationServiceImpl = context.getBean(PaginationServiceImpl.class);
+
+    @Autowired
+    private CrudComputerService crudComputerServiceImpl;
+    @Autowired
+    private CrudCompanyService crudCompanyServiceImpl;
+    @Autowired
+    private PaginationService paginationServiceImpl;
 
     /**
      * @see HttpServlet#HttpServlet()
