@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.persistence.impl.CrudCompanyImpl;
+import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
-public class CrudCompanyService {
+public class CrudCompanyServiceImpl implements CrudCompanyService {
 
     @Autowired
     private CrudCompanyImpl crudCompanyImpl;

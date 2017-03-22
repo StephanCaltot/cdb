@@ -12,10 +12,9 @@ import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.services.CrudCompanyService;
-import com.excilys.scaltot.cdb.services.CrudComputerService;
-import com.excilys.scaltot.cdb.services.PaginationCompanyService;
-import com.excilys.scaltot.cdb.services.PaginationComputerService;
+import com.excilys.scaltot.cdb.services.CrudCompanyServiceImpl;
+import com.excilys.scaltot.cdb.services.CrudComputerServiceImpl;
+import com.excilys.scaltot.cdb.services.PaginationServiceImpl;
 import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
@@ -38,10 +37,10 @@ public class ControllerCli {
     private long offset = 0;
 
     private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
-    private CrudComputerService crudComputerService = context.getBean(CrudComputerService.class);
-    private CrudCompanyService crudCompanyService = context.getBean(CrudCompanyService.class);
-    private PaginationComputerService paginationComputerService = context.getBean(PaginationComputerService.class);
-    private PaginationCompanyService paginationCompanyService = context.getBean(PaginationCompanyService.class);
+    private CrudComputerServiceImpl crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
+    private CrudCompanyServiceImpl crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
+    private PaginationServiceImpl paginationComputerServiceImpl = context.getBean(PaginationServiceImpl.class);
+    private PaginationServiceImpl paginationServiceImpl = context.getBean(PaginationServiceImpl.class);
 
     /**
      * Controler's constructor setting crudService for company and computer.
@@ -49,8 +48,8 @@ public class ControllerCli {
      * @throws SQLException :
      */
     public ControllerCli() {
-        paginationComputerService.paginationInitialisation(paginationComputer);
-        paginationCompanyService.paginationInitialisation(paginationCompany);
+        paginationServiceImpl.paginationInitialisation(paginationComputer);
+        paginationServiceImpl.paginationInitialisation(paginationCompany);
         scan = ScannerSystemIn.getInstance();
     }
 
@@ -71,7 +70,7 @@ public class ControllerCli {
 
         String choice = null;
 
-        computers = paginationComputerService.findByPage(paginationComputer);
+        computers = paginationComputerServiceImpl.findComputerByPage(paginationComputer);
         viewCli.displayAllComputers(computers);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -98,14 +97,14 @@ public class ControllerCli {
                 viewCli.displayMenu();
                 break;
             case "n":
-                paginationComputerService.nextPage(paginationComputer);
-                computers = paginationComputerService.findByPage(paginationComputer);
+                paginationComputerServiceImpl.nextPage(paginationComputer);
+                computers = paginationComputerServiceImpl.findComputerByPage(paginationComputer);
                 viewCli.displayAllComputers(computers);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                paginationComputerService.previousPage(paginationComputer);
-                computers = paginationComputerService.findByPage(paginationComputer);
+                paginationComputerServiceImpl.previousPage(paginationComputer);
+                computers = paginationComputerServiceImpl.findComputerByPage(paginationComputer);
                 viewCli.displayAllComputers(computers);
                 break;
             case "q":
@@ -131,7 +130,7 @@ public class ControllerCli {
     public void listingOfCompanies() {
 
         String choice = null;
-        companies = paginationCompanyService.findByPage(paginationCompany);
+        companies = paginationServiceImpl.findCompanyByPage(paginationCompany);
         viewCli.displayAllCompanies(companies);
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
         do {
@@ -158,14 +157,14 @@ public class ControllerCli {
                 viewCli.displayMenu();
                 break;
             case "n":
-                paginationCompanyService.nextPage(paginationCompany);
-                companies = paginationCompanyService.findByPage(paginationCompany);
+                paginationServiceImpl.nextPage(paginationCompany);
+                companies = paginationServiceImpl.findCompanyByPage(paginationCompany);
                 viewCli.displayAllCompanies(companies);
                 viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
                 break;
             case "p":
-                paginationCompanyService.previousPage(paginationCompany);
-                companies = paginationCompanyService.findByPage(paginationCompany);
+                paginationServiceImpl.previousPage(paginationCompany);
+                companies = paginationServiceImpl.findCompanyByPage(paginationCompany);
                 viewCli.displayAllCompanies(companies);
                 break;
             case "q":
@@ -196,7 +195,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id : "));
             computerId = scan.nextInt();
         } while (computerId == 0);
-        Optional<Computer> computerOptional = crudComputerService.find(computerId);
+        Optional<Computer> computerOptional = crudComputerServiceImpl.find(computerId);
         if (computerOptional.isPresent()) {
             viewCli.displayComputersDetails(computerOptional);
         }
@@ -217,7 +216,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
             computerId = scan.nextInt();
         } while (computerId <= 0);
-        if (crudComputerService.delete(computerId)) {
+        if (crudComputerServiceImpl.delete(computerId)) {
             viewCli.displayInfo(Optional.of("\nComputer (" + computerId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -238,7 +237,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the company's id you want delete : "));
             companyId = scan.nextInt();
         } while (companyId <= 0);
-        if (crudCompanyService.delete(companyId)) {
+        if (crudCompanyServiceImpl.delete(companyId)) {
             viewCli.displayInfo(Optional.of("\nCompany (" + companyId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
