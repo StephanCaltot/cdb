@@ -6,12 +6,11 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * Class allows jdbc connection ( initialization, opening and closing ).
@@ -27,20 +26,15 @@ public class DatabaseManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class.getName());
 
     private Connection connection;
-    private PropertiesLoader propertiesLoader = PropertiesLoader.INSTANCE;
     private Properties properties;
-    private HikariDataSource dataSource;
+    @Autowired
+    private Datasource datasource;
 
     /**
      * Singleton's private constructor.
      */
     public DatabaseManager() {
-        propertiesLoader.setFileName("hikari.properties");
-        propertiesLoader.initProperties();
-        properties = propertiesLoader.getProperties();
-        HikariConfig config = new HikariConfig(properties);
-        config.setConnectionTestQuery("show tables");
-        dataSource = new HikariDataSource(config);
+        
     }
 
     /**
@@ -63,7 +57,7 @@ public class DatabaseManager {
      */
     public Connection getConnection() {
         try {
-            connection = dataSource.getConnection();
+            connection = datasource.getConnection();
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             throw new PersistenceException(
