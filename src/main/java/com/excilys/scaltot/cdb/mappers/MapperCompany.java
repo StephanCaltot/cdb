@@ -21,9 +21,6 @@ public class MapperCompany {
      *
      * @param resultSet : resultSet
      * @return Optional company entity
-     * @throws PersistenceException
-     *             :
-     * @throws Exception
      */
     public static Optional<Company> resultSetToEntity(Optional<ResultSet> resultSet) {
 

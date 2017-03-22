@@ -12,9 +12,9 @@ import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.services.CrudCompanyServiceImpl;
-import com.excilys.scaltot.cdb.services.CrudComputerServiceImpl;
-import com.excilys.scaltot.cdb.services.PaginationServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
 import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
@@ -32,8 +32,8 @@ public class ControllerCli {
     private List<Company> companies;
     private long offsetCompany = 0;
     private Scanner scan;
-    private Pagination paginationComputer = new Pagination();
-    private Pagination paginationCompany = new Pagination();
+    private Pagination paginationComputer = new Pagination.PaginationBuilder().build();
+    private Pagination paginationCompany = new Pagination.PaginationBuilder().build();
     private long offset = 0;
 
     private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
@@ -44,8 +44,6 @@ public class ControllerCli {
 
     /**
      * Controler's constructor setting crudService for company and computer.
-     *
-     * @throws SQLException :
      */
     public ControllerCli() {
         paginationServiceImpl.paginationInitialisation(paginationComputer);
@@ -62,9 +60,6 @@ public class ControllerCli {
 
     /**
      * Method : listing computers paginated.
-     *
-     * @throws Exception :
-     * @throws PersistenceException :
      */
     public void listingOfComputers() {
 
@@ -123,9 +118,6 @@ public class ControllerCli {
 
     /**
      * Method : listing companies paginated.
-     *
-     * @throws Exception :
-     * @throws PersistenceException :
      */
     public void listingOfCompanies() {
 
@@ -183,11 +175,6 @@ public class ControllerCli {
 
     /**
      * Method : showing details for one computer.
-     *
-     * @throws Exception
-     *             :
-     * @throws PersistenceException
-     *             :
      */
     public void showComputersDetails() {
         long computerId = 0;
@@ -203,11 +190,6 @@ public class ControllerCli {
 
     /**
      * Method : deleting one computer.
-     *
-     * @throws SQLException
-     *             :
-     * @throws PersistenceException
-     *             :
      */
     public void deleteComputer() {
 
@@ -245,11 +227,7 @@ public class ControllerCli {
 
     /**
      * Method : handling menu execution.
-     *
-     * @throws Exception
-     *             :
-     * @throws PersistenceException
-     *             :
+     * @throws Exception : Exception
      */
     public void execute() throws Exception {
 

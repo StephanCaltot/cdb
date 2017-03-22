@@ -24,9 +24,12 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.mappers.MapperComputerDto;
-import com.excilys.scaltot.cdb.services.CrudCompanyServiceImpl;
-import com.excilys.scaltot.cdb.services.CrudComputerServiceImpl;
-import com.excilys.scaltot.cdb.services.PaginationServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
+import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
+import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
+import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
+import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
 import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 import com.excilys.scaltot.cdb.validation.DateValidator;
@@ -45,9 +48,9 @@ public class ServletComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private String pageToForward;
     private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
-    private CrudComputerServiceImpl crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
-    private CrudCompanyServiceImpl crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
-    private PaginationServiceImpl paginationServiceImpl = context.getBean(PaginationServiceImpl.class);
+    private CrudComputerService crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
+    private CrudCompanyService crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
+    private PaginationService paginationServiceImpl = context.getBean(PaginationServiceImpl.class);
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -57,12 +60,11 @@ public class ServletComputer extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     * @param request :
-     * @param response :
-     * @throws ServletException :
-     * @throws IOException :
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     * @param request : request
+     * @param response : response
+     * @throws ServletException : ServletException
+     * @throws IOException : IOException
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         List<CompanyDto> companies;
@@ -81,6 +83,7 @@ public class ServletComputer extends HttpServlet {
                         int numOfPage = Integer.parseInt(request.getParameter("numOfPage"));
                         paginationServiceImpl.setCurrentPage(page, numOfPage);
                     } catch (NumberFormatException e) {
+                        throw new NumberFormatException();
                   }
                 }
                 break;
@@ -90,6 +93,7 @@ public class ServletComputer extends HttpServlet {
                         filter = request.getParameter("filter");
                         paginationServiceImpl.setFilter(page, filter);
                     } catch (NumberFormatException e) {
+                        throw new NumberFormatException();
                   }
                 }
                 break;
@@ -105,6 +109,7 @@ public class ServletComputer extends HttpServlet {
                         int size = Integer.parseInt(request.getParameter("size"));
                         paginationServiceImpl.setPageSize(page, size);
                     } catch (NumberFormatException e) {
+                        throw new NumberFormatException();
                   }
                 }
                 break;
@@ -123,7 +128,7 @@ public class ServletComputer extends HttpServlet {
                         request.getSession().setAttribute("computerDto", computerDto);
                         pageToForward = "/views/editComputer.jsp";
                     } catch (NumberFormatException numberFormatException) {
-
+                        throw new NumberFormatException();
                     }
                 }
                 break;
@@ -157,12 +162,11 @@ public class ServletComputer extends HttpServlet {
         return (Pagination) request.getSession().getAttribute("page");
     }
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     * @param request :
-     * @param response :
-     * @throws ServletException :
-     * @throws IOException :
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     * @param request : request
+     * @param response : response
+     * @throws ServletException : ServletException
+     * @throws IOException : IOException
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -2,8 +2,6 @@ package com.excilys.scaltot.cdb.cli.mvc;
 
 import java.util.Optional;
 
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-
 /**
  * Main of Command line interface.
  *
@@ -15,10 +13,7 @@ public class MainCli {
 
     /**
      * Main for launch and handle CLI.
-     *
-     * @param args :
-     * @throws Exception :
-     * @throws PersistenceException :
+     * @param args : ARGS list
      */
     public static void main(String[] args) {
 

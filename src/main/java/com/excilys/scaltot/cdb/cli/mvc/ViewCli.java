@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
  * View fir Command line interface.
@@ -27,8 +26,7 @@ public class ViewCli {
     /**
      * View constructor setting controller.
      *
-     * @param controlerCli
-     *            :
+     * @param controlerCli : controlerCli
      */
     public ViewCli(Optional<ControllerCli> controlerCli) {
         this.controlerCli = controlerCli.get();
@@ -51,9 +49,6 @@ public class ViewCli {
 
     /**
      * Designed display for CLI menu.
-     *
-     * @throws PersistenceException
-     *             :
      */
     public void displayMenu() {
         System.out.println("\n\n");
@@ -78,8 +73,7 @@ public class ViewCli {
     /**
      * Method displaying computers formated.
      *
-     * @param computers
-     *            :
+     * @param computers : computers
      */
     public void displayAllComputers(List<Computer> computers) {
 
@@ -97,8 +91,7 @@ public class ViewCli {
     /**
      * Method displaying companies formated.
      *
-     * @param companies
-     *            :
+     * @param companies : companies
      */
     public void displayAllCompanies(List<Company> companies) {
         System.out.println("\n");
@@ -113,8 +106,7 @@ public class ViewCli {
     /**
      * Method displaying details for on computer.
      *
-     * @param computer
-     *            :
+     * @param computer : computer
      */
     public void displayComputersDetails(Optional<Computer> computer) {
         if (computer.isPresent()) {
@@ -125,8 +117,7 @@ public class ViewCli {
     /**
      * Displaying information given in parameter.
      *
-     * @param info
-     *            :
+     * @param info : info
      */
     public void displayInfo(Optional<String> info) {
         if (info.isPresent()) {

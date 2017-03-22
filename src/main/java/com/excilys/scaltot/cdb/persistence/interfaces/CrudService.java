@@ -11,6 +11,7 @@ import com.excilys.scaltot.cdb.utils.Pagination;
  *         22 févr. 2017
  */
 public interface CrudService<T> {
+
     /**
      * Retrieves one element referenced by id parameter.
      * @param id :

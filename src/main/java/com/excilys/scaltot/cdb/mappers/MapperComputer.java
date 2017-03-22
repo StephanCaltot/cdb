@@ -28,8 +28,6 @@ public class MapperComputer {
      *
      * @param resultSet : resultSet
      * @return Optional computer entity
-     * @throws PersistenceException : Persistence Exception
-     * @throws Exception : exception
      */
     public static Optional<Computer> resultSetToEntity(Optional<ResultSet> resultSet) {
         if (!resultSet.isPresent()) {

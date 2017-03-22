@@ -12,20 +12,17 @@ import com.excilys.scaltot.cdb.entities.company.Company;
  *
  *         20 févr. 2017
  */
-public interface CompanyValidator {
+public abstract class CompanyValidator {
 
-    Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
+    static Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class.getName());
 
     /**
      * Method checking Company's entity .
      *
-     * @param company
-     *            :
-     * @throws Exception
-     *             :
+     * @param company : company
      * @return boolean
      */
-    static Boolean check(Optional<Company> company) {
+    public static Boolean check(Optional<Company> company) {
         if (company.get().getId() > 0) {
             if ((company.get().getName() != null && StringValidator.isFormed(Optional.of(company.get().getName())))) {
                 return true;

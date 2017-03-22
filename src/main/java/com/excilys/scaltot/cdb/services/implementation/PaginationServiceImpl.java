@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.services;
+package com.excilys.scaltot.cdb.services.implementation;
 
 import java.util.List;
 
@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
+import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
 import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
@@ -16,10 +18,10 @@ import com.excilys.scaltot.cdb.utils.Pagination;
 public class PaginationServiceImpl implements PaginationService {
 
     @Autowired
-    private CrudCompanyServiceImpl crudCompanyServiceImpl;
-    
+    private CrudCompanyService crudCompanyServiceImpl;
+
     @Autowired
-    private CrudComputerServiceImpl crudComputerServiceImpl;
+    private CrudComputerService crudComputerServiceImpl;
 
     /**
      * Initialize number of elements and pages.
@@ -50,14 +52,23 @@ public class PaginationServiceImpl implements PaginationService {
     public List<Computer> findComputerByPage(Pagination pagination) {
         return crudComputerServiceImpl.findByPageFilter(pagination);
     }
-    
+
     /**
      * Switch to the next page.
      *
      * @param pagination : page
      */
     public void nextPage(Pagination pagination) {
-        pagination.nextPage();
+        long offset = pagination.getOffset();
+        long currentPage = pagination.getCurrentPage();
+        long pageSize = pagination.getPageSize();
+        long numberOfPages = pagination.getNumberOfPages();
+
+        currentPage = (currentPage + 1) <= numberOfPages ? (currentPage + 1) : numberOfPages;
+        offset = currentPage * pageSize;
+
+        pagination.setCurrentPage(currentPage);
+        pagination.setOffset(offset);
     }
 
     /**
@@ -66,8 +77,16 @@ public class PaginationServiceImpl implements PaginationService {
      * @param pagination : page
      */
     public void previousPage(Pagination pagination) {
-        pagination.previousPage();
-    }
+        long offset = pagination.getOffset();
+        long currentPage = pagination.getCurrentPage();
+        long pageSize = pagination.getPageSize();
+
+        currentPage = (currentPage - 1) >= 0 ? (currentPage - 1) : 0;
+        offset = currentPage * pageSize;
+
+        pagination.setCurrentPage(currentPage);
+        pagination.setOffset(offset);
+     }
 
     /**
      * Set the current page.

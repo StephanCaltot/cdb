@@ -35,7 +35,7 @@ public interface PaginationService {
      * @return list of computers
      */
     List<Computer> findComputerByPage(Pagination pagination);
-    
+
     /**
      * Switch to the next page.
      *
