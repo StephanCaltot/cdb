@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
 import com.excilys.scaltot.cdb.entities.company.Company;
@@ -15,6 +16,7 @@ import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
 import com.excilys.scaltot.cdb.services.PaginationCompanyService;
 import com.excilys.scaltot.cdb.services.PaginationComputerService;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
@@ -33,15 +35,13 @@ public class ControllerCli {
     private Scanner scan;
     private Pagination paginationComputer = new Pagination();
     private Pagination paginationCompany = new Pagination();
-    @Autowired
-    private CrudComputerService crudComputerService;
-    @Autowired
-    private CrudCompanyService crudCompanyService;
-    @Autowired
-    private PaginationComputerService paginationComputerService;
-    @Autowired
-    private PaginationCompanyService paginationCompanyService;
     private long offset = 0;
+
+    private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+    private CrudComputerService crudComputerService = context.getBean(CrudComputerService.class);
+    private CrudCompanyService crudCompanyService = context.getBean(CrudCompanyService.class);
+    private PaginationComputerService paginationComputerService = context.getBean(PaginationComputerService.class);
+    private PaginationCompanyService paginationCompanyService = context.getBean(PaginationCompanyService.class);
 
     /**
      * Controler's constructor setting crudService for company and computer.
