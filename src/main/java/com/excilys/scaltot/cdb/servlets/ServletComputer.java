@@ -15,14 +15,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.company.CompanyDto;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
+import com.excilys.scaltot.cdb.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.mappers.MapperComputerDto;
 import com.excilys.scaltot.cdb.services.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.CrudComputerService;
 import com.excilys.scaltot.cdb.services.PaginationComputerService;
+import com.excilys.scaltot.cdb.spring.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 import com.excilys.scaltot.cdb.validation.DateValidator;
 
@@ -39,6 +44,10 @@ public class ServletComputer extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServletComputer.class);
     private static final long serialVersionUID = 1L;
     private String pageToForward;
+    private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+    private CrudComputerService crudComputerService = context.getBean(CrudComputerService.class);
+    private CrudCompanyService crudCompanyService = context.getBean(CrudCompanyService.class);
+    private PaginationComputerService paginationComputerService = context.getBean(PaginationComputerService.class);
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -56,13 +65,13 @@ public class ServletComputer extends HttpServlet {
      * @throws IOException :
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        List<Company> companies;
+        List<CompanyDto> companies;
         List<ComputerDto> computers;
         pageToForward = "/views/dashboard.jsp";
         Pagination page = getPage(request);
         String filter = "";
         ComputerDto computerDto;
-        page.setNumberOfElements(CrudComputerService.INSTANCE.getCountOfComputers());
+        page.setNumberOfElements(crudComputerService.getCountOfComputers());
 
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
@@ -70,7 +79,7 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("numOfPage") != null) {
                     try {
                         int numOfPage = Integer.parseInt(request.getParameter("numOfPage"));
-                        PaginationComputerService.setCurrentPage(page, numOfPage);
+                        paginationComputerService.setCurrentPage(page, numOfPage);
                     } catch (NumberFormatException e) {
                   }
                 }
@@ -79,28 +88,28 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("filter") != null) {
                     try {
                         filter = request.getParameter("filter");
-                        PaginationComputerService.setFilter(page, filter);
+                        paginationComputerService.setFilter(page, filter);
                     } catch (NumberFormatException e) {
                   }
                 }
                 break;
             case "nextPage":
-                PaginationComputerService.nextPage(page);
+                paginationComputerService.nextPage(page);
                 break;
             case "previousPage":
-                PaginationComputerService.previousPage(page);
+                paginationComputerService.previousPage(page);
                 break;
             case "size":
                 if (request.getParameter("size") != null) {
                     try {
                         int size = Integer.parseInt(request.getParameter("size"));
-                        PaginationComputerService.setPageSize(page, size);
+                        paginationComputerService.setPageSize(page, size);
                     } catch (NumberFormatException e) {
                   }
                 }
                 break;
             case "add":
-                companies = CrudCompanyService.INSTANCE.findAll();
+                companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyService.findAll());
                 request.getSession().setAttribute("companies", companies);
                 pageToForward = "/views/addComputer.jsp";
                 break;
@@ -108,8 +117,8 @@ public class ServletComputer extends HttpServlet {
                 if (request.getParameter("id") != null) {
                     try {
                         long id = Long.parseLong(request.getParameter("id"));
-                        companies = CrudCompanyService.INSTANCE.findAll();
-                        computerDto = MapperComputerDto.computerToComputerDto(CrudComputerService.INSTANCE.find(id));
+                        companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyService.findAll());
+                        computerDto = MapperComputerDto.computerToComputerDto(crudComputerService.find(id));
                         request.getSession().setAttribute("companies", companies);
                         request.getSession().setAttribute("computerDto", computerDto);
                         pageToForward = "/views/editComputer.jsp";
@@ -123,7 +132,7 @@ public class ServletComputer extends HttpServlet {
             }
         }
         if (pageToForward.equals("/views/dashboard.jsp")) {
-            computers = MapperComputerDto.computerListToComputerDto(PaginationComputerService.findByPage(page));
+            computers = MapperComputerDto.computerListToComputerDto(paginationComputerService.findByPage(page));
             request.getSession().setAttribute("computers", computers);
             request.getSession().setAttribute("filter", filter);
             request.getSession().setAttribute("numberOfPages", page.getNumberOfPages());
@@ -165,17 +174,14 @@ public class ServletComputer extends HttpServlet {
                     String name = request.getParameter("computerName");
                     Computer.ComputerBuilder computerBuilder = new Computer.ComputerBuilder().withName(name);
                     LocalDate introduced = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced")))
-                            && StringUtils.isNotBlank(request.getParameter("introduced"))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced"))) && StringUtils.isNotBlank(request.getParameter("introduced"))) {
                         introduced = LocalDate.parse(request.getParameter("introduced"));
                         computerBuilder.withDateWichIsIntroduced(introduced);
                     }
 
                     LocalDate discontinued = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued")))
-                            && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
-                        if (DateValidator.isRealTime(Optional.ofNullable(introduced),
-                                Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued"))) && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
+                        if (DateValidator.isRealTime(Optional.ofNullable(introduced), Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
                             discontinued = LocalDate.parse(request.getParameter("discontinued"));
                             computerBuilder.withDateWichIsDiscontinued(discontinued);
                         }
@@ -188,10 +194,10 @@ public class ServletComputer extends HttpServlet {
                         company = new Company.CompanyBuilder().withId(companyId).build();
                         computerBuilder.withManufacturer(company);
                     }
-                    CrudComputerService.INSTANCE.create(Optional.ofNullable(computerBuilder.build()));
+                    crudComputerService.create(Optional.ofNullable(computerBuilder.build()));
 
                 } catch (NumberFormatException e) {
-                    System.out.println(e);
+                    throw new NumberFormatException();
                 }
                 break;
             case "edit":
@@ -201,17 +207,14 @@ public class ServletComputer extends HttpServlet {
                     LOGGER.info("voila le nom récupéré : " + name);
                     Computer.ComputerBuilder computerBuilder = new Computer.ComputerBuilder().withId(id).withName(name);
                     LocalDate introduced = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced")))
-                            && StringUtils.isNotBlank(request.getParameter("introduced"))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("introduced"))) && StringUtils.isNotBlank(request.getParameter("introduced"))) {
                         introduced = LocalDate.parse(request.getParameter("introduced"));
                         computerBuilder.withDateWichIsIntroduced(introduced);
                     }
 
                     LocalDate discontinued = null;
-                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued")))
-                            && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
-                        if (DateValidator.isRealTime(Optional.ofNullable(introduced),
-                                Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
+                    if (DateValidator.formatIsValid(Optional.of(request.getParameter("discontinued"))) && StringUtils.isNotBlank(request.getParameter("discontinued"))) {
+                        if (DateValidator.isRealTime(Optional.ofNullable(introduced), Optional.ofNullable(LocalDate.parse(request.getParameter("discontinued"))))) {
                             discontinued = LocalDate.parse(request.getParameter("discontinued"));
                             computerBuilder.withDateWichIsDiscontinued(discontinued);
                         }
@@ -224,10 +227,10 @@ public class ServletComputer extends HttpServlet {
                         company = new Company.CompanyBuilder().withId(companyId).build();
                         computerBuilder.withManufacturer(company);
                     }
-                    CrudComputerService.INSTANCE.update(Optional.ofNullable(computerBuilder.build()));
+                    crudComputerService.update(Optional.ofNullable(computerBuilder.build()));
 
                 } catch (NumberFormatException e) {
-                    System.out.println(e);
+                    throw new NumberFormatException();
                 }
                 break;
             case "delete":
@@ -235,7 +238,7 @@ public class ServletComputer extends HttpServlet {
                 String[] selections = selection.split(",");
                 for (String computerId : selections) {
                     LOGGER.info("DELETION ID" + Long.parseLong(computerId));
-                    CrudComputerService.INSTANCE.delete(Long.parseLong(computerId));
+                    crudComputerService.delete(Long.parseLong(computerId));
                 }
                 break;
             default:

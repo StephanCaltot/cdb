@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dao;
+package com.excilys.scaltot.cdb.persistence;
 
 /**
  * Class contains all needed constant for dao request.
@@ -29,7 +29,8 @@ public class DaoProperties {
 
     public static final String FIND_COMPANY = "select id, name from company where id= ?;";
 
-    public static final String FIND_ALL_COMPUTERS = "select id, name, introduced, discontinued, company_id from computer limit ? offset ?;";
+    public static final String FIND_ALL_COMPUTERS = "select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name company_name from computer "
+            + "left join company on company.id = computer.company_id;";
 
     public static final String FIND_ALL_COMPANIES = "select id, name from company;";
 
@@ -49,7 +50,7 @@ public class DaoProperties {
 
     public static final String COMPUTER_FILTERED = "select computer.id, computer.name, computer.introduced, computer.discontinued,"
             + " computer.company_id, company.name company_name from computer"
-            + " left join company on company.id = computer.company_id where company_name like ?;";
+            + " left join company on company.id = computer.company_id where company.id like ?;";
 
     public static final String PAGE_COMPANY_FILTERED = "select company.id, company.name from company where company.name like ? limit ? offset ?;";
 }

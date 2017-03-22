@@ -49,7 +49,6 @@ public class MapperComputerDto {
         List<ComputerDto> computersDto = new ArrayList<>();
         ComputerDto computerDto;
 
-
         for (Computer computer: computers) {
             computerDto = new ComputerDto();
             computerDto.setId(computer.getId());

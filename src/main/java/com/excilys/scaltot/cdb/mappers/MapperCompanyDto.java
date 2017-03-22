@@ -34,9 +34,10 @@ public class MapperCompanyDto {
      */
     public static List<CompanyDto> companyListToCompanyDto(List<Company> companies) {
         List<CompanyDto> companiesDto = new ArrayList<>();
-        CompanyDto companyDto = new CompanyDto();
+        CompanyDto companyDto;
 
         for (Company company : companies) {
+            companyDto = new CompanyDto();
             companyDto.setId(company.getId());
             companyDto.setName(company.getName());
             companiesDto.add(companyDto);

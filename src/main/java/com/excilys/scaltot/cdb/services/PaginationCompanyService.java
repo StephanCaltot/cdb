@@ -2,13 +2,19 @@ package com.excilys.scaltot.cdb.services;
 
 import java.util.List;
 
-import com.excilys.scaltot.cdb.dao.impl.CrudCompanyImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
-public enum PaginationCompanyService {
+@Service
+@Scope("singleton")
+public class PaginationCompanyService {
 
-    INSTANCE;
+    @Autowired
+    private CrudCompanyService crudCompanyService;
 
     /**
      * Initialize number of elements and pages.
@@ -16,8 +22,8 @@ public enum PaginationCompanyService {
      * @param paginationCompany
      *            : page
      */
-    public static void paginationInitialisation(Pagination paginationCompany) {
-        paginationCompany.setNumberOfElements(CrudCompanyService.INSTANCE.getCountOfCompanies());
+    public void paginationInitialisation(Pagination paginationCompany) {
+        paginationCompany.setNumberOfElements(crudCompanyService.getCountOfCompanies());
         paginationCompany.setNumberOfPages(paginationCompany.getNumberOfElements() / paginationCompany.getPageSize());
     }
 
@@ -28,8 +34,8 @@ public enum PaginationCompanyService {
      *            : page
      * @return list of companies
      */
-    public static List<Company> findByPage(Pagination paginationCompany) {
-        return CrudCompanyImpl.INSTANCE.findByPageFilter(paginationCompany);
+    public List<Company> findByPage(Pagination paginationCompany) {
+        return crudCompanyService.findByPage(paginationCompany);
     }
 
     /**
@@ -38,7 +44,7 @@ public enum PaginationCompanyService {
      * @param paginationCompany
      *            : page
      */
-    public static void nextPage(Pagination paginationCompany) {
+    public void nextPage(Pagination paginationCompany) {
         paginationCompany.nextPage();
     }
 
@@ -48,7 +54,7 @@ public enum PaginationCompanyService {
      * @param paginationCompany
      *            : page
      */
-    public static void previousPage(Pagination paginationCompany) {
+    public void previousPage(Pagination paginationCompany) {
         paginationCompany.previousPage();
     }
 
@@ -60,7 +66,7 @@ public enum PaginationCompanyService {
      * @param numOfPage
      *            : number of current page
      */
-    public static void setCurrentPage(Pagination paginationCompany, int numOfPage) {
+    public void setCurrentPage(Pagination paginationCompany, int numOfPage) {
         paginationCompany.setCurrentPage(numOfPage);
     }
 
@@ -72,7 +78,7 @@ public enum PaginationCompanyService {
      * @param pageSize
      *            : size of page
      */
-    public static void setPageSize(Pagination paginationCompany, int pageSize) {
+    public void setPageSize(Pagination paginationCompany, int pageSize) {
         paginationCompany.setPageSize(pageSize);
     }
 
@@ -84,7 +90,7 @@ public enum PaginationCompanyService {
      * @param filter
      *            : filter
      */
-    public static void setFilter(Pagination paginationCompany, String filter) {
+    public void setFilter(Pagination paginationCompany, String filter) {
         paginationCompany.setFilter(filter);
     }
 }

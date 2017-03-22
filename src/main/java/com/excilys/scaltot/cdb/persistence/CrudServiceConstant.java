@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dao;
+package com.excilys.scaltot.cdb.persistence;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import com.excilys.scaltot.cdb.entities.computer.Computer;
  * @author screetts
  *
  */
-public abstract class CrudServiceConstant {
+public final class CrudServiceConstant {
 
     /**
      * Default Limit of pagination.

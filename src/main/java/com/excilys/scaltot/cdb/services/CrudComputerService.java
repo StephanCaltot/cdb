@@ -4,21 +4,28 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.scaltot.cdb.dao.impl.CrudComputerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.persistence.impl.CrudComputerImpl;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
-public enum CrudComputerService {
+@Service
+@Scope("singleton")
+public class CrudComputerService {
 
-    INSTANCE;
+    @Autowired
+    private CrudComputerImpl crudComputerImpl;
 
     /**
      * Create computer.
      * @param computer : computer
      */
     public void create(Optional<Computer> computer) {
-        CrudComputerImpl.INSTANCE.create(computer);
+        crudComputerImpl.create(computer);
     }
 
     /**
@@ -30,7 +37,7 @@ public enum CrudComputerService {
      * @throws Exception
      */
     public Optional<Computer> find(long id) {
-        return CrudComputerImpl.INSTANCE.find(id);
+        return crudComputerImpl.find(id);
     }
 
     /**
@@ -42,7 +49,7 @@ public enum CrudComputerService {
      * @return boolean
      */
     public Boolean delete(long id) {
-        return CrudComputerImpl.INSTANCE.delete(id);
+        return crudComputerImpl.delete(id);
     }
 
     /**
@@ -53,7 +60,7 @@ public enum CrudComputerService {
      * @throws Exception : Exception
      */
     public void update(Optional<Computer> computer) {
-        CrudComputerImpl.INSTANCE.update(computer);
+        crudComputerImpl.update(computer);
     }
 
     /**
@@ -64,7 +71,7 @@ public enum CrudComputerService {
      * @throws Exception : Exception
      */
     public List<Computer> findAll() {
-        return CrudComputerImpl.INSTANCE.findAll();
+        return crudComputerImpl.findAll();
     }
 
     /**
@@ -72,7 +79,7 @@ public enum CrudComputerService {
      * @return long
      */
     public long getCountOfComputers() {
-        return CrudComputerImpl.INSTANCE.getCountOfElements();
+        return crudComputerImpl.getCountOfElements();
     }
 
     /**
@@ -81,7 +88,7 @@ public enum CrudComputerService {
      * @return list of computers
      */
     public List<Computer> getComputersFiltered(String nameFilter) {
-        return CrudComputerImpl.INSTANCE.getComputersFiltered(nameFilter);
+        return crudComputerImpl.getComputersFiltered(nameFilter);
     }
 
     /**
@@ -93,6 +100,6 @@ public enum CrudComputerService {
      * @throws Exception
      */
     public List<Computer> findByPageFilter(Pagination pagination) {
-        return CrudComputerImpl.INSTANCE.findByPageFilter(pagination);
+        return crudComputerImpl.findByPageFilter(pagination);
     }
 }
