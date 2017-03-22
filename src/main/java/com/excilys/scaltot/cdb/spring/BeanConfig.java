@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan("com.excilys.scaltot.cdb")
+//@ComponentScan(basePackages = { "com.excilys.scaltot.cdb.services.implementation", "com.excilys.scaltot.cdb.persistence.implementation" })
 public class BeanConfig {
 
 }

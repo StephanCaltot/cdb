@@ -24,12 +24,12 @@ import com.zaxxer.hikari.HikariDataSource;
 @Scope("singleton")
 public class DatabaseManager {
 
-    private Connection connection;
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class.getName());
+
+    private Connection connection;
     private PropertiesLoader propertiesLoader = PropertiesLoader.INSTANCE;
     private Properties properties;
     private HikariDataSource dataSource;
-    private ThreadLocal<Connection> myThreadLocal = new ThreadLocal<Connection>();
 
     /**
      * Singleton's private constructor.
@@ -65,7 +65,6 @@ public class DatabaseManager {
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
-            myThreadLocal.set(connection);
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Connection can't be etablished and retrieved... (check your connection's properties)", e);
@@ -73,7 +72,7 @@ public class DatabaseManager {
         if (!connection.equals(null)) {
             LOGGER.info("Connection etablished and retrieved");
         }
-        return (Connection) myThreadLocal.get();
+        return connection;
     }
 
     /**
