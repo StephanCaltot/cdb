@@ -17,8 +17,10 @@ public interface PaginationService {
      * Initialize number of elements and pages depending of type Company, or Computer.
      *
      * @param pagination : page
+     * @param classe : class type
+     * @return 
      */
-    void paginationInitialisation(Pagination pagination, Class<?> classe);
+    Pagination paginationInitialisation(Pagination pagination, Class<?> classe);
 
     /**
      * Retrieves list of companies paginated.

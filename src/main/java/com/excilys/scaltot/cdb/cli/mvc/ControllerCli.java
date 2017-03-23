@@ -15,7 +15,7 @@ import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
 import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
 import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
-import com.excilys.scaltot.cdb.spring.BeanConfig;
+import com.excilys.scaltot.cdb.spring.utils.BeanConfig;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**

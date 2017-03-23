@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
@@ -18,6 +19,7 @@ import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
+@Transactional
 public class CrudComputerServiceImpl implements CrudComputerService {
 
     @Autowired
@@ -77,9 +79,9 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return boolean
      */
     public Boolean delete(long id) {
-        
+
         connection = databaseManager.getConnection();
-        
+
         try {
            if (!crudComputerImpl.delete(id, connection)) {
                return false;
@@ -102,7 +104,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
     public void update(Optional<Computer> computer) {
 
         connection = databaseManager.getConnection();
-        
+
         try {
             crudComputerImpl.update(computer, connection);
             databaseManager.commit();
@@ -143,7 +145,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return long
      */
     public long getCountOfComputers() {
-        
+
         connection = databaseManager.getConnection();
 
         try {
@@ -158,13 +160,14 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
             databaseManager.closeConnection();
 
-        }        
+        }
     }
 
     /**
      * Return the list of computer in database filtered by name.
      * @param nameFilter : filter
      * @return list of computers
+     * @throws SQLException : SQLException
      */
     public List<Computer> getComputersFiltered(String nameFilter) throws SQLException {
 
@@ -182,7 +185,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
             databaseManager.closeConnection();
 
-        }  
+        }
     }
 
     /**
@@ -192,7 +195,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return list of computers paginated
      */
     public List<Computer> findByPageFilter(Pagination pagination) {
-        
+
         connection = databaseManager.getConnection();
 
         try {

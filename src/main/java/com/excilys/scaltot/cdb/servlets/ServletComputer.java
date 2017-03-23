@@ -159,6 +159,7 @@ public class ServletComputer extends Servlet {
         }
         return (Pagination) request.getSession().getAttribute("page");
     }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      * @param request : request

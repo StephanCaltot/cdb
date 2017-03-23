@@ -3,9 +3,10 @@
 
 
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/font-awesome.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/main.css"/>" rel="stylesheet" media="screen">
+
 </head>
 
 <body>
@@ -82,7 +83,7 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="?action=previousPage" aria-label="Previous"> <span
+				<li><a href="?action=previousPage&numOfPage=${currentPage-1 }" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="i"
@@ -90,7 +91,7 @@
 					end="${(currentPage + 2 < numberOfPages) ? (currentPage + 2) : numberOfPages}">
 					<li><a href="?action=numOfPage&numOfPage=${i-1}">${i}</a></li>
 				</c:forEach>
-				<li><a href="?action=nextPage" aria-label="Next"> <span
+				<li><a href="?action=nextPage&numOfPage=${currentPage+1 }" aria-label="Next"> <span
 						aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
@@ -102,8 +103,9 @@
 			</div>
 		</div>
 	</footer>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	<script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/dashboard.js"/>"></script>
+
 </body>
 </html>

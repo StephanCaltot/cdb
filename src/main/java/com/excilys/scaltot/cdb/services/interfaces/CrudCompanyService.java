@@ -18,7 +18,7 @@ public interface CrudCompanyService {
      * Retrieves one company by id.
      * @param id : id of company
      * @return company with id gave a parameter
-     * @throws SQLException : SQLException 
+     * @throws SQLException : SQLException
      */
     Optional<Company> find(long id) throws SQLException;
 

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
@@ -18,6 +19,7 @@ import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
+@Transactional
 public class CrudCompanyServiceImpl implements CrudCompanyService {
 
     @Autowired
