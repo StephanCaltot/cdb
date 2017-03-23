@@ -5,7 +5,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Repository;
 
  /**
-  * 
+  *
   * @author Caltot Stéphan
   *
   * 22 mars 2017

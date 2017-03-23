@@ -11,5 +11,5 @@ import org.springframework.web.context.ContextLoaderListener;
  * 22 mars 2017
  */
 @WebListener
-public class Listener extends ContextLoaderListener {   
+public class Listener extends ContextLoaderListener {
 }

@@ -252,7 +252,6 @@ public class CrudComputerImpl implements CrudComputer {
         return computers;
     }
 
-
     /**
      * Return the number of computer in database.
      * @return long

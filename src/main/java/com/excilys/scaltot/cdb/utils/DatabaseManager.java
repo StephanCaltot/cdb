@@ -2,7 +2,6 @@ package com.excilys.scaltot.cdb.utils;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,6 @@ public class DatabaseManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class.getName());
 
     private Connection connection;
-    private Properties properties;
     @Autowired
     private Datasource datasource;
 
@@ -34,18 +32,7 @@ public class DatabaseManager {
      * Singleton's private constructor.
      */
     public DatabaseManager() {
-        
-    }
 
-    /**
-     * Initialization of driver.
-     */
-    public void initDriver() {
-        try {
-            Class.forName(properties.getProperty("DRIVER"));
-        } catch (ClassNotFoundException e1) {
-            e1.printStackTrace();
-        }
     }
 
     /**
