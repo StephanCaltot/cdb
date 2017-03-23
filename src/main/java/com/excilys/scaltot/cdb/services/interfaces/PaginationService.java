@@ -14,11 +14,11 @@ import com.excilys.scaltot.cdb.utils.Pagination;
 public interface PaginationService {
 
     /**
-     * Initialize number of elements and pages.
+     * Initialize number of elements and pages depending of type Company, or Computer.
      *
      * @param pagination : page
      */
-    void paginationInitialisation(Pagination pagination);
+    void paginationInitialisation(Pagination pagination, Class<?> classe);
 
     /**
      * Retrieves list of companies paginated.

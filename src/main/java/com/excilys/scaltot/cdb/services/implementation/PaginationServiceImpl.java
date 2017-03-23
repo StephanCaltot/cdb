@@ -28,8 +28,14 @@ public class PaginationServiceImpl implements PaginationService {
      *
      * @param pagination : page
      */
-    public void paginationInitialisation(Pagination pagination) {
-        pagination.setNumberOfElements(crudCompanyServiceImpl.getCountOfCompanies());
+    public void paginationInitialisation(Pagination pagination, Class<?> classe) {
+        if (classe.getSimpleName().equals("Computer")){
+            pagination.setNumberOfElements(crudComputerServiceImpl.getCountOfComputers());
+
+        } else if (classe.getSimpleName().equals("Company")) {
+            pagination.setNumberOfElements(crudCompanyServiceImpl.getCountOfCompanies());
+
+        }
         pagination.setNumberOfPages(pagination.getNumberOfElements() / pagination.getPageSize());
     }
 

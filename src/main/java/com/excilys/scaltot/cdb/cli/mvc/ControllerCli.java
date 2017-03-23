@@ -46,8 +46,8 @@ public class ControllerCli {
      * Controler's constructor setting crudService for company and computer.
      */
     public ControllerCli() {
-        paginationServiceImpl.paginationInitialisation(paginationComputer);
-        paginationServiceImpl.paginationInitialisation(paginationCompany);
+        paginationServiceImpl.paginationInitialisation(paginationComputer, Computer.class);
+        paginationServiceImpl.paginationInitialisation(paginationCompany, Company.class);
         scan = ScannerSystemIn.getInstance();
     }
 
