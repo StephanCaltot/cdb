@@ -29,7 +29,7 @@ public class DatabaseManager {
     private Datasource datasource;
 
     /**
-     * Singleton's private constructor.
+     * Constructor.
      */
     public DatabaseManager() {
 

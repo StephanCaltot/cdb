@@ -1,5 +1,7 @@
 package com.excilys.scaltot.cdb.services.implementation;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,8 +10,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
+import com.excilys.scaltot.cdb.utils.DatabaseManager;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
@@ -18,13 +22,28 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
     @Autowired
     private CrudComputer crudComputerImpl;
+    private Connection connection;
+    @Autowired
+    private DatabaseManager databaseManager;
 
     /**
      * Create computer.
      * @param computer : computer
      */
     public void create(Optional<Computer> computer) {
-        crudComputerImpl.create(computer);
+
+        connection = databaseManager.getConnection();
+
+        try {
+            crudComputerImpl.create(computer, connection);
+            databaseManager.commit();
+
+        } catch (SQLException e) {
+            databaseManager.rollback();
+            throw new PersistenceException(e);
+        } finally {
+            databaseManager.closeConnection();
+        }
     }
 
     /**
@@ -34,7 +53,21 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return computer entity find with id gave in parameter
      */
     public Optional<Computer> find(long id) {
-        return crudComputerImpl.find(id);
+
+        connection = databaseManager.getConnection();
+
+        try {
+            return crudComputerImpl.find(id, connection);
+
+        } catch (SQLException e) {
+
+            throw new PersistenceException(e);
+
+        } finally {
+
+            databaseManager.closeConnection();
+
+        }
     }
 
     /**
@@ -44,8 +77,22 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return boolean
      */
     public Boolean delete(long id) {
-        return crudComputerImpl.delete(id);
-    }
+        
+        connection = databaseManager.getConnection();
+        
+        try {
+           if (!crudComputerImpl.delete(id, connection)) {
+               return false;
+           }
+           databaseManager.commit();
+           return true;
+       } catch (SQLException e) {
+           databaseManager.rollback();
+           throw new PersistenceException(e);
+       } finally {
+           databaseManager.closeConnection();
+       }
+   }
 
     /**
      * Update CRUD's operation.
@@ -53,7 +100,18 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @param computer : computer
      */
     public void update(Optional<Computer> computer) {
-        crudComputerImpl.update(computer);
+
+        connection = databaseManager.getConnection();
+        
+        try {
+            crudComputerImpl.update(computer, connection);
+            databaseManager.commit();
+       } catch (SQLException e) {
+           databaseManager.rollback();
+           throw new PersistenceException(e);
+       } finally {
+           databaseManager.closeConnection();
+       }
     }
 
     /**
@@ -62,7 +120,22 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return list of computers
      */
     public List<Computer> findAll() {
-        return crudComputerImpl.findAll();
+
+        connection = databaseManager.getConnection();
+
+        try {
+
+            return crudComputerImpl.findAll(connection);
+
+        } catch (SQLException e) {
+
+            throw new PersistenceException(e);
+
+        } finally {
+
+            databaseManager.closeConnection();
+
+        }
     }
 
     /**
@@ -70,7 +143,22 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return long
      */
     public long getCountOfComputers() {
-        return crudComputerImpl.getCountOfElements();
+        
+        connection = databaseManager.getConnection();
+
+        try {
+
+            return crudComputerImpl.getCountOfElements(connection);
+
+        } catch (SQLException e) {
+
+            throw new PersistenceException(e);
+
+        } finally {
+
+            databaseManager.closeConnection();
+
+        }        
     }
 
     /**
@@ -78,8 +166,23 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @param nameFilter : filter
      * @return list of computers
      */
-    public List<Computer> getComputersFiltered(String nameFilter) {
-        return crudComputerImpl.getComputersFiltered(nameFilter);
+    public List<Computer> getComputersFiltered(String nameFilter) throws SQLException {
+
+        connection = databaseManager.getConnection();
+
+        try {
+
+            return crudComputerImpl.getComputersFiltered(nameFilter, connection);
+
+        } catch (SQLException e) {
+
+            throw new PersistenceException(e);
+
+        } finally {
+
+            databaseManager.closeConnection();
+
+        }  
     }
 
     /**
@@ -89,6 +192,21 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return list of computers paginated
      */
     public List<Computer> findByPageFilter(Pagination pagination) {
-        return crudComputerImpl.findByPageFilter(pagination);
+        
+        connection = databaseManager.getConnection();
+
+        try {
+
+            return crudComputerImpl.findByPageFilter(pagination, connection);
+
+        } catch (SQLException e) {
+
+            throw new PersistenceException(e);
+
+        } finally {
+
+            databaseManager.closeConnection();
+
+        }
     }
 }

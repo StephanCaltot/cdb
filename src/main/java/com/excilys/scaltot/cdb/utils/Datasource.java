@@ -14,9 +14,6 @@ import org.springframework.stereotype.Repository;
 @Scope("singleton")
 public class Datasource extends DriverManagerDataSource {
 
-    @SuppressWarnings("unused")
-    private PropertiesLoader propertiesLoader = PropertiesLoader.INSTANCE;
-
     /**
      * Configures data source.
      */

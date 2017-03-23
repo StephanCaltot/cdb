@@ -1,5 +1,7 @@
 package com.excilys.scaltot.cdb.services.implementation;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,8 +10,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
 import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
+import com.excilys.scaltot.cdb.utils.DatabaseManager;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
@@ -18,14 +22,25 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
 
     @Autowired
     private CrudCompany crudCompanyImpl;
+    private Connection connection;
+    @Autowired
+    private DatabaseManager databaseManager;
 
     /**
      * Return company find by id.
      * @param id : id
      * @return company
+     * @throws SQLException 
      */
     public Optional<Company> find(long id) {
-        return crudCompanyImpl.find(id);
+        connection = databaseManager.getConnection();
+        try {
+            return crudCompanyImpl.find(id, connection);
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            databaseManager.closeConnection();
+        }
     }
 
     /**
@@ -33,7 +48,14 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findAll() {
-        return crudCompanyImpl.findAll();
+        connection = databaseManager.getConnection();
+        try {
+            return crudCompanyImpl.findAll(connection);
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            databaseManager.closeConnection();
+        }
     }
 
     /**
@@ -42,7 +64,14 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findByPage(Pagination pagination) {
-        return crudCompanyImpl.findByPageFilter(pagination);
+        connection = databaseManager.getConnection();
+        try {
+            return crudCompanyImpl.findByPageFilter(pagination, connection);
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            databaseManager.closeConnection();
+        }
     }
 
     /**
@@ -50,7 +79,14 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return long
      */
     public long getCountOfCompanies() {
-        return crudCompanyImpl.getCountOfElements();
+        connection = databaseManager.getConnection();
+        try {
+            return crudCompanyImpl.getCountOfElements(connection);
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            databaseManager.closeConnection();
+        }
     }
 
     /**
@@ -59,6 +95,18 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return boolean
      */
     public boolean delete(long companyId) {
-        return crudCompanyImpl.delete(companyId);
+        connection = databaseManager.getConnection();
+         try {
+            if (!crudCompanyImpl.delete(companyId, connection)) {
+                return false;
+            }
+            databaseManager.commit();
+            return true;
+        } catch (SQLException e) {
+            databaseManager.rollback();
+            throw new PersistenceException(e);
+        } finally {
+            databaseManager.closeConnection();
+        }
     }
 }

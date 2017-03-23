@@ -1,5 +1,6 @@
 package com.excilys.scaltot.cdb.services.interfaces;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +18,9 @@ public interface CrudCompanyService {
      * Retrieves one company by id.
      * @param id : id of company
      * @return company with id gave a parameter
+     * @throws SQLException : SQLException 
      */
-    Optional<Company> find(long id);
+    Optional<Company> find(long id) throws SQLException;
 
     /**
      * Retrieves all companies.
