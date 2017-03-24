@@ -41,7 +41,8 @@ public class CrudComputerImpl implements CrudComputer {
      * Create CRUD's operation.
      *
      * @param computer : computer
-     * @throws SQLException 
+     * @param connection : connection
+     * @throws SQLException
      */
     public void create(Optional<Computer> computer, Connection connection) throws SQLException {
         if (!computer.isPresent()) {
@@ -84,16 +85,17 @@ public class CrudComputerImpl implements CrudComputer {
      *
      * @param id : id
      * @return computer entity find with id gave in parameter
+     * @param connection : connection
      * @throws SQLException : SQLException
      */
-    public Optional<Computer> find(long id, Connection connection2) throws SQLException {
+    public Optional<Computer> find(long id, Connection connection) throws SQLException {
 
         if (id <= 0) {
             LOGGER.warn("You are trying to find a computer with null or negative id !\n");
             return Optional.empty();
         }
 
-        CrudServiceConstant.preparedStatementFind = connection2.prepareStatement(DaoProperties.FIND_COMPUTER);
+        CrudServiceConstant.preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPUTER);
         CrudServiceConstant.preparedStatementFind.setLong(1, id);
 
         if (!CrudServiceConstant.preparedStatementFind.executeQuery().isBeforeFirst()) {
@@ -113,6 +115,7 @@ public class CrudComputerImpl implements CrudComputer {
      * Delete CRUD's operation.
      *
      * @param id : id
+     * @param connection : connection
      * @throws PersistenceException : PersistenceException
      * @throws SQLException
      * @return boolean
@@ -136,7 +139,8 @@ public class CrudComputerImpl implements CrudComputer {
      * Update CRUD's operation.
      *
      * @param computer : computer
-     * @throws SQLException 
+     * @param connection : connection
+     * @throws SQLException
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
@@ -188,7 +192,8 @@ public class CrudComputerImpl implements CrudComputer {
      * Retrieves all computers without any pagination.
      *
      * @return list of computers
-     * @throws SQLException : SQLException 
+     * @param connection : connection
+     * @throws SQLException : SQLException
      * @throws PersistenceException : SQLException
      * @throws Exception : SQLException
      */
@@ -210,8 +215,9 @@ public class CrudComputerImpl implements CrudComputer {
 
     /**
      * Return the number of computer in database.
+     * @param connection : connection
      * @return long
-     * @throws SQLException 
+     * @throws SQLException
      */
     public long getCountOfElements(Connection connection) throws SQLException {
 
@@ -224,9 +230,10 @@ public class CrudComputerImpl implements CrudComputer {
 
     /**
      * Return the list of computer in database filtered by name.
+     * @param connection : connection
      * @param nameFilter : filter
      * @return list of computers
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<Computer> getComputersFiltered(String nameFilter, Connection connection) throws SQLException {
 
@@ -248,8 +255,9 @@ public class CrudComputerImpl implements CrudComputer {
      * Retrieves computers paginated by limit ( 10 here ).
      *
      * @param pagination : page
+     * @param connection : connection
      * @return list of computers paginated
-     * @throws SQLException 
+     * @throws SQLException
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */

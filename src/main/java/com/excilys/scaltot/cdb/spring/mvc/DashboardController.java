@@ -16,7 +16,6 @@ import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.mappers.MapperComputerDto;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
 import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
-import com.excilys.scaltot.cdb.servlets.ServletComputer;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 
@@ -29,55 +28,49 @@ import com.excilys.scaltot.cdb.utils.Pagination;
 @RequestMapping("/springcdb")
 public class DashboardController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServletComputer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardController.class);
 
     @Autowired
     private PaginationService paginationServiceImpl;
-
     @Autowired
     private CrudComputerService crudComputerServiceImpl;
-
-    private boolean init = false;
-    
     private Pagination page;
-    
     private List<ComputerDto> computers;
 
+    /**
+     * Initializes home page.
+     * @param model : model
+     * @param action :action
+     * @param size : size
+     * @param numOfPage : numOfPage
+     * @param filter : filter
+     * @return page redirection
+     */
     @RequestMapping(method = RequestMethod.GET)
     public String doGet(ModelMap model,
             @RequestParam(value = "action", defaultValue = "") final String action,
-            @RequestParam(value = "pageSize", defaultValue = "10") final int size,
+            @RequestParam(value = "size", defaultValue = "10") final int size,
             @RequestParam(value = "numOfPage", defaultValue = "0") final int numOfPage,
             @RequestParam(value = "filter", defaultValue = "") final String filter) {
 
-        if (!init) {
-            page = paginationServiceImpl.paginationInitialisation(new Pagination(), Computer.class);
-            init = true;
-        }
-
+        page = paginationServiceImpl.paginationInitialisation(new Pagination(), Computer.class);
         paginationServiceImpl.setFilter(page, filter);
-        if (action.equals("")) {
-            paginationServiceImpl.setCurrentPage(page, numOfPage);
-        }
-        paginationServiceImpl.setPageSize(page, size);
-
 
         if (action.equals("previousPage")) {
-            long offset = page.getOffset();
+            long offset;
             long currentPage = numOfPage;
-            long pageSize = page.getPageSize();
+            long pageSize = size;
 
             currentPage = (currentPage) >= 0 ? (currentPage) : 0;
             offset = currentPage * pageSize;
 
             page.setCurrentPage(currentPage);
             page.setOffset(offset);
-            
-            }
-        if (action.equals("nextPage")) {
-            long offset = page.getOffset();
+
+        } else if (action.equals("nextPage")) {
+            long offset;
             long currentPage = numOfPage;
-            long pageSize = page.getPageSize();
+            long pageSize = size;
             long numberOfPages = page.getNumberOfPages();
 
             currentPage = (currentPage) <= numberOfPages ? (currentPage) : numberOfPages;
@@ -85,8 +78,10 @@ public class DashboardController {
 
             page.setCurrentPage(currentPage);
             page.setOffset(offset);
+        } else {
+            paginationServiceImpl.setPageSize(page, size);
+            paginationServiceImpl.setCurrentPage(page, numOfPage);
         }
-
 
         computers = MapperComputerDto.computerListToComputerDto(paginationServiceImpl.findComputerByPage(page));
         model.addAttribute("computers", computers);
@@ -94,10 +89,16 @@ public class DashboardController {
         model.addAttribute("numberOfPages", page.getNumberOfPages());
         model.addAttribute("currentPage", page.getCurrentPage());
         model.addAttribute("numberOfElements", page.getNumberOfElements());
-        
+
         return "dashboard";
     }
-    
+
+    /**
+     * Post delete method.
+     * @param model : model
+     * @param selection : selection
+     * @return page redirection
+     */
     @RequestMapping(method = RequestMethod.POST)
     public String doPost(ModelMap model,
             @RequestParam(value = "selection", defaultValue = "") final String selection) {
@@ -107,6 +108,6 @@ public class DashboardController {
             LOGGER.info("DELETION ID" + Long.parseLong(computerId));
             crudComputerServiceImpl.delete(Long.parseLong(computerId));
         }
-        return "dashboard";
+        return "redirect:springcdb";
     }
 }

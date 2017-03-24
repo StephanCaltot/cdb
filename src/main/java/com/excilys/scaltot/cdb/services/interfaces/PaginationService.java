@@ -18,7 +18,7 @@ public interface PaginationService {
      *
      * @param pagination : page
      * @param classe : class type
-     * @return 
+     * @return Pagination page
      */
     Pagination paginationInitialisation(Pagination pagination, Class<?> classe);
 

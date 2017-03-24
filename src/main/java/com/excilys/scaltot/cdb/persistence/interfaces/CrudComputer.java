@@ -16,18 +16,21 @@ public interface CrudComputer extends CrudService<Computer> {
 
     /**
      * Method which permits to create a computer.
+     * @param connection : connection
      * @param computer : computer
      */
     void create(Optional<Computer> computer, Connection connection) throws SQLException;
 
     /**
      * Method which permits to update a computer.
+     * @param connection : connection
      * @param computer : computer
      */
     void update(Optional<Computer> computer, Connection connection) throws SQLException;
 
     /**
      * Method which permits to retrieves a list of computer filtered.
+     * @param connection : connection
      * @param filter : filter
      * @return list of computer
      */

@@ -29,14 +29,14 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="?action=add" >Add
+					<a class="btn btn-success" id="addComputer" href="addComputer" >Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
 
-        <form id="deleteForm" action="?action=delete" method="POST">
+        <form id="deleteForm" action="springcdb" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -68,7 +68,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computerDto.id}"></td>
-							<td><a href="computerdatabase?action=edit&id=${computerDto.id}" onclick="">${computerDto.name}</a></td>
+							<td><a href="editComputer?id=${computerDto.id}" onclick="">${computerDto.name}</a></td>
 							<td>${computerDto.dateWichIsIntroduced}</td>
 							<td>${computerDto.dateWichIsDiscontinued}</td>
 							<td>${computerDto.companyName}</td>
@@ -83,7 +83,7 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="?action=previousPage&numOfPage=${currentPage-1 }" aria-label="Previous"> <span
+				<li><a href="?action=previousPage&numOfPage=${currentPage-1}" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="i"
@@ -91,15 +91,15 @@
 					end="${(currentPage + 2 < numberOfPages) ? (currentPage + 2) : numberOfPages}">
 					<li><a href="?action=numOfPage&numOfPage=${i-1}">${i}</a></li>
 				</c:forEach>
-				<li><a href="?action=nextPage&numOfPage=${currentPage+1 }" aria-label="Next"> <span
+				<li><a href="?action=nextPage&numOfPage=${currentPage+1}" aria-label="Next"> <span
 						aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a class="btn btn-default " href="?action=size&size=10">10</a> <a
-					class="btn btn-default " href="?action=size&size=50">50</a> <a
-					class="btn btn-default " href="?action=size&size=100">100</a>
+				<a class="btn btn-default " href="?size=10">10</a> <a
+					class="btn btn-default " href="?size=50">50</a> <a
+					class="btn btn-default " href="?size=100">100</a>
 			</div>
 		</div>
 	</footer>

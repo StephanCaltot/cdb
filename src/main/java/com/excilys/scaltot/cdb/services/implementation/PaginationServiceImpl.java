@@ -28,6 +28,7 @@ public class PaginationServiceImpl implements PaginationService {
      *
      * @param pagination : page
      * @param classe : class type
+     * @return Pagination page
      */
     public Pagination paginationInitialisation(Pagination pagination, Class<?> classe) {
         if (classe.getSimpleName().equals("Computer")) {

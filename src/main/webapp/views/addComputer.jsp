@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form action="computerdatabase" method="POST"> 
+                    <form method="POST"> 
                     	<input name="action" type="hidden" value="add"/>
                         <fieldset>
                             <div class="form-group">
@@ -52,7 +52,7 @@
                         <div class="actions pull-right">
                             <input id="addComputerButton" type="submit" value="Add" class="btn btn-primary">
                             or
-                            <a href="computerdatabase" class="btn btn-default">Cancel</a>
+                            <a href="springcdb" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

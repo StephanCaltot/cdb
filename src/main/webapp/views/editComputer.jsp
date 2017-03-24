@@ -27,7 +27,7 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form action="computerdatabase" method="POST">
+                    <form method="POST">
                         <input name="action" type="hidden" value="edit"/>
                         <fieldset>
                                 <input type="hidden" class="form-control" id="id" name="id" value="${computerDto.id}" />
@@ -65,7 +65,7 @@
                         <div class="actions pull-right">
                             <input id="editComputerButton" type="submit" value="Edit" class="btn btn-primary">
                             or
-                            <a href="computerdatabase" class="btn btn-default">Cancel</a>
+                            <a href="springcdb" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

@@ -5,12 +5,12 @@ import org.springframework.web.WebApplicationInitializer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
- 
+
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 /**
- * 
+ *
  * @author Caltot Stéphan
  *
  * 23 mars 2017
@@ -19,6 +19,8 @@ public class CdbInitializer implements WebApplicationInitializer {
 
     /**
      * Initialize context.
+     * @param container : container
+     * @throws ServletException : ServletException
      */
     public void onStartup(ServletContext container) throws ServletException {
 

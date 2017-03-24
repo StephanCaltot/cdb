@@ -40,8 +40,9 @@ public class CrudCompanyImpl implements CrudCompany {
      * Find CRUD's operation.
      *
      * @param id : id
+     * @param connection : connection
      * @return company entity find with id gave in parameter
-     * @throws SQLException 
+     * @throws SQLException
      */
     public Optional<Company> find(long id, Connection connection) throws SQLException {
 
@@ -61,7 +62,7 @@ public class CrudCompanyImpl implements CrudCompany {
 
     /**
      * Retrieves all companies.
-     *
+     * @param connection : connection
      * @return list contains all companies
      * @throws SQLException  : SQLException
      */
@@ -83,9 +84,10 @@ public class CrudCompanyImpl implements CrudCompany {
 
     /**
      * Allows pagination for findAll companies.
+     * @param connection : connection
      * @param pagination : page
      * @return List of companies
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<Company> findByPageFilter(Pagination pagination, Connection connection) throws SQLException {
 
@@ -118,8 +120,9 @@ public class CrudCompanyImpl implements CrudCompany {
 
     /**
      * Return the number of computer in database.
+     * @param connection : connection
      * @return long
-     * @throws SQLException : SQLException 
+     * @throws SQLException : SQLException
      */
     public long getCountOfElements(Connection connection) throws SQLException {
 
@@ -132,8 +135,9 @@ public class CrudCompanyImpl implements CrudCompany {
     /**
      * Delete one company with computer associated.
      * @param id : id of company
+     * @param connection : connection
      * @return boolean
-     * @throws SQLException : SQLException 
+     * @throws SQLException : SQLException
      */
     public boolean delete(long id, Connection connection) throws SQLException {
         if (id <= 0) {

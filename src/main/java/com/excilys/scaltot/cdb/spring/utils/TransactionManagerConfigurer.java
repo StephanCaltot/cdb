@@ -18,9 +18,9 @@ public class TransactionManagerConfigurer implements TransactionManagementConfig
 
     @Autowired
     private Datasource datasource;
-    
+
     /**
-     * Constructor instantiating the data source. 
+     * Constructor instantiating the data source.
      */
     @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {

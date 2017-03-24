@@ -32,7 +32,7 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * Return company find by id.
      * @param id : id
      * @return company
-     * @throws SQLException 
+     * @throws SQLException
      */
     public Optional<Company> find(long id) {
         connection = databaseManager.getConnection();
