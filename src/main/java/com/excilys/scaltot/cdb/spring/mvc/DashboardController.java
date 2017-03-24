@@ -1,14 +1,17 @@
 package com.excilys.scaltot.cdb.spring.mvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
@@ -46,20 +49,19 @@ public class DashboardController {
      * @param filter : filter
      * @return page redirection
      */
-    @RequestMapping(method = RequestMethod.GET)
-    public String doGet(ModelMap model,
-            @RequestParam(value = "action", defaultValue = "") final String action,
-            @RequestParam(value = "size", defaultValue = "10") final int size,
-            @RequestParam(value = "numOfPage", defaultValue = "0") final int numOfPage,
-            @RequestParam(value = "filter", defaultValue = "") final String filter) {
+    @GetMapping
+    public String doGet(ModelMap model, @RequestParam MultiValueMap<String, String> parameters) {
 
         page = paginationServiceImpl.paginationInitialisation(new Pagination(), Computer.class);
-        paginationServiceImpl.setFilter(page, filter);
 
-        if (action.equals("previousPage")) {
+        if (parameters.containsKey("filter")) {
+            paginationServiceImpl.setFilter(page, parameters.get("filter").get(0));   
+        }
+
+        if (parameters.containsKey("previousPage")) {
             long offset;
-            long currentPage = numOfPage;
-            long pageSize = size;
+            long currentPage = Long.valueOf(parameters.get("numOfPage").get(0));
+            long pageSize = Long.valueOf(parameters.get("size").get(0));
 
             currentPage = (currentPage) >= 0 ? (currentPage) : 0;
             offset = currentPage * pageSize;
@@ -67,10 +69,11 @@ public class DashboardController {
             page.setCurrentPage(currentPage);
             page.setOffset(offset);
 
-        } else if (action.equals("nextPage")) {
+        } else if (parameters.containsKey("nextPage")) {
+
             long offset;
-            long currentPage = numOfPage;
-            long pageSize = size;
+            long currentPage = Long.valueOf(parameters.get("numOfPage").get(0));
+            long pageSize = Long.valueOf(parameters.get("size").get(0));
             long numberOfPages = page.getNumberOfPages();
 
             currentPage = (currentPage) <= numberOfPages ? (currentPage) : numberOfPages;
@@ -78,14 +81,18 @@ public class DashboardController {
 
             page.setCurrentPage(currentPage);
             page.setOffset(offset);
+
         } else {
-            paginationServiceImpl.setPageSize(page, size);
-            paginationServiceImpl.setCurrentPage(page, numOfPage);
+            if (parameters.containsKey("size")) {
+                paginationServiceImpl.setPageSize(page, Integer.valueOf(parameters.get("size").get(0)));
+            }
+            if (parameters.containsKey("numOfPage")) {
+                paginationServiceImpl.setCurrentPage(page, Integer.valueOf(parameters.get("numOfPage").get(0)));
+            }
         }
 
         computers = MapperComputerDto.computerListToComputerDto(paginationServiceImpl.findComputerByPage(page));
         model.addAttribute("computers", computers);
-        model.addAttribute("filter", filter);
         model.addAttribute("numberOfPages", page.getNumberOfPages());
         model.addAttribute("currentPage", page.getCurrentPage());
         model.addAttribute("numberOfElements", page.getNumberOfElements());
@@ -99,14 +106,16 @@ public class DashboardController {
      * @param selection : selection
      * @return page redirection
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public String doPost(ModelMap model,
-            @RequestParam(value = "selection", defaultValue = "") final String selection) {
+            @RequestParam("selection") final Optional<String> selection) {
 
-        String[] selections = selection.split(",");
-        for (String computerId : selections) {
-            LOGGER.info("DELETION ID" + Long.parseLong(computerId));
-            crudComputerServiceImpl.delete(Long.parseLong(computerId));
+        if (selection.isPresent()) {
+            String[] selections = selection.get().split(",");
+            for (String computerId : selections) {
+                LOGGER.info("DELETION ID" + Long.parseLong(computerId));
+                crudComputerServiceImpl.delete(Long.parseLong(computerId));
+            }   
         }
         return "redirect:springcdb";
     }
