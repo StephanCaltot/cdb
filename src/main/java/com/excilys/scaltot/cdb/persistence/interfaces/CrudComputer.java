@@ -1,6 +1,5 @@
 package com.excilys.scaltot.cdb.persistence.interfaces;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -16,24 +15,22 @@ public interface CrudComputer extends CrudService<Computer> {
 
     /**
      * Method which permits to create a computer.
-     * @param connection : connection
      * @param computer : computer
+     * @return 
      */
-    void create(Optional<Computer> computer, Connection connection) throws SQLException;
+    boolean create(Optional<Computer> computer) throws SQLException;
 
     /**
      * Method which permits to update a computer.
-     * @param connection : connection
      * @param computer : computer
      */
-    void update(Optional<Computer> computer, Connection connection) throws SQLException;
+    void update(Optional<Computer> computer) throws SQLException;
 
     /**
      * Method which permits to retrieves a list of computer filtered.
-     * @param connection : connection
      * @param filter : filter
      * @return list of computer
      */
-    List<Computer> getComputersFiltered(String filter, Connection connection) throws SQLException;
+    List<Computer> getComputersFiltered(String filter) throws SQLException;
 
 }

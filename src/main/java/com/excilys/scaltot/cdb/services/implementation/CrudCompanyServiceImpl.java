@@ -1,6 +1,5 @@
 package com.excilys.scaltot.cdb.services.implementation;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
 import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
-import com.excilys.scaltot.cdb.utils.DatabaseManager;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
@@ -24,9 +22,6 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
 
     @Autowired
     private CrudCompany crudCompanyImpl;
-    private Connection connection;
-    @Autowired
-    private DatabaseManager databaseManager;
 
     /**
      * Return company find by id.
@@ -35,13 +30,10 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @throws SQLException
      */
     public Optional<Company> find(long id) {
-        connection = databaseManager.getConnection();
         try {
-            return crudCompanyImpl.find(id, connection);
+            return crudCompanyImpl.find(id);
         } catch (SQLException e) {
             throw new PersistenceException(e);
-        } finally {
-            databaseManager.closeConnection();
         }
     }
 
@@ -50,13 +42,10 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findAll() {
-        connection = databaseManager.getConnection();
         try {
-            return crudCompanyImpl.findAll(connection);
+            return crudCompanyImpl.findAll();
         } catch (SQLException e) {
             throw new PersistenceException(e);
-        } finally {
-            databaseManager.closeConnection();
         }
     }
 
@@ -66,13 +55,10 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return list of companies
      */
     public List<Company> findByPage(Pagination pagination) {
-        connection = databaseManager.getConnection();
         try {
-            return crudCompanyImpl.findByPageFilter(pagination, connection);
+            return crudCompanyImpl.findByPageFilter(pagination);
         } catch (SQLException e) {
             throw new PersistenceException(e);
-        } finally {
-            databaseManager.closeConnection();
         }
     }
 
@@ -81,13 +67,10 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return long
      */
     public long getCountOfCompanies() {
-        connection = databaseManager.getConnection();
         try {
-            return crudCompanyImpl.getCountOfElements(connection);
+            return crudCompanyImpl.getCountOfElements();
         } catch (SQLException e) {
             throw new PersistenceException(e);
-        } finally {
-            databaseManager.closeConnection();
         }
     }
 
@@ -97,18 +80,13 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      * @return boolean
      */
     public boolean delete(long companyId) {
-        connection = databaseManager.getConnection();
          try {
-            if (!crudCompanyImpl.delete(companyId, connection)) {
+            if (!crudCompanyImpl.delete(companyId)) {
                 return false;
             }
-            databaseManager.commit();
             return true;
         } catch (SQLException e) {
-            databaseManager.rollback();
             throw new PersistenceException(e);
-        } finally {
-            databaseManager.closeConnection();
         }
     }
 }

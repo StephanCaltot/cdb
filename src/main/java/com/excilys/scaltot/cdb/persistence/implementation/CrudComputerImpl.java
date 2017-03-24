@@ -7,17 +7,25 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.mappers.MapperComputer;
 import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
 import com.excilys.scaltot.cdb.persistence.DaoProperties;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
+import com.excilys.scaltot.cdb.utils.Datasource;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
@@ -37,47 +45,35 @@ public class CrudComputerImpl implements CrudComputer {
     private Computer computer;
     private List<Computer> computers;
 
+
+    @Autowired
+    private Datasource dataSource;
+
+    private JdbcTemplate jdbcTemplateObject;
+
+    /**
+     * Avoids error on JDBC template initialization.
+     */
+    @PostConstruct
+    public void setDataSource() {
+       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+    }
+
     /**
      * Create CRUD's operation.
      *
      * @param computer : computer
-     * @param connection : connection
      * @throws SQLException
      */
-    public void create(Optional<Computer> computer, Connection connection) throws SQLException {
+    public boolean create(Optional<Computer> computer) throws SQLException {
         if (!computer.isPresent()) {
             LOGGER.warn("You are trying to create a null computer !\n");
-            return;
+            return false;
         }
 
-        CrudServiceConstant.preparedStatementInsert = connection.prepareStatement(DaoProperties.CREATE_COMPUTER);
+        int res = jdbcTemplateObject.queryForObject(DaoProperties.CREATE_COMPUTER, Integer.class, computer);
 
-        if (computer.get().getName() != null) {
-            CrudServiceConstant.preparedStatementInsert.setString(1, computer.get().getName());
-        } else {
-            CrudServiceConstant.preparedStatementInsert.setNull(1, java.sql.Types.VARCHAR);
-        }
-
-        if (computer.get().getDateWichIsIntroduced() != null) {
-            CrudServiceConstant.preparedStatementInsert.setObject(2,
-                    Date.valueOf(computer.get().getDateWichIsIntroduced()));
-        } else {
-            CrudServiceConstant.preparedStatementInsert.setNull(2, java.sql.Types.DATE);
-        }
-        if (computer.get().getDateWichIsDiscontinued() != null) {
-            CrudServiceConstant.preparedStatementInsert.setDate(3,
-                    Date.valueOf(computer.get().getDateWichIsDiscontinued()));
-        } else {
-            CrudServiceConstant.preparedStatementInsert.setNull(3, java.sql.Types.DATE);
-        }
-
-        if (computer.get().getManufacturer() != null) {
-            CrudServiceConstant.preparedStatementInsert.setLong(4, computer.get().getManufacturer().getId());
-        } else {
-            CrudServiceConstant.preparedStatementInsert.setNull(4, java.sql.Types.INTEGER);
-        }
-        CrudServiceConstant.preparedStatementInsert.execute();
-
+        return true;
     }
 
     /**
@@ -85,27 +81,16 @@ public class CrudComputerImpl implements CrudComputer {
      *
      * @param id : id
      * @return computer entity find with id gave in parameter
-     * @param connection : connection
      * @throws SQLException : SQLException
      */
-    public Optional<Computer> find(long id, Connection connection) throws SQLException {
+    public Optional<Computer> find(long id) throws SQLException {
 
         if (id <= 0) {
             LOGGER.warn("You are trying to find a computer with null or negative id !\n");
             return Optional.empty();
         }
 
-        CrudServiceConstant.preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPUTER);
-        CrudServiceConstant.preparedStatementFind.setLong(1, id);
-
-        if (!CrudServiceConstant.preparedStatementFind.executeQuery().isBeforeFirst()) {
-            LOGGER.warn("You are trying to find a computer doesn't exists anymore");
-            return Optional.empty();
-        }
-
-        resultSet = CrudServiceConstant.preparedStatementFind.executeQuery();
-        resultSet.next();
-        computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
+        Computer computer = jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPUTER, new MapperComputer(), id);
 
         return Optional.of(computer);
 
@@ -115,12 +100,11 @@ public class CrudComputerImpl implements CrudComputer {
      * Delete CRUD's operation.
      *
      * @param id : id
-     * @param connection : connection
      * @throws PersistenceException : PersistenceException
      * @throws SQLException
      * @return boolean
      */
-    public boolean delete(long id, Connection connection) throws SQLException {
+    public boolean delete(long id) throws SQLException {
         if (id <= 0) {
             LOGGER.warn("You are trying to delete a computer with null or negative id !\n");
             return false;
@@ -139,12 +123,11 @@ public class CrudComputerImpl implements CrudComputer {
      * Update CRUD's operation.
      *
      * @param computer : computer
-     * @param connection : connection
      * @throws SQLException
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
-    public void update(Optional<Computer> computer, Connection connection) throws SQLException {
+    public void update(Optional<Computer> computer) throws SQLException {
         if (!computer.isPresent()) {
             LOGGER.warn("You are trying to update a null computer !\n");
             return;
@@ -192,12 +175,11 @@ public class CrudComputerImpl implements CrudComputer {
      * Retrieves all computers without any pagination.
      *
      * @return list of computers
-     * @param connection : connection
      * @throws SQLException : SQLException
      * @throws PersistenceException : SQLException
      * @throws Exception : SQLException
      */
-    public List<Computer> findAll(Connection connection) throws SQLException {
+    public List<Computer> findAll() throws SQLException {
 
         computers = new ArrayList<>();
 
@@ -215,11 +197,10 @@ public class CrudComputerImpl implements CrudComputer {
 
     /**
      * Return the number of computer in database.
-     * @param connection : connection
      * @return long
      * @throws SQLException
      */
-    public long getCountOfElements(Connection connection) throws SQLException {
+    public long getCountOfElements() throws SQLException {
 
         CrudServiceConstant.preparedStatementCountComputer = connection.prepareStatement(DaoProperties.COUNT_COMPUTER);
         resultSet = CrudServiceConstant.preparedStatementCountComputer.executeQuery();
@@ -230,12 +211,11 @@ public class CrudComputerImpl implements CrudComputer {
 
     /**
      * Return the list of computer in database filtered by name.
-     * @param connection : connection
      * @param nameFilter : filter
      * @return list of computers
      * @throws SQLException
      */
-    public List<Computer> getComputersFiltered(String nameFilter, Connection connection) throws SQLException {
+    public List<Computer> getComputersFiltered(String nameFilter) throws SQLException {
 
         computers = new ArrayList<>();
 
@@ -255,13 +235,12 @@ public class CrudComputerImpl implements CrudComputer {
      * Retrieves computers paginated by limit ( 10 here ).
      *
      * @param pagination : page
-     * @param connection : connection
      * @return list of computers paginated
      * @throws SQLException
      * @throws PersistenceException : PersistenceException
      * @throws Exception
      */
-    public List<Computer> findByPageFilter(Pagination pagination, Connection connection) throws SQLException {
+    public List<Computer> findByPageFilter(Pagination pagination) throws SQLException {
 
         computers = new ArrayList<>();
         long offset = pagination.getOffset();

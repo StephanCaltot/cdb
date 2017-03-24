@@ -2,17 +2,17 @@ package com.excilys.scaltot.cdb.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+
+import org.springframework.jdbc.core.RowMapper;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
  * @author Caltot Stéphan
  *
  *         23 févr. 2017
  */
-public class MapperCompany {
+public class MapperCompany implements RowMapper<Company> {
 
     private static Company company;
 
@@ -22,26 +22,22 @@ public class MapperCompany {
      * @param resultSet : resultSet
      * @return Optional company entity
      */
-    public static Optional<Company> resultSetToEntity(Optional<ResultSet> resultSet) {
+    @Override
+    public Company mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 
         String name = null;
         long id = 0;
 
-        try {
-            company = new Company.CompanyBuilder().build();
+        company = new Company.CompanyBuilder().build();
 
-            if (resultSet.get().getLong("id") != 0) {
-                id = resultSet.get().getLong("id");
-            }
-            if (resultSet.get().getString("name") != null) {
-                name = resultSet.get().getString("name");
-            }
-            company = new Company.CompanyBuilder().withName(name).withId(id).build();
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
+        if (resultSet.getLong("id") != 0) {
+            id = resultSet.getLong("id");
         }
+        if (resultSet.getString("name") != null) {
+            name = resultSet.getString("name");
+        }
+        company = new Company.CompanyBuilder().withName(name).withId(id).build();
 
-        return Optional.of(company);
+        return company;
     }
-
 }
