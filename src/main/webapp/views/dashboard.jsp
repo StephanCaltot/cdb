@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
+<html>
+<head>
+<title>Computer Database</title>
 <!-- Bootstrap -->
 <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" media="screen">
 <link href="<c:url value="/resources/css/font-awesome.css"/>" rel="stylesheet" media="screen">
@@ -12,8 +14,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="springcdb"> Application -
-				Computer Database </a>
+            <a id="homePage" class="navbar-brand" href="springcdb"> Application - Computer Database </a>
 		</div>
 	</header>
 
@@ -29,9 +30,8 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer" >Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer" >Add Computer</a>
+					<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>

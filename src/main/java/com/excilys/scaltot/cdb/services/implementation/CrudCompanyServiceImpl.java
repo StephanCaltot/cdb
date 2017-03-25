@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
 import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
-import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
@@ -33,7 +33,7 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
         try {
             return crudCompanyImpl.find(id);
         } catch (PersistenceException persistenceException) {
-            throw new PersistenceException(persistenceException);
+            throw new PersistenceException("You are trying to find a computer (id=" + id + "which doesn't exists anymore.)",persistenceException);
         }
     }
 

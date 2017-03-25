@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
-import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")

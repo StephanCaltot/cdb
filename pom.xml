@@ -7,8 +7,8 @@
   <version>1.0.0</version>
   <packaging>war</packaging>
 
-  <name>cdb</name>
-  <url>http://localhost:8080/cdb/computerdatabase</url>
+  <name>Computer database</name>
+  <url>http://localhost:8080/cdb/springcdb</url>
 
   <properties>
   
@@ -37,6 +37,7 @@
 		<spring>4.3.7.RELEASE</spring>
 		<webdrivermanager.version>1.6.1</webdrivermanager.version>
 		<selenium.version>3.3.1</selenium.version>
+		<maven-logback.version>1.2.1</maven-logback.version>
 		
 	</properties>
 
@@ -157,18 +158,21 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql}</version>
+			<scope>compile</scope>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>${slf4j}</version>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
@@ -187,44 +191,51 @@
 		
 		<dependency>
 		    <groupId>javax.servlet</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
+		    <scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.servlet</groupId>
 		    <artifactId>javax.servlet-api</artifactId>
 		    <version>${servlet}</version>
-		    <scope>provided</scope>
+		    <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		    <version>${commons.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>jstl</groupId>
-		    <artifactId>jstl</artifactId>
-		    <version>${jstl}</version>
+		    <scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-core</artifactId>
 		    <version>${spring}</version>
+		    <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-context</artifactId>
 		    <version>${spring}</version>
+		    <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 	    	<groupId>org.springframework</groupId>
 		    <artifactId>spring-test</artifactId>
 		    <version>${spring}</version>
+		    <scope>test</scope>
 		</dependency>
 		
 		<dependency>
 	    	<groupId>org.springframework</groupId>
 		    <artifactId>spring-web</artifactId>
 		    <version>${spring}</version>
+		    <scope>compile</scope>
 		</dependency>
 		
 			<dependency>
@@ -238,19 +249,29 @@
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>${webdrivermanager.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-jdbc</artifactId>
 		    <version>${spring}</version>
+		    <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring}</version>
+		    <scope>compile</scope>
         </dependency>
+		
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${maven-logback.version}</version>
+		    <scope>compile</scope>
+		</dependency>
 		
 	</dependencies>
 	

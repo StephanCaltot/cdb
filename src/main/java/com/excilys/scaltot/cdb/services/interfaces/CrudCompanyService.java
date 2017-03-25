@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.utils.Pagination;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 
 /**
  * @author Caltot Stéphan

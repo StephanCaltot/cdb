@@ -14,13 +14,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.entities.mappers.MapperComputer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.mappers.MapperComputer;
-import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
-import com.excilys.scaltot.cdb.persistence.DaoProperties;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
-import com.excilys.scaltot.cdb.utils.Datasource;
-import com.excilys.scaltot.cdb.utils.Pagination;
+import com.excilys.scaltot.cdb.persistence.utils.CrudServiceConstant;
+import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
+import com.excilys.scaltot.cdb.persistence.utils.Datasource;
 
 /**
  * CRUD service allows CRUD operations on Computer entities.

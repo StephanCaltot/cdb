@@ -14,7 +14,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
+            <a id="homePage" class="navbar-brand" href="springcdb"> Application - Computer Database </a>
         </div>
     </header>
     
@@ -33,7 +33,7 @@
                                 <input type="hidden" class="form-control" id="id" name="id" value="${computerDto.id}" />
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" value="${computerDto.name}" />
+                                <input type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" value="${computerDto.name}" />
                                 <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">

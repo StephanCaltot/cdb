@@ -14,7 +14,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
+            <a id="homePage" class="navbar-brand" href="springcdb"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -28,13 +28,13 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="Computer name" name="computerName" >
+                                <input type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" >
                                 <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
                                 <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced">
-								<span id="dateError">Date have to matches dd/mm/aaaa format.</span>
+								<span id="dateError">Date must bet like dd/mm/aaaa and introduced must be before discontinued.</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>

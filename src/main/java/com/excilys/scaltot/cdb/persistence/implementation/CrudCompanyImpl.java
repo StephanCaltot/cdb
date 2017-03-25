@@ -14,13 +14,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.mappers.MapperCompany;
-import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
-import com.excilys.scaltot.cdb.persistence.DaoProperties;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
-import com.excilys.scaltot.cdb.utils.Datasource;
-import com.excilys.scaltot.cdb.utils.Pagination;
+import com.excilys.scaltot.cdb.persistence.utils.CrudServiceConstant;
+import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
+import com.excilys.scaltot.cdb.persistence.utils.Datasource;
 
 /**
  * Crud service allows CRUD's operations on Company entities.
@@ -69,7 +69,7 @@ public class CrudCompanyImpl implements CrudCompany {
             jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPANY, new MapperCompany(), id);
 
         } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
+            throw new PersistenceException(dataAccessException);
         }
 
         return Optional.of(company);
