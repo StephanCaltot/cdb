@@ -16,13 +16,13 @@ import com.excilys.scaltot.cdb.entities.computer.Computer.ComputerBuilder;
  *
  *         23 févr. 2017
  */
-public class MapperComputer implements RowMapper<Computer>{
+public class MapperComputer implements RowMapper<Computer> {
 
     private static ComputerBuilder computerBuilder;
     private static CompanyBuilder companyBuilder;
     private static Computer computer;
     private static Company company;
-    
+
     /**
      * Method transform resultSet in computer entity for JDBC template.
      * @param resultSet :resultSet

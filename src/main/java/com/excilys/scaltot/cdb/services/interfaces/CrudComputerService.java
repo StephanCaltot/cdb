@@ -1,6 +1,5 @@
 package com.excilys.scaltot.cdb.services.interfaces;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +59,7 @@ public interface CrudComputerService {
      * @param nameFilter : filter
      * @return list of computers
      */
-    List<Computer> getComputersFiltered(String nameFilter) throws SQLException;
+    List<Computer> getComputersFiltered(String nameFilter);
 
     /**
      * Retrieves computers paginated by limit ( 10 here ).

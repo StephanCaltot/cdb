@@ -1,9 +1,9 @@
 package com.excilys.scaltot.cdb.persistence.interfaces;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.utils.Pagination;
 
 /**
@@ -17,38 +17,38 @@ public interface CrudService<T> {
      * Retrieves one element referenced by id parameter.
      * @param id : id
      * @return T
-     * @throws SQLException : SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    Optional<T> find(long id) throws SQLException;
+    Optional<T> find(long id) throws PersistenceException;
 
     /**
      * Retrieves all elements.
      * @return T
-     * @throws SQLException : SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    List<T> findAll() throws SQLException;
+    List<T> findAll() throws PersistenceException;
 
     /**
      * Retrieves all elements paginated and filtered.
      * @param pagination : page
      * @return List<T>
-     * @throws SQLException : SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    List<T> findByPageFilter(Pagination pagination) throws SQLException;
+    List<T> findByPageFilter(Pagination pagination) throws PersistenceException;
 
     /**
      * Delete one elements referenced by id in parameter.
      * @param id : id
      * @return boolean
-     * @throws SQLException : SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    boolean delete(long id) throws SQLException;
+    boolean delete(long id) throws PersistenceException;
 
     /**
      * Return number of elements.
      * @return long
-     * @throws SQLException : SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    long getCountOfElements() throws SQLException;
+    long getCountOfElements() throws PersistenceException;
 
 }

@@ -32,8 +32,8 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
     public Optional<Company> find(long id) {
         try {
             return crudCompanyImpl.find(id);
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
+        } catch (PersistenceException persistenceException) {
+            throw new PersistenceException(persistenceException);
         }
     }
 
@@ -44,8 +44,8 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
     public List<Company> findAll() {
         try {
             return crudCompanyImpl.findAll();
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
+        } catch (PersistenceException persistenceException) {
+            throw new PersistenceException(persistenceException);
         }
     }
 
@@ -57,8 +57,8 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
     public List<Company> findByPage(Pagination pagination) {
         try {
             return crudCompanyImpl.findByPageFilter(pagination);
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
+        } catch (PersistenceException persistenceException) {
+            throw new PersistenceException(persistenceException);
         }
     }
 
@@ -69,8 +69,8 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
     public long getCountOfCompanies() {
         try {
             return crudCompanyImpl.getCountOfElements();
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
+        } catch (PersistenceException persistenceException) {
+            throw new PersistenceException(persistenceException);
         }
     }
 
@@ -85,8 +85,8 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
                 return false;
             }
             return true;
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
+        } catch (PersistenceException persistenceException) {
+            throw new PersistenceException(persistenceException);
         }
     }
 }

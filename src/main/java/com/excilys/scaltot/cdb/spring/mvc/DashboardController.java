@@ -43,10 +43,7 @@ public class DashboardController {
     /**
      * Initializes home page.
      * @param model : model
-     * @param action :action
-     * @param size : size
-     * @param numOfPage : numOfPage
-     * @param filter : filter
+     * @param parameters : parameters
      * @return page redirection
      */
     @GetMapping
@@ -55,7 +52,7 @@ public class DashboardController {
         page = paginationServiceImpl.paginationInitialisation(new Pagination(), Computer.class);
 
         if (parameters.containsKey("filter")) {
-            paginationServiceImpl.setFilter(page, parameters.get("filter").get(0));   
+            paginationServiceImpl.setFilter(page, parameters.get("filter").get(0));
         }
 
         if (parameters.containsKey("previousPage")) {
@@ -92,6 +89,7 @@ public class DashboardController {
         }
 
         computers = MapperComputerDto.computerListToComputerDto(paginationServiceImpl.findComputerByPage(page));
+
         model.addAttribute("computers", computers);
         model.addAttribute("numberOfPages", page.getNumberOfPages());
         model.addAttribute("currentPage", page.getCurrentPage());
@@ -115,7 +113,7 @@ public class DashboardController {
             for (String computerId : selections) {
                 LOGGER.info("DELETION ID" + Long.parseLong(computerId));
                 crudComputerServiceImpl.delete(Long.parseLong(computerId));
-            }   
+            }
         }
         return "redirect:springcdb";
     }

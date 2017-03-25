@@ -1,10 +1,5 @@
 package com.excilys.scaltot.cdb.persistence.implementation;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.mappers.MapperComputer;
 import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
 import com.excilys.scaltot.cdb.persistence.DaoProperties;
@@ -41,11 +35,6 @@ public class CrudComputerImpl implements CrudComputer {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudComputerImpl.class);
 
-    private ResultSet resultSet;
-    private Computer computer;
-    private List<Computer> computers;
-
-
     @Autowired
     private Datasource dataSource;
 
@@ -56,22 +45,31 @@ public class CrudComputerImpl implements CrudComputer {
      */
     @PostConstruct
     public void setDataSource() {
+
        this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+
     }
 
     /**
      * Create CRUD's operation.
      *
      * @param computer : computer
-     * @throws SQLException
+     * @throws PersistenceException : PersistenceException
+     * @return boolean
      */
-    public boolean create(Optional<Computer> computer) throws SQLException {
+    public boolean create(Optional<Computer> computer) throws PersistenceException {
         if (!computer.isPresent()) {
             LOGGER.warn("You are trying to create a null computer !\n");
             return false;
         }
 
-        int res = jdbcTemplateObject.queryForObject(DaoProperties.CREATE_COMPUTER, Integer.class, computer);
+        try {
+
+            jdbcTemplateObject.update(DaoProperties.CREATE_COMPUTER, computer.get().getName(), computer.get().getDateWichIsIntroduced(), computer.get().getDateWichIsDiscontinued(), computer.get().getManufacturer().getId());
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
+        }
 
         return true;
     }
@@ -81,16 +79,24 @@ public class CrudComputerImpl implements CrudComputer {
      *
      * @param id : id
      * @return computer entity find with id gave in parameter
-     * @throws SQLException : SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    public Optional<Computer> find(long id) throws SQLException {
+    public Optional<Computer> find(long id) throws PersistenceException {
 
         if (id <= 0) {
             LOGGER.warn("You are trying to find a computer with null or negative id !\n");
             return Optional.empty();
         }
 
-        Computer computer = jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPUTER, new MapperComputer(), id);
+        Computer computer = null;
+
+        try {
+
+            computer = jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPUTER, new MapperComputer(), id);
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
+        }
 
         return Optional.of(computer);
 
@@ -101,21 +107,29 @@ public class CrudComputerImpl implements CrudComputer {
      *
      * @param id : id
      * @throws PersistenceException : PersistenceException
-     * @throws SQLException
      * @return boolean
      */
-    public boolean delete(long id) throws SQLException {
+    public boolean delete(long id) throws PersistenceException {
         if (id <= 0) {
             LOGGER.warn("You are trying to delete a computer with null or negative id !\n");
             return false;
         }
 
-        CrudServiceConstant.preparedStatementDelete = connection.prepareStatement(DaoProperties.DELETE_COMPUTER);
-        CrudServiceConstant.preparedStatementDelete.setLong(1, id);
-        if (CrudServiceConstant.preparedStatementDelete.executeUpdate() == 0) {
-            LOGGER.warn("This computer doesn't exist, choose an other ID !");
+        int res = 0;
+
+        try {
+
+            res = jdbcTemplateObject.update(DaoProperties.DELETE_COMPUTER, id);
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
+        }
+
+        if (res == 0) {
+            LOGGER.warn("Deletion of computer with id" + id + "failed !\n The computer might not exists");
             return false;
         }
+
         return true;
     }
 
@@ -123,51 +137,21 @@ public class CrudComputerImpl implements CrudComputer {
      * Update CRUD's operation.
      *
      * @param computer : computer
-     * @throws SQLException
      * @throws PersistenceException : PersistenceException
-     * @throws Exception
      */
-    public void update(Optional<Computer> computer) throws SQLException {
+    public void update(Optional<Computer> computer) throws PersistenceException {
         if (!computer.isPresent()) {
             LOGGER.warn("You are trying to update a null computer !\n");
             return;
         }
 
-        CrudServiceConstant.preparedStatementUpdate = connection.prepareStatement(DaoProperties.UPDATE_COMPUTER);
+        try {
 
-        if (computer.get().getName() != null) {
-            CrudServiceConstant.preparedStatementUpdate.setString(1, computer.get().getName());
-        } else {
-            CrudServiceConstant.preparedStatementUpdate.setNull(1, java.sql.Types.VARCHAR);
+            jdbcTemplateObject.update(DaoProperties.UPDATE_COMPUTER, computer.get().getName(), computer.get().getDateWichIsIntroduced(), computer.get().getDateWichIsDiscontinued(), computer.get().getManufacturer().getId(), computer.get().getId());
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
         }
-
-        if (computer.get().getDateWichIsIntroduced() != null) {
-            CrudServiceConstant.preparedStatementUpdate.setObject(2,
-                    Date.valueOf(computer.get().getDateWichIsIntroduced()));
-        } else {
-            CrudServiceConstant.preparedStatementUpdate.setNull(2, java.sql.Types.DATE);
-        }
-
-        if (computer.get().getDateWichIsDiscontinued() != null) {
-            CrudServiceConstant.preparedStatementUpdate.setDate(3,
-                    Date.valueOf(computer.get().getDateWichIsDiscontinued()));
-        } else {
-            CrudServiceConstant.preparedStatementUpdate.setNull(3, java.sql.Types.DATE);
-        }
-
-        if (computer.get().getManufacturer() != null) {
-            CrudServiceConstant.preparedStatementUpdate.setLong(4, computer.get().getManufacturer().getId());
-        } else {
-            CrudServiceConstant.preparedStatementUpdate.setNull(4, java.sql.Types.INTEGER);
-        }
-
-        if (computer.get().getId() != 0) {
-            CrudServiceConstant.preparedStatementUpdate.setLong(5, computer.get().getId());
-        } else {
-            CrudServiceConstant.preparedStatementUpdate.setNull(5, java.sql.Types.INTEGER);
-        }
-
-        CrudServiceConstant.preparedStatementUpdate.execute();
 
     }
 
@@ -175,21 +159,18 @@ public class CrudComputerImpl implements CrudComputer {
      * Retrieves all computers without any pagination.
      *
      * @return list of computers
-     * @throws SQLException : SQLException
-     * @throws PersistenceException : SQLException
-     * @throws Exception : SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    public List<Computer> findAll() throws SQLException {
+    public List<Computer> findAll() throws PersistenceException {
 
-        computers = new ArrayList<>();
+        List<Computer> computers = null;
 
-        CrudServiceConstant.preparedStatementFindAll = connection.prepareStatement(DaoProperties.FIND_ALL_COMPUTERS);
-        resultSet = CrudServiceConstant.preparedStatementFindAll.executeQuery();
-        while (resultSet.next()) {
-            if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
-                computers.add(computer);
-            }
+        try {
+
+            computers = jdbcTemplateObject.query(DaoProperties.FIND_ALL_COMPUTERS, new MapperComputer());
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
         }
 
         return computers;
@@ -198,37 +179,45 @@ public class CrudComputerImpl implements CrudComputer {
     /**
      * Return the number of computer in database.
      * @return long
-     * @throws SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    public long getCountOfElements() throws SQLException {
+    public long getCountOfElements() throws PersistenceException {
 
-        CrudServiceConstant.preparedStatementCountComputer = connection.prepareStatement(DaoProperties.COUNT_COMPUTER);
-        resultSet = CrudServiceConstant.preparedStatementCountComputer.executeQuery();
-        resultSet.next();
-        return resultSet.getInt("number");
+        long countOfElements = 0;
 
+        try {
+
+            countOfElements = jdbcTemplateObject.queryForObject(DaoProperties.COUNT_COMPUTER, long.class);
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
+        }
+
+        return countOfElements;
     }
 
     /**
      * Return the list of computer in database filtered by name.
      * @param nameFilter : filter
      * @return list of computers
-     * @throws SQLException
+     * @throws PersistenceException : PersistenceException
      */
-    public List<Computer> getComputersFiltered(String nameFilter) throws SQLException {
+    public List<Computer> getComputersFiltered(String nameFilter) throws PersistenceException {
 
-        computers = new ArrayList<>();
+        List<Computer> computers = null;
 
-        CrudServiceConstant.preparedStatementComputersFiltered = connection.prepareStatement(DaoProperties.COMPUTER_FILTERED);
-        CrudServiceConstant.preparedStatementComputersFiltered.setString(1, "%" + nameFilter + "%");
-        resultSet = CrudServiceConstant.preparedStatementComputersFiltered.executeQuery();
-        while (resultSet.next()) {
-            if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
-                computers.add(computer);
-            }
+        try {
+
+            computers = jdbcTemplateObject.query("select computer.id, computer.name, computer.introduced, computer.discontinued,"
+                    + " computer.company_id, company.name company_name from computer"
+                    + " left join company on company.id = computer.company_id where company.id like '%" + nameFilter + "%';", new MapperComputer());
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
         }
-        return computers;
+
+       return computers;
+
     }
 
     /**
@@ -236,13 +225,10 @@ public class CrudComputerImpl implements CrudComputer {
      *
      * @param pagination : page
      * @return list of computers paginated
-     * @throws SQLException
      * @throws PersistenceException : PersistenceException
-     * @throws Exception
      */
-    public List<Computer> findByPageFilter(Pagination pagination) throws SQLException {
+    public List<Computer> findByPageFilter(Pagination pagination) throws PersistenceException {
 
-        computers = new ArrayList<>();
         long offset = pagination.getOffset();
         long pageSize = pagination.getPageSize();
         String filter = pagination.getFilter();
@@ -254,19 +240,13 @@ public class CrudComputerImpl implements CrudComputer {
             offset = 0;
         }
 
-        CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPUTER_FILTERED);
-        CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + filter + "%");
-        CrudServiceConstant.preparedStatementFindByPage.setLong(2, pageSize);
-        CrudServiceConstant.preparedStatementFindByPage.setLong(3, offset);
-        resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
-        while (resultSet.next()) {
-            if (MapperComputer.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                computer = MapperComputer.resultSetToEntity(Optional.of(resultSet)).get();
-                computers.add(computer);
-            }
+        try {
+            return jdbcTemplateObject.query("select computer.id, computer.name, computer.introduced, computer.discontinued,"
+                    + " computer.company_id, company.name company_name from computer "
+                    + "left join company on company.id = computer.company_id where computer.name like '%" + filter + "%' limit " + pageSize + " offset " + offset + ";", new MapperComputer());
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
         }
-
-        return computers;
     }
 
 }

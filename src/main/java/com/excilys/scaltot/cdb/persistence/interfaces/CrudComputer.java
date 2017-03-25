@@ -1,10 +1,10 @@
 package com.excilys.scaltot.cdb.persistence.interfaces;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**
  * @author Caltot Stéphan
@@ -16,21 +16,24 @@ public interface CrudComputer extends CrudService<Computer> {
     /**
      * Method which permits to create a computer.
      * @param computer : computer
-     * @return 
+     * @return boolean
+     * @throws PersistenceException : PersistenceException
      */
-    boolean create(Optional<Computer> computer) throws SQLException;
+    boolean create(Optional<Computer> computer) throws PersistenceException;
 
     /**
      * Method which permits to update a computer.
      * @param computer : computer
+     * @throws PersistenceException : PersistenceException
      */
-    void update(Optional<Computer> computer) throws SQLException;
+    void update(Optional<Computer> computer) throws PersistenceException;
 
     /**
      * Method which permits to retrieves a list of computer filtered.
      * @param filter : filter
      * @return list of computer
+     * @throws PersistenceException : PersistenceException
      */
-    List<Computer> getComputersFiltered(String filter) throws SQLException;
+    List<Computer> getComputersFiltered(String filter) throws PersistenceException;
 
 }

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,11 +39,9 @@ public class MapperCompanyTest {
         Mockito.when(resultSet.getLong("id")).thenReturn((long) 1);
         Mockito.when(resultSet.getString("name")).thenReturn("company test");
 
-        Optional<Company> optionalCompany = MapperCompany.resultSetToEntity(Optional.of(resultSet));
-        if (optionalCompany.isPresent()) {
-            Company company = optionalCompany.get();
+        Company mapperCompany = new MapperCompany().mapRow(resultSet,Integer.MIN_VALUE);
+            Company company = mapperCompany;
             assertEquals(1, company.getId());
             assertEquals("company test", company.getName());
-        }
     }
 }

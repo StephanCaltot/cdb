@@ -55,17 +55,14 @@ public class AddController {
     /**
      * Post method for add computer.
      * @param model : model
-     * @param introduced : introduced
-     * @param discontinued : discontinued
-     * @param companyId : company id
-     * @param computerName : computer name
+     * @param parameters : parameters
      * @return page redirection
      */
     @PostMapping
     public String doPost(ModelMap model, @RequestParam MultiValueMap<String, String> parameters) {
 
         Computer.ComputerBuilder computerBuilder = null;
-        
+
         if (parameters.containsKey("computerName")) {
             String computerName = parameters.get("computerName").get(0);
             computerBuilder = new Computer.ComputerBuilder().withName(computerName);

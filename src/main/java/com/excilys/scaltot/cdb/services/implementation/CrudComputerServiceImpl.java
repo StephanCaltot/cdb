@@ -1,6 +1,5 @@
 package com.excilys.scaltot.cdb.services.implementation;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +30,8 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
         try {
             crudComputerImpl.create(computer);
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
+        } catch (PersistenceException persistenceException) {
+            throw new PersistenceException(persistenceException);
         }
     }
 
@@ -47,9 +46,9 @@ public class CrudComputerServiceImpl implements CrudComputerService {
         try {
             return crudComputerImpl.find(id);
 
-        } catch (SQLException e) {
+        } catch (PersistenceException persistenceException) {
 
-            throw new PersistenceException(e);
+            throw new PersistenceException(persistenceException);
 
         }
     }
@@ -67,8 +66,8 @@ public class CrudComputerServiceImpl implements CrudComputerService {
                return false;
            }
            return true;
-       } catch (SQLException e) {
-           throw new PersistenceException(e);
+       } catch (PersistenceException persistenceException) {
+           throw new PersistenceException(persistenceException);
        }
    }
 
@@ -81,8 +80,8 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
         try {
             crudComputerImpl.update(computer);
-       } catch (SQLException e) {
-           throw new PersistenceException(e);
+       } catch (PersistenceException persistenceException) {
+           throw new PersistenceException(persistenceException);
        }
     }
 
@@ -97,9 +96,9 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
             return crudComputerImpl.findAll();
 
-        } catch (SQLException e) {
+        } catch (PersistenceException persistenceException) {
 
-            throw new PersistenceException(e);
+            throw new PersistenceException(persistenceException);
 
         }
     }
@@ -114,9 +113,9 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
             return crudComputerImpl.getCountOfElements();
 
-        } catch (SQLException e) {
+        } catch (PersistenceException persistenceException) {
 
-            throw new PersistenceException(e);
+            throw new PersistenceException(persistenceException);
 
         }
     }
@@ -125,17 +124,16 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * Return the list of computer in database filtered by name.
      * @param nameFilter : filter
      * @return list of computers
-     * @throws SQLException : SQLException
      */
-    public List<Computer> getComputersFiltered(String nameFilter) throws SQLException {
+    public List<Computer> getComputersFiltered(String nameFilter) {
 
         try {
 
             return crudComputerImpl.getComputersFiltered(nameFilter);
 
-        } catch (SQLException e) {
+        } catch (PersistenceException persistenceException) {
 
-            throw new PersistenceException(e);
+            throw new PersistenceException(persistenceException);
 
         }
     }
@@ -152,9 +150,9 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
             return crudComputerImpl.findByPageFilter(pagination);
 
-        } catch (SQLException e) {
+        } catch (PersistenceException persistenceException) {
 
-            throw new PersistenceException(e);
+            throw new PersistenceException(persistenceException);
 
         }
     }

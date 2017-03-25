@@ -60,11 +60,7 @@ public class EditController {
     /**
      * Post method for edit.
      * @param model : model
-     * @param id : id
-     * @param introduced : introduced
-     * @param discontinued : discontinued
-     * @param companyId : company id
-     * @param computerName computer name
+     * @param parameters : parameters
      * @return page redirection
      */
     @PostMapping
@@ -75,7 +71,7 @@ public class EditController {
         long id = 0;
 
         if (parameters.containsKey("id") && parameters.containsKey("computerName")) {
-            computerName = parameters.get("computerName").get(0);            
+            computerName = parameters.get("computerName").get(0);
             id = Long.parseLong(parameters.get("id").get(0));
 
             computerBuilder = new Computer.ComputerBuilder().withId(id).withName(computerName);
