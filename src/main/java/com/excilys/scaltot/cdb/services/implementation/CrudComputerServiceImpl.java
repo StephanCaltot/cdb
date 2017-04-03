@@ -6,14 +6,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
-import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
+@Transactional
 public class CrudComputerServiceImpl implements CrudComputerService {
 
     @Autowired
@@ -24,7 +27,12 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @param computer : computer
      */
     public void create(Optional<Computer> computer) {
-        crudComputerImpl.create(computer);
+
+        try {
+            crudComputerImpl.create(computer);
+        } catch (PersistenceException persistenceException) {
+            throw new PersistenceException(persistenceException);
+        }
     }
 
     /**
@@ -34,7 +42,15 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return computer entity find with id gave in parameter
      */
     public Optional<Computer> find(long id) {
-        return crudComputerImpl.find(id);
+
+        try {
+            return crudComputerImpl.find(id);
+
+        } catch (PersistenceException persistenceException) {
+
+            throw new PersistenceException(persistenceException);
+
+        }
     }
 
     /**
@@ -44,8 +60,16 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return boolean
      */
     public Boolean delete(long id) {
-        return crudComputerImpl.delete(id);
-    }
+
+        try {
+           if (!crudComputerImpl.delete(id)) {
+               return false;
+           }
+           return true;
+       } catch (PersistenceException persistenceException) {
+           throw new PersistenceException(persistenceException);
+       }
+   }
 
     /**
      * Update CRUD's operation.
@@ -53,7 +77,12 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @param computer : computer
      */
     public void update(Optional<Computer> computer) {
-        crudComputerImpl.update(computer);
+
+        try {
+            crudComputerImpl.update(computer);
+       } catch (PersistenceException persistenceException) {
+           throw new PersistenceException(persistenceException);
+       }
     }
 
     /**
@@ -62,7 +91,16 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return list of computers
      */
     public List<Computer> findAll() {
-        return crudComputerImpl.findAll();
+
+        try {
+
+            return crudComputerImpl.findAll();
+
+        } catch (PersistenceException persistenceException) {
+
+            throw new PersistenceException(persistenceException);
+
+        }
     }
 
     /**
@@ -70,7 +108,16 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return long
      */
     public long getCountOfComputers() {
-        return crudComputerImpl.getCountOfElements();
+
+        try {
+
+            return crudComputerImpl.getCountOfElements();
+
+        } catch (PersistenceException persistenceException) {
+
+            throw new PersistenceException(persistenceException);
+
+        }
     }
 
     /**
@@ -79,7 +126,16 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return list of computers
      */
     public List<Computer> getComputersFiltered(String nameFilter) {
-        return crudComputerImpl.getComputersFiltered(nameFilter);
+
+        try {
+
+            return crudComputerImpl.getComputersFiltered(nameFilter);
+
+        } catch (PersistenceException persistenceException) {
+
+            throw new PersistenceException(persistenceException);
+
+        }
     }
 
     /**
@@ -89,6 +145,15 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * @return list of computers paginated
      */
     public List<Computer> findByPageFilter(Pagination pagination) {
-        return crudComputerImpl.findByPageFilter(pagination);
+
+        try {
+
+            return crudComputerImpl.findByPageFilter(pagination);
+
+        } catch (PersistenceException persistenceException) {
+
+            throw new PersistenceException(persistenceException);
+
+        }
     }
 }

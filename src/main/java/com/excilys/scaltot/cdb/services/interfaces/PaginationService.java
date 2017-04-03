@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.utils.Pagination;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 
 /**
  * @author Caltot Stéphan
@@ -14,11 +14,13 @@ import com.excilys.scaltot.cdb.utils.Pagination;
 public interface PaginationService {
 
     /**
-     * Initialize number of elements and pages.
+     * Initialize number of elements and pages depending of type Company, or Computer.
      *
      * @param pagination : page
+     * @param classe : class type
+     * @return Pagination page
      */
-    void paginationInitialisation(Pagination pagination);
+    Pagination paginationInitialisation(Pagination pagination, Class<?> classe);
 
     /**
      * Retrieves list of companies paginated.

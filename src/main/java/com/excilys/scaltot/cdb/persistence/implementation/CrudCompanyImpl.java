@@ -1,25 +1,26 @@
 package com.excilys.scaltot.cdb.persistence.implementation;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
-import com.excilys.scaltot.cdb.mappers.MapperCompany;
-import com.excilys.scaltot.cdb.persistence.CrudServiceConstant;
-import com.excilys.scaltot.cdb.persistence.DaoProperties;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
-import com.excilys.scaltot.cdb.utils.DatabaseManager;
-import com.excilys.scaltot.cdb.utils.Pagination;
+import com.excilys.scaltot.cdb.persistence.utils.CrudServiceConstant;
+import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
+import com.excilys.scaltot.cdb.persistence.utils.Datasource;
 
 /**
  * Crud service allows CRUD's operations on Company entities.
@@ -34,40 +35,41 @@ public class CrudCompanyImpl implements CrudCompany {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudCompanyImpl.class.getName());
 
-    private ResultSet resultSet;
-    private Company company;
-    private List<Company> companies;
-    private Connection connection;
-
     @Autowired
-    private DatabaseManager jdbcConnection;
+    private Datasource dataSource;
+
+    private JdbcTemplate jdbcTemplateObject;
+
+    /**
+     * Avoids error on JDBC template initialization.
+     */
+    @PostConstruct
+    public void setDataSource() {
+       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+    }
 
     /**
      * Find CRUD's operation.
      *
      * @param id : id
      * @return company entity find with id gave in parameter
+     * @throws PersistenceException : PersistenceException
      */
-    public Optional<Company> find(long id) {
+    public Optional<Company> find(long id) throws PersistenceException {
 
         if (id <= 0) {
             LOGGER.warn("You are trying to find a company with null or negative id");
             return Optional.empty();
         }
 
-        connection = jdbcConnection.getConnection();
+        Company company = null;
 
         try {
-            CrudServiceConstant.preparedStatementFind = connection.prepareStatement(DaoProperties.FIND_COMPANY);
-            CrudServiceConstant.preparedStatementFind.setLong(1, id);
-            resultSet = CrudServiceConstant.preparedStatementFind.executeQuery();
-            resultSet.next();
-            company = MapperCompany.resultSetToEntity(Optional.of(resultSet)).get();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            jdbcConnection.closeConnection();
+            jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPANY, new MapperCompany(), id);
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException(dataAccessException);
         }
 
         return Optional.of(company);
@@ -75,44 +77,28 @@ public class CrudCompanyImpl implements CrudCompany {
 
     /**
      * Retrieves all companies.
-     *
      * @return list contains all companies
-     * @throws PersistenceException
-     *             :
-     * @throws Exception
+     * @throws PersistenceException : PersistenceException
      */
-    public List<Company> findAll() {
-
-        connection = jdbcConnection.getConnection();
-        companies = new ArrayList<>();
+    public List<Company> findAll() throws PersistenceException {
 
         try {
-            CrudServiceConstant.preparedStatementFindAll = connection.prepareStatement(DaoProperties.FIND_ALL_COMPANIES);
-            resultSet = CrudServiceConstant.preparedStatementFindAll.executeQuery();
-            while (resultSet.next()) {
-                if (MapperCompany.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                    company = MapperCompany.resultSetToEntity(Optional.of(resultSet)).get();
-                    companies.add(company);
-                }
-            }
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            jdbcConnection.closeConnection();
-        }
 
-        return companies;
+            return jdbcTemplateObject.query(DaoProperties.FIND_ALL_COMPANIES, new MapperCompany());
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
+        }
     }
 
     /**
      * Allows pagination for findAll companies.
      * @param pagination : page
      * @return List of companies
+     * @throws PersistenceException : PersistenceException
      */
-    public List<Company> findByPageFilter(Pagination pagination) {
+    public List<Company> findByPageFilter(Pagination pagination) throws PersistenceException {
 
-        connection = jdbcConnection.getConnection();
-        companies = new ArrayList<>();
         long offset = pagination.getOffset();
         long pageSize = pagination.getPageSize();
         String filter = pagination.getFilter();
@@ -123,44 +109,29 @@ public class CrudCompanyImpl implements CrudCompany {
         if (offset < 0) {
             offset = 0;
         }
-        try {
-            CrudServiceConstant.preparedStatementFindByPage = connection.prepareStatement(DaoProperties.PAGE_COMPANY_FILTERED);
-            CrudServiceConstant.preparedStatementFindByPage.setString(1, "%" + filter + "%");
-            CrudServiceConstant.preparedStatementFindByPage.setLong(2, pageSize);
-            CrudServiceConstant.preparedStatementFindByPage.setLong(3, offset);
-            resultSet = CrudServiceConstant.preparedStatementFindByPage.executeQuery();
-            while (resultSet.next()) {
-                if (MapperCompany.resultSetToEntity(Optional.of(resultSet)).isPresent()) {
-                    company = MapperCompany.resultSetToEntity(Optional.of(resultSet)).get();
-                    companies.add(company);
-                }
-            }
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            jdbcConnection.closeConnection();
-        }
 
-        return companies;
+        try {
+
+            return jdbcTemplateObject.query("select company.id, company.name from company where company.name like '%" + filter + "%' limit " + pageSize + " offset " + offset + ";", new MapperCompany(), filter, pageSize, offset);
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
+        }
     }
 
     /**
      * Return the number of computer in database.
      * @return long
+     * @throws PersistenceException : PersistenceException
      */
-    public long getCountOfElements() {
-
-        connection = jdbcConnection.getConnection();
+    public long getCountOfElements() throws PersistenceException {
 
         try {
-            CrudServiceConstant.preparedStatementCountCompanies = connection.prepareStatement(DaoProperties.COUNT_COMPANY);
-            resultSet = CrudServiceConstant.preparedStatementCountCompanies.executeQuery();
-            resultSet.next();
-            return resultSet.getInt("number");
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            jdbcConnection.closeConnection();
+
+            return jdbcTemplateObject.queryForObject(DaoProperties.COUNT_COMPANY, long.class);
+
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
         }
     }
 
@@ -168,32 +139,33 @@ public class CrudCompanyImpl implements CrudCompany {
      * Delete one company with computer associated.
      * @param id : id of company
      * @return boolean
+     * @throws PersistenceException : PersistenceException
      */
-    public boolean delete(long id) {
+    public boolean delete(long id) throws PersistenceException {
         if (id <= 0) {
             LOGGER.warn("You are trying to delete a company with null or negative id !\n");
             return false;
         }
-        connection = jdbcConnection.getConnection();
 
         try {
-            CrudServiceConstant.preparedStatementDelete = connection.prepareStatement(DaoProperties.DELETE_COMPUTER_COMPANY);
-            CrudServiceConstant.preparedStatementDelete.setLong(1, id);
-            if (CrudServiceConstant.preparedStatementDelete.executeUpdate() == 0) {
+            int res = jdbcTemplateObject.update(DaoProperties.DELETE_COMPUTER_COMPANY, id);
+
+            if (res == 0) {
+                LOGGER.warn("Deletion of computer with id" + id + "failed !");
+                return false;
+            }
+
+            res = jdbcTemplateObject.update(DaoProperties.DELETE_COMPANY, id);
+
+            if (res == 0) {
                 LOGGER.warn("This company doesn't exist, choose an other ID !");
                 return false;
             }
-            CrudServiceConstant.preparedStatementDelete = connection.prepareStatement(DaoProperties.DELETE_COMPANY);
-            CrudServiceConstant.preparedStatementDelete.setLong(1, id);
-            CrudServiceConstant.preparedStatementDelete.executeUpdate();
-
-            jdbcConnection.commit();
             return true;
-        } catch (SQLException e) {
-            jdbcConnection.rollback();
-            throw new PersistenceException(e);
-        } finally {
-            jdbcConnection.closeConnection();
+        } catch (DataAccessException dataAccessException) {
+            throw new PersistenceException();
         }
+
     }
+
 }

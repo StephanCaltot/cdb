@@ -1,5 +1,6 @@
 package com.excilys.scaltot.cdb.entities.computer;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import com.excilys.scaltot.cdb.entities.company.Company;
 
@@ -10,8 +11,9 @@ import com.excilys.scaltot.cdb.entities.company.Company;
  *
  *         20 févr. 2017
  */
-public class Computer {
+public class Computer implements Serializable {
 
+    private static final long serialVersionUID = 7843282249327558232L;
     private long id;
     private String name;
     private LocalDate dateWichIsIntroduced;

@@ -1,5 +1,7 @@
 package com.excilys.scaltot.cdb.entities.company;
 
+import java.io.Serializable;
+
 /**
  * Class representing a Company implementing ICompany.
  *
@@ -7,8 +9,9 @@ package com.excilys.scaltot.cdb.entities.company;
  *
  *         20 févr. 2017
  */
-public class Company {
+public class Company implements Serializable {
 
+    private static final long serialVersionUID = 5909107314153074415L;
     private long id;
     private String name;
 

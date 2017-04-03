@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
 import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
-import com.excilys.scaltot.cdb.utils.Pagination;
 
 @Service
 @Scope("singleton")
@@ -27,10 +27,19 @@ public class PaginationServiceImpl implements PaginationService {
      * Initialize number of elements and pages.
      *
      * @param pagination : page
+     * @param classe : class type
+     * @return Pagination page
      */
-    public void paginationInitialisation(Pagination pagination) {
-        pagination.setNumberOfElements(crudCompanyServiceImpl.getCountOfCompanies());
+    public Pagination paginationInitialisation(Pagination pagination, Class<?> classe) {
+        if (classe.getSimpleName().equals("Computer")) {
+            pagination.setNumberOfElements(crudComputerServiceImpl.getCountOfComputers());
+
+        } else if (classe.getSimpleName().equals("Company")) {
+            pagination.setNumberOfElements(crudCompanyServiceImpl.getCountOfCompanies());
+
+        }
         pagination.setNumberOfPages(pagination.getNumberOfElements() / pagination.getPageSize());
+        return pagination;
     }
 
     /**
