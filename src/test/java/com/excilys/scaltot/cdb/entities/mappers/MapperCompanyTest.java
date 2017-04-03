@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.entities.mappers.MapperCompany;
 
 /**
  * @author Caltot Stéphan
@@ -39,7 +38,7 @@ public class MapperCompanyTest {
         Mockito.when(resultSet.getLong("id")).thenReturn((long) 1);
         Mockito.when(resultSet.getString("name")).thenReturn("company test");
 
-        Company mapperCompany = new MapperCompany().mapRow(resultSet,Integer.MIN_VALUE);
+        Company mapperCompany = new MapperCompany().mapRow(resultSet, Integer.MIN_VALUE);
             Company company = mapperCompany;
             assertEquals(1, company.getId());
             assertEquals("company test", company.getName());

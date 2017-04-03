@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.junit.Test;
 
-import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.validation.CompanyValidator;
 
 /**

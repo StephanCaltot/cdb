@@ -19,17 +19,28 @@ public class DashboardTest {
   private WebDriver driver;
   private String baseUrl;
 
+  /**
+   * Retrieves browser's instance.
+   */
   @BeforeClass
   public static void setupClass() {
     FirefoxDriverManager.getInstance().setup();
   }
-  
+
+  /**
+   * Set browser and ip.
+   * @throws Exception : exception
+   */
   @Before
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     baseUrl = "http://localhost:8080/cdb";
   }
 
+  /**
+   * Main for Selenium test.
+   * @throws Exception : exception
+   */
   @Test
   public void testDashboard() throws Exception {
     driver.get(baseUrl + "/springcdb");
@@ -53,6 +64,10 @@ public class DashboardTest {
     Thread.sleep(1000);
   }
 
+  /**
+   * Leave browser.
+   * @throws Exception : exception
+   */
   @After
   public void tearDown() throws Exception {
     driver.quit();

@@ -33,7 +33,7 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
         try {
             return crudCompanyImpl.find(id);
         } catch (PersistenceException persistenceException) {
-            throw new PersistenceException("You are trying to find a computer (id=" + id + "which doesn't exists anymore.)",persistenceException);
+            throw new PersistenceException("You are trying to find a computer (id=" + id + "which doesn't exists anymore.)", persistenceException);
         }
     }
 
