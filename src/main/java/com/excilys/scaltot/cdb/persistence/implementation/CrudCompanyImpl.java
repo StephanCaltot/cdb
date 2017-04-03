@@ -45,7 +45,9 @@ public class CrudCompanyImpl implements CrudCompany {
      */
     @PostConstruct
     public void setDataSource() {
+
        this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+
     }
 
     /**
@@ -53,20 +55,20 @@ public class CrudCompanyImpl implements CrudCompany {
      *
      * @param id : id
      * @return company entity find with id gave in parameter
-     * @throws PersistenceException : PersistenceException
      */
-    public Optional<Company> find(long id) throws PersistenceException {
+    public Optional<Company> find(long id) {
+
+        LOGGER.warn("Finding company with id " + id + "...");
 
         if (id <= 0) {
-            LOGGER.warn("You are trying to find a company with null or negative id");
-            return Optional.empty();
+            throw new IllegalArgumentException("You are trying to find a company with null or negative id !");
         }
 
         Company company = null;
 
         try {
 
-            jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPANY, new MapperCompany(), id);
+            company = jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPANY, new MapperCompany(), id);
 
         } catch (DataAccessException dataAccessException) {
             throw new PersistenceException(dataAccessException);
@@ -78,9 +80,10 @@ public class CrudCompanyImpl implements CrudCompany {
     /**
      * Retrieves all companies.
      * @return List contains all companies
-     * @throws PersistenceException : PersistenceException
      */
-    public List<Company> findAll() throws PersistenceException {
+    public List<Company> findAll() {
+
+        LOGGER.warn("Doing find all company...");
 
         try {
 
@@ -95,9 +98,10 @@ public class CrudCompanyImpl implements CrudCompany {
      * Allows pagination for findAll companies.
      * @param pagination : page
      * @return List of companies
-     * @throws PersistenceException : PersistenceException
      */
-    public List<Company> findByPageFilter(Pagination pagination) throws PersistenceException {
+    public List<Company> findByPageFilter(Pagination pagination) {
+
+        LOGGER.warn("Getting company filtered by name beggining by " + pagination.getFilter() +  "...");
 
         long offset = pagination.getOffset();
         long pageSize = pagination.getPageSize();
@@ -122,9 +126,10 @@ public class CrudCompanyImpl implements CrudCompany {
     /**
      * Return the number of computer in database.
      * @return long
-     * @throws PersistenceException : PersistenceException
      */
-    public long getCountOfElements() throws PersistenceException {
+    public long getCountOfElements() {
+
+        LOGGER.warn("Getting number of company...");
 
         try {
 
@@ -149,18 +154,10 @@ public class CrudCompanyImpl implements CrudCompany {
         }
 
         try {
-            int res = jdbcTemplateObject.update(DaoProperties.DELETE_COMPUTER_COMPANY, id);
 
-            if (res == 0) {
-                throw new IllegalArgumentException("Deletion of computer with id" + id + "failed !");
-            }
+            jdbcTemplateObject.update(DaoProperties.DELETE_COMPUTER_COMPANY, id);
+            jdbcTemplateObject.update(DaoProperties.DELETE_COMPANY, id);
 
-            res = jdbcTemplateObject.update(DaoProperties.DELETE_COMPANY, id);
-
-            if (res == 0) {
-                LOGGER.warn("This company doesn't exist, choose an other ID !");
-                return false;
-            }
         } catch (DataAccessException dataAccessException) {
             throw new PersistenceException();
         }

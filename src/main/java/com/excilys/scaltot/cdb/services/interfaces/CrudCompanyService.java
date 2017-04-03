@@ -46,5 +46,5 @@ public interface CrudCompanyService {
      * @param companyId : id of company
      * @return false if companyId doesn't exist , true if deletion was done.
      */
-    boolean delete(long companyId);
+    long delete(long companyId);
 }

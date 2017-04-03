@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
@@ -28,11 +27,8 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      */
     public void create(Optional<Computer> computer) {
 
-        try {
-            crudComputerImpl.create(computer);
-        } catch (PersistenceException persistenceException) {
-            throw new PersistenceException(persistenceException);
-        }
+        crudComputerImpl.create(computer);
+
     }
 
     /**
@@ -43,14 +39,8 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      */
     public Optional<Computer> find(long id) {
 
-        try {
-            return crudComputerImpl.find(id);
+        return crudComputerImpl.find(id);
 
-        } catch (PersistenceException persistenceException) {
-
-            throw new PersistenceException(persistenceException);
-
-        }
     }
 
     /**
@@ -58,27 +48,21 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      *
      * @param id : id
      */
-    public void delete(long id) {
+    public long delete(long id) {
 
-       try {
-           crudComputerImpl.delete(id);
-       } catch (PersistenceException persistenceException) {
-           throw new PersistenceException(persistenceException);
-       }
-   }
+        return crudComputerImpl.delete(id);
+
+    }
 
     /**
      * Update CRUD's operation.
      *
      * @param computer : computer
      */
-    public void update(Optional<Computer> computer) {
+    public Optional<Computer> update(Optional<Computer> computer) {
 
-        try {
-            crudComputerImpl.update(computer);
-       } catch (PersistenceException persistenceException) {
-           throw new PersistenceException(persistenceException);
-       }
+        return crudComputerImpl.update(computer);
+
     }
 
     /**
@@ -88,15 +72,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      */
     public List<Computer> findAll() {
 
-        try {
-
-            return crudComputerImpl.findAll();
-
-        } catch (PersistenceException persistenceException) {
-
-            throw new PersistenceException(persistenceException);
-
-        }
+        return crudComputerImpl.findAll();
     }
 
     /**
@@ -105,15 +81,8 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      */
     public long getCountOfComputers() {
 
-        try {
+        return crudComputerImpl.getCountOfElements();
 
-            return crudComputerImpl.getCountOfElements();
-
-        } catch (PersistenceException persistenceException) {
-
-            throw new PersistenceException(persistenceException);
-
-        }
     }
 
     /**
@@ -123,15 +92,8 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      */
     public List<Computer> getComputersFiltered(String nameFilter) {
 
-        try {
-
-            return crudComputerImpl.getComputersFiltered(nameFilter);
-
-        } catch (PersistenceException persistenceException) {
-
-            throw new PersistenceException(persistenceException);
-
-        }
+        return crudComputerImpl.getComputersFiltered(nameFilter);
+        
     }
 
     /**
@@ -142,14 +104,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      */
     public List<Computer> findByPageFilter(Pagination pagination) {
 
-        try {
+        return crudComputerImpl.findByPageFilter(pagination);
 
-            return crudComputerImpl.findByPageFilter(pagination);
-
-        } catch (PersistenceException persistenceException) {
-
-            throw new PersistenceException(persistenceException);
-
-        }
     }
 }

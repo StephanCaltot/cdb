@@ -85,7 +85,7 @@ public class CrudComputerImpl implements CrudComputer {
      */
     public Optional<Computer> find(long id) {
 
-        LOGGER.warn("Finding computer with id" + id + "...");
+        LOGGER.warn("Finding computer with id " + id + "...");
 
         if (id <= 0) {
             throw new IllegalArgumentException("You are trying to find a computer with null or negative id !");
@@ -230,9 +230,8 @@ public class CrudComputerImpl implements CrudComputer {
      *
      * @param pagination : page
      * @return list of computers paginated
-     * @throws PersistenceException : PersistenceException
      */
-    public List<Computer> findByPageFilter(Pagination pagination) throws PersistenceException {
+    public List<Computer> findByPageFilter(Pagination pagination) {
 
         LOGGER.warn("Getting computer paginated and filtered by name beggining by " + pagination.getFilter() +  "...");
 
@@ -253,5 +252,4 @@ public class CrudComputerImpl implements CrudComputer {
             throw new PersistenceException();
         }
     }
-
 }

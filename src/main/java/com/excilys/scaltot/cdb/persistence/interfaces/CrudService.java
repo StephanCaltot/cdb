@@ -39,9 +39,10 @@ public interface CrudService<T> {
     /**
      * Delete one elements referenced by id in parameter.
      * @param id : id
+     * @return 
      * @throws PersistenceException : PersistenceException
      */
-    void delete(long id) throws PersistenceException;
+    long delete(long id) throws PersistenceException;
 
     /**
      * Return number of elements.

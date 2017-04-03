@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan("com.excilys.scaltot.cdb")
 @EnableTransactionManagement
-//@ComponentScan(basePackages = { "com.excilys.scaltot.cdb.services.implementation", "com.excilys.scaltot.cdb.persistence.implementation" })
 public class BeanConfig {
 
 }
