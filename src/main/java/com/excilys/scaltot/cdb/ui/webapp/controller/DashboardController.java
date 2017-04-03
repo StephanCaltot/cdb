@@ -1,6 +1,7 @@
 package com.excilys.scaltot.cdb.ui.webapp.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,30 +47,40 @@ public class DashboardController {
      * @return page redirection
      */
     @GetMapping
-    public String doGet(ModelMap model, @RequestParam MultiValueMap<String, String> parameters) {
+    public String doGet(ModelMap model, @RequestParam Map<String, String> parameters) {
 
         page = paginationServiceImpl.paginationInitialisation(new Pagination(), Computer.class);
 
+        long currentPage = -10;
+
         if (parameters.containsKey("filter")) {
-            paginationServiceImpl.setFilter(page, parameters.get("filter").get(0));
+            paginationServiceImpl.setFilter(page, parameters.get("filter"));
+        }
+        if (parameters.containsKey("size")) {
+            paginationServiceImpl.setPageSize(page, Integer.valueOf(parameters.get("size")));
+        }
+        if (parameters.containsKey("numOfPage")) {
+            paginationServiceImpl.setCurrentPage(page, Integer.valueOf(parameters.get("numOfPage")));
         }
 
         if (parameters.containsKey("previousPage")) {
             long offset;
-            long currentPage = Long.valueOf(parameters.get("numOfPage").get(0));
-            long pageSize = Long.valueOf(parameters.get("size").get(0));
+            currentPage = Long.valueOf(parameters.get("numOfPage"));
+            long pageSize = Long.valueOf(parameters.get("size"));
 
             currentPage = (currentPage) >= 0 ? (currentPage) : 0;
             offset = currentPage * pageSize;
 
             page.setCurrentPage(currentPage);
             page.setOffset(offset);
+            currentPage = 9999;
+
 
         } else if (parameters.containsKey("nextPage")) {
 
             long offset;
-            long currentPage = Long.valueOf(parameters.get("numOfPage").get(0));
-            long pageSize = Long.valueOf(parameters.get("size").get(0));
+            currentPage = Long.valueOf(parameters.get("numOfPage"));
+            long pageSize = Long.valueOf(parameters.get("size"));
             long numberOfPages = page.getNumberOfPages();
 
             currentPage = (currentPage) <= numberOfPages ? (currentPage) : numberOfPages;
@@ -79,13 +89,6 @@ public class DashboardController {
             page.setCurrentPage(currentPage);
             page.setOffset(offset);
 
-        } else {
-            if (parameters.containsKey("size")) {
-                paginationServiceImpl.setPageSize(page, Integer.valueOf(parameters.get("size").get(0)));
-            }
-            if (parameters.containsKey("numOfPage")) {
-                paginationServiceImpl.setCurrentPage(page, Integer.valueOf(parameters.get("numOfPage").get(0)));
-            }
         }
 
         computers = MapperComputerDto.computerListToComputerDto(paginationServiceImpl.findComputerByPage(page));
@@ -93,7 +96,7 @@ public class DashboardController {
         model.addAttribute("computers", computers);
         model.addAttribute("numberOfPages", page.getNumberOfPages());
         model.addAttribute("currentPage", page.getCurrentPage());
-        model.addAttribute("numberOfElements", page.getNumberOfElements());
+        model.addAttribute("numberOfElements", currentPage);
 
         return "dashboard";
     }

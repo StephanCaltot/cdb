@@ -77,7 +77,7 @@ public class CrudCompanyImpl implements CrudCompany {
 
     /**
      * Retrieves all companies.
-     * @return list contains all companies
+     * @return List contains all companies
      * @throws PersistenceException : PersistenceException
      */
     public List<Company> findAll() throws PersistenceException {
@@ -112,7 +112,7 @@ public class CrudCompanyImpl implements CrudCompany {
 
         try {
 
-            return jdbcTemplateObject.query("select company.id, company.name from company where company.name like '%" + filter + "%' limit " + pageSize + " offset " + offset + ";", new MapperCompany(), filter, pageSize, offset);
+            return jdbcTemplateObject.query(DaoProperties.PAGE_COMPANY_FILTERED, new MapperCompany(), filter, pageSize, offset);
 
         } catch (DataAccessException dataAccessException) {
             throw new PersistenceException();
@@ -138,21 +138,21 @@ public class CrudCompanyImpl implements CrudCompany {
     /**
      * Delete one company with computer associated.
      * @param id : id of company
-     * @return boolean
-     * @throws PersistenceException : PersistenceException
+     * @return long id
      */
-    public boolean delete(long id) throws PersistenceException {
+    public long delete(long id) {
+
+        LOGGER.warn("Deleting company with id " + id + "...");
+
         if (id <= 0) {
-            LOGGER.warn("You are trying to delete a company with null or negative id !\n");
-            return false;
+            throw new IllegalArgumentException("You are trying to delete a company with null or negative id !");
         }
 
         try {
             int res = jdbcTemplateObject.update(DaoProperties.DELETE_COMPUTER_COMPANY, id);
 
             if (res == 0) {
-                LOGGER.warn("Deletion of computer with id" + id + "failed !");
-                return false;
+                throw new IllegalArgumentException("Deletion of computer with id" + id + "failed !");
             }
 
             res = jdbcTemplateObject.update(DaoProperties.DELETE_COMPANY, id);
@@ -161,10 +161,11 @@ public class CrudCompanyImpl implements CrudCompany {
                 LOGGER.warn("This company doesn't exist, choose an other ID !");
                 return false;
             }
-            return true;
         } catch (DataAccessException dataAccessException) {
             throw new PersistenceException();
         }
+
+        return id;
 
     }
 

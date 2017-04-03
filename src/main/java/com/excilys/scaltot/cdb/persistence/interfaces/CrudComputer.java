@@ -16,17 +16,17 @@ public interface CrudComputer extends CrudService<Computer> {
     /**
      * Method which permits to create a computer.
      * @param computer : computer
-     * @return boolean
      * @throws PersistenceException : PersistenceException
      */
-    boolean create(Optional<Computer> computer) throws PersistenceException;
+    void create(Optional<Computer> computer) throws PersistenceException;
 
     /**
      * Method which permits to update a computer.
      * @param computer : computer
+     * @return computer
      * @throws PersistenceException : PersistenceException
      */
-    void update(Optional<Computer> computer) throws PersistenceException;
+    Optional<Computer> update(Optional<Computer> computer) throws PersistenceException;
 
     /**
      * Method which permits to retrieves a list of computer filtered.

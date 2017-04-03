@@ -57,15 +57,11 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * Delete CRUD's operation.
      *
      * @param id : id
-     * @return boolean
      */
-    public Boolean delete(long id) {
+    public void delete(long id) {
 
-        try {
-           if (!crudComputerImpl.delete(id)) {
-               return false;
-           }
-           return true;
+       try {
+           crudComputerImpl.delete(id);
        } catch (PersistenceException persistenceException) {
            throw new PersistenceException(persistenceException);
        }

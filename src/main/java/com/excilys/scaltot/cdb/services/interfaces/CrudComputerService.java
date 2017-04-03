@@ -30,9 +30,8 @@ public interface CrudComputerService {
      * Delete CRUD's operation.
      *
      * @param id : id
-     * @return boolean
      */
-    Boolean delete(long id);
+    void delete(long id);
 
     /**
      * Update CRUD's operation.
