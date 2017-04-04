@@ -16,7 +16,7 @@ import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
 import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
 import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
 import com.excilys.scaltot.cdb.ui.cli.ScannerSystemIn;
-import com.excilys.scaltot.cdb.ui.webapp.utils.BeanConfig;
+import com.excilys.scaltot.cdb.ui.webapp.utils.CdbConfiguration;
 
 /**
  * Controler for Command line interface.
@@ -36,7 +36,7 @@ public class ControllerCli {
     private Pagination paginationCompany = new Pagination.PaginationBuilder().build();
     private long offset = 0;
 
-    private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+    private ApplicationContext context = new AnnotationConfigApplicationContext(CdbConfiguration.class);
     private CrudComputerServiceImpl crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
     private CrudCompanyServiceImpl crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
     private PaginationServiceImpl paginationComputerServiceImpl = context.getBean(PaginationServiceImpl.class);

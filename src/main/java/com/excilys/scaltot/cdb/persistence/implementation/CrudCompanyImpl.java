@@ -150,6 +150,7 @@ public class CrudCompanyImpl implements CrudCompany {
         LOGGER.warn("Deleting company with id " + id + "...");
 
         if (id <= 0) {
+
             throw new IllegalArgumentException("You are trying to delete a company with null or negative id !");
         }
 

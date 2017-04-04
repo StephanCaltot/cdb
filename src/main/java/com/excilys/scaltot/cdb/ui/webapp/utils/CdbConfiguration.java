@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.excilys.scaltot.cdb")
+@ComponentScan(basePackages = {"com.excilys.scaltot.cdb.services", "com.excilys.scaltot.cdb.ui", "com.excilys.scaltot.cdb.persistence"})
 public class CdbConfiguration extends WebMvcConfigurerAdapter {
 
     /**
