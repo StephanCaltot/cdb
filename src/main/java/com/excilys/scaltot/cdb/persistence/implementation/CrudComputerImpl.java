@@ -70,7 +70,7 @@ public class CrudComputerImpl implements CrudComputer {
                     computer.get().getName(),
                     computer.get().getDateWichIsIntroduced(),
                     computer.get().getDateWichIsDiscontinued(),
-                    computer.get().getManufacturer().getId());
+                    computer.get().getManufacturer() != null ? computer.get().getManufacturer().getId() : null);
 
         } catch (DataAccessException dataAccessException) {
             throw new PersistenceException();
@@ -149,7 +149,7 @@ public class CrudComputerImpl implements CrudComputer {
                     computer.get().getName(),
                     computer.get().getDateWichIsIntroduced(),
                     computer.get().getDateWichIsDiscontinued(),
-                    computer.get().getManufacturer().getId(),
+                    computer.get().getManufacturer() != null ? computer.get().getManufacturer().getId() : null,
                     computer.get().getId());
 
         } catch (DataAccessException dataAccessException) {

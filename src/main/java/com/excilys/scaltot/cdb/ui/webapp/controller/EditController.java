@@ -1,28 +1,30 @@
 package com.excilys.scaltot.cdb.ui.webapp.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.company.CompanyDto;
-import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.entities.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.entities.mappers.MapperComputerDto;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
-import com.excilys.scaltot.cdb.validation.DateValidator;
+import com.excilys.scaltot.cdb.ui.webapp.validator.ComputerFormValidator;
 
 /**
  * @author Caltot Stéphan
@@ -35,20 +37,28 @@ public class EditController {
 
     @Autowired
     private CrudComputerService crudComputerServiceImpl;
+
     @Autowired
     private CrudCompanyService crudCompanyServiceImpl;
     private List<CompanyDto> companies;
     private ComputerDto computerDto;
+
+    @Autowired
+    private ComputerFormValidator computerFormValidator;
+
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(computerFormValidator);
+    }
 
     /**
      * Set computer properties on the edit page.
      * @param model : model
      * @param id : id
      * @return page redirection
-     */
+     */ 
     @GetMapping
-    public String doGet(ModelMap model,
-            @RequestParam(value = "id", defaultValue = "0") final int id) {
+    public String doGet(ModelMap model, @RequestParam(value = "id", defaultValue = "0") final int id) {
 
       companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
       computerDto = MapperComputerDto.computerToComputerDto(crudComputerServiceImpl.find(id));
@@ -57,6 +67,7 @@ public class EditController {
 
       return "editComputer";
     }
+
     /**
      * Post method for edit.
      * @param model : model
@@ -64,47 +75,15 @@ public class EditController {
      * @return page redirection
      */
     @PostMapping
-    public String doPost(ModelMap model, @RequestParam MultiValueMap<String, String> parameters) {
+    public String doPost (@ModelAttribute("computerDto") @Validated ComputerDto computerDto,
+            BindingResult result,
+            Model model) {
 
-        Computer.ComputerBuilder computerBuilder = null;
-        String computerName = "";
-        long id = 0;
+        try {
+            crudComputerServiceImpl.update(Optional.ofNullable(MapperComputerDto.computerDtoToComputer(computerDto)));
+        } catch (PersistenceException persistenceException) {
 
-        if (parameters.containsKey("id") && parameters.containsKey("computerName")) {
-            computerName = parameters.get("computerName").get(0);
-            id = Long.parseLong(parameters.get("id").get(0));
-
-            computerBuilder = new Computer.ComputerBuilder().withId(id).withName(computerName);
         }
-
-        LocalDate introducedDate = null;
-        String introduced = null;
-        if (StringUtils.isNotBlank(introduced) && DateValidator.formatIsValid(Optional.of(introduced))) {
-            introduced = parameters.get("introduced").get(0);
-            introducedDate = LocalDate.parse(introduced);
-
-            computerBuilder.withDateWichIsIntroduced(introducedDate);
-        }
-
-        LocalDate discontinuedDate = null;
-        String discontinued = null;
-        if (StringUtils.isNotBlank(discontinued) && DateValidator.formatIsValid(Optional.of(discontinued))) {
-            if (DateValidator.isRealTime(Optional.ofNullable(introducedDate), Optional.ofNullable(LocalDate.parse(discontinued)))) {
-                discontinued = parameters.get("discontinued").get(0);
-                discontinuedDate = LocalDate.parse(discontinued);
-
-                computerBuilder.withDateWichIsDiscontinued(discontinuedDate);
-            }
-        }
-
-        Company company = null;
-
-        if (parameters.containsKey("companyId")) {
-            company = new Company.CompanyBuilder().withId(Long.parseLong(parameters.get("companyId").get(0))).build();
-            computerBuilder.withManufacturer(company);
-        }
-
-        crudComputerServiceImpl.update(Optional.ofNullable(computerBuilder.build()));
 
         return "redirect:springcdb";
     }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.company.CompanyDto;
 
@@ -45,4 +47,23 @@ public class MapperCompanyDto {
 
         return companiesDto;
     };
+    
+    /**
+     * Changes companyDto to company.
+     * @param companyDto : companyDto
+     * @return company
+     */
+    public static Company companyDtoToCompany(CompanyDto companyDto) {
+
+        Company company = null;
+        
+        if (StringUtils.isNotBlank(companyDto.getName()) && companyDto.getId() > 0) {
+            company = new Company.CompanyBuilder()
+                    .withId(companyDto.getId())
+                    .withName(companyDto.getName())
+                    .build();
+        }
+
+        return company;
+    }
 }

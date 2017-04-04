@@ -96,7 +96,7 @@ public class DashboardController {
         model.addAttribute("computers", computers);
         model.addAttribute("numberOfPages", page.getNumberOfPages());
         model.addAttribute("currentPage", page.getCurrentPage());
-        model.addAttribute("numberOfElements", currentPage);
+        model.addAttribute("numberOfElements", page.getNumberOfElements());
 
         return "dashboard";
     }

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
 <head>
@@ -20,6 +22,7 @@
 
 	<section id="main">
 		<div class="container">
+			<h1><spring:message code="cdb.add.title"/></h1>
 			<h1 id="homeTitle">${numberOfElements} computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
@@ -68,7 +71,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computerDto.id}"></td>
-							<td><a href="editComputer?id=${computerDto.id}" onclick="">${computerDto.name}</a></td>
+							<td><a href="editComputer?id=${computerDto.id}" onclick="">${computerDto.computerName}</a></td>
 							<td>${computerDto.dateWichIsIntroduced}</td>
 							<td>${computerDto.dateWichIsDiscontinued}</td>
 							<td>${computerDto.companyName}</td>

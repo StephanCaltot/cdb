@@ -1,11 +1,16 @@
 package com.excilys.scaltot.cdb.entities.mappers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
+import com.excilys.scaltot.cdb.entities.computer.Computer.ComputerBuilder;
 
 /**
  * @author Caltot Stéphan
@@ -23,7 +28,7 @@ public class MapperComputerDto {
         ComputerDto computerDto = new ComputerDto();
 
         computerDto.setId(computer.get().getId());
-        computerDto.setName(computer.get().getName());
+        computerDto.setComputerName(computer.get().getName());
         if (computer.get().getDateWichIsIntroduced() != null) {
             computerDto.setDateWichIsIntroduced(computer.get().getDateWichIsIntroduced().toString());
         }
@@ -32,7 +37,7 @@ public class MapperComputerDto {
             computerDto.setDateWichIsDiscontinued(computer.get().getDateWichIsDiscontinued().toString());
         }
 
-        if (computer.get().getManufacturer().getId() != 0) {
+        if (computer.get().getManufacturer().getId() > 0) {
             computerDto.setCompanyId(computer.get().getManufacturer().getId());
             computerDto.setCompanyName(computer.get().getManufacturer().getName());
         }
@@ -52,7 +57,7 @@ public class MapperComputerDto {
         for (Computer computer: computers) {
             computerDto = new ComputerDto();
             computerDto.setId(computer.getId());
-            computerDto.setName(computer.getName());
+            computerDto.setComputerName(computer.getName());
             if (computer.getDateWichIsIntroduced() != null) {
                 computerDto.setDateWichIsIntroduced(computer.getDateWichIsIntroduced().toString());
             }
@@ -61,7 +66,7 @@ public class MapperComputerDto {
                 computerDto.setDateWichIsDiscontinued(computer.getDateWichIsDiscontinued().toString());
             }
 
-            if (computer.getManufacturer().getId() != 0) {
+            if (computer.getManufacturer().getId() > 0) {
                 computerDto.setCompanyId(computer.getManufacturer().getId());
                 computerDto.setCompanyName(computer.getManufacturer().getName());
             }
@@ -70,4 +75,40 @@ public class MapperComputerDto {
 
         return computersDto;
     };
+
+    /**
+     * Changes computerDto to computer.
+     * @param computerDto : computerDto
+     * @return computer
+     */
+    public static Computer computerDtoToComputer(ComputerDto computerDto) {
+        ComputerBuilder computerBuilder = new Computer.ComputerBuilder();
+        
+        if (computerDto.getId() > 0 ) {
+            computerBuilder.withId(computerDto.getId());
+        }
+
+        if (computerDto.getComputerName() != null) {
+            computerBuilder.withName(computerDto.getComputerName());
+        }
+
+        if (StringUtils.isNotBlank(computerDto.getDateWichIsIntroduced())) {
+            computerBuilder.withDateWichIsIntroduced(LocalDate.parse(computerDto.getDateWichIsIntroduced()));
+        }
+
+        if (StringUtils.isNotBlank(computerDto.getDateWichIsDiscontinued())) {
+            computerBuilder.withDateWichIsDiscontinued(LocalDate.parse(computerDto.getDateWichIsDiscontinued()));
+        }
+
+        if (StringUtils.isNotBlank(computerDto.getCompanyName()) && computerDto.getCompanyId() > 0) {
+            Company company = new Company.CompanyBuilder()
+                    .withId(computerDto.getCompanyId())
+                    .withName(computerDto.getCompanyName())
+                    .build();
+            computerBuilder.withManufacturer(company);
+        }
+
+        return computerBuilder.build();
+    }
+    
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
 <head>
@@ -27,23 +28,23 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form method="POST">
+                    <form:form action="editComputer" modelAttribute="computerDto" method="POST">
                         <input name="action" type="hidden" value="edit"/>
                         <fieldset>
                                 <input type="hidden" class="form-control" id="id" name="id" value="${computerDto.id}" />
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" value="${computerDto.name}" />
+                                <form:input path="computerName" type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" value="${computerDto.computerName}" />
                                 <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '*' and '/' characters.</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computerDto.dateWichIsIntroduced}" />
+                                <form:input path="dateWichIsIntroduced" type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computerDto.dateWichIsIntroduced}" />
 								<span id="dateError">Date have to matches dd/mm/aaaa format.</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" value="${computerDto.dateWichIsDiscontinued}"/>
+                                <form:input path="dateWichIsDiscontinued" type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" value="${computerDto.dateWichIsDiscontinued}"/>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -67,7 +68,7 @@
                             or
                             <a href="springcdb" class="btn btn-default">Cancel</a>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>
