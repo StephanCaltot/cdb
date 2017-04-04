@@ -15,7 +15,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a id="homePage" class="navbar-brand" href="springcdb"> Application - Computer Database </a>
+            <a id="homePage" class="navbar-brand" href="springcdb"><spring:message code="cdb.webapp.title"/></a>
         </div>
     </header>
 
@@ -23,58 +23,51 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
+					<h1><spring:message code="cdb.add.title"/></h1>
                     <form:form action="addComputer" modelAttribute="computerDto" method="POST">
                     	<input name="action" type="hidden" value="add"/>
-                        <fieldset>
-                        
-                        
-                        
-                        
-                        
+
                        		<spring:bind path="computerName">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
-									<label class="col-sm-2 control-label">Computer Name</label>
-									<div class="col-sm-10">
-									    <form:input path="computerName" type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" />
-										<form:errors path="computerName" class="control-label" />
-									</div>
+									<label for="computerName"><spring:message code="cdb.computer.name"/></label>
+								    <form:input path="computerName" type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" />
+									<form:errors path="computerName" class="control-label" />
 								</div>
 							</spring:bind>
                         
-                        
-                        
-							<spring:bind path="computerName">
+                            <spring:bind path="dateWichIsIntroduced">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
-									<label class="col-sm-2 control-label">Computer Name</label>
-									<div class="col-sm-10">
-									    <form:input path="computerName" type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" />
-										<form:errors path="computerName" class="control-label" />
-									</div>
+                                <label for="introduced"><spring:message code="cdb.computer.introduced"/></label>
+									<form:input path="dateWichIsIntroduced" type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" />
+									<form:errors path="dateWichIsIntroduced" class="control-label" />
 								</div>
 							</spring:bind>
-                            <div class="form-group">
-                                <label for="introduced">Introduced date</label>
-                                <form:input path="dateWichIsIntroduced" type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" />
-								<span id="dateError">Date must bet like dd/mm/aaaa and introduced must be before discontinued.</span>
-                            </div>
-                            <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
+                    
+                             <spring:bind path="dateWichIsDiscontinued">
+								<div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="discontinued"><spring:message code="cdb.computer.discontinued"/></label>
                                 <form:input path="dateWichIsDiscontinued" type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" />
-                            </div>
-                            <div class="form-group">
-                                <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" name="companyId">                                   
-                                    <c:forEach var="company" items="${companies}">
-                                    	<option value="${company.id}">${company.name}</option>
-              						</c:forEach>
-                                </select>
-                            </div>                 
-                        </fieldset>
+									<form:errors path="dateWichIsDiscontinued" class="control-label" />
+								</div>
+							</spring:bind>
+                            
+           
+                            
+	                        <spring:bind path="companyId">
+								<div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="companyId"><spring:message code="cdb.computer.company"/></label>
+									<form:select path="companyId" class="form-control">
+										<form:option value="0" label="--No company selected --" />
+										<form:options items="${companies}" itemValue="id" itemLabel="name" />
+									</form:select>
+									<form:errors path="companyId" class="control-label" />
+								</div>
+							</spring:bind> 
+                                          
                         <div class="actions pull-right">
-                            <input id="addComputerButton" type="submit" value="Add" class="btn btn-primary">
-                            or
-                            <a href="springcdb" class="btn btn-default">Cancel</a>
+                            <input id="addComputerButton" type="submit" value="<spring:message code="cdb.form.add"/>" class="btn btn-primary">
+                            <spring:message code="cdb.form.or"/>
+                            <a href="springcdb" class="btn btn-default"><spring:message code="cdb.form.cancel"/></a>
                         </div>
                     </form:form>
                 </div>
@@ -83,6 +76,5 @@
     </section>
     
 	<script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
-<%-- 	<script src="<c:url value="/resources/js/addcomputer.js"/>"></script> --%>
 </body>
 </html>

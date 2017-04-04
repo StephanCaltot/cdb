@@ -22,7 +22,7 @@ public class StringValidator {
      * @param string : string
      * @return boolean
      */
-    public static Boolean isFormed(Optional<String> string) {
+    public static boolean isFormed(Optional<String> string) {
         if (string.get().matches("[a-zA-Z0-9-_ ./+]*") && !string.get().equals("") && !string.get().matches("[ ]*")) {
             return true;
         } else {

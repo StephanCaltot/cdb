@@ -55,7 +55,7 @@ public class StringCheckTest {
         assertFalse(StringValidator.isFormed(Optional.ofNullable("&")));
         assertFalse(StringValidator.isFormed(Optional.ofNullable("@")));
         assertFalse(StringValidator.isFormed(Optional.ofNullable("ç ^")));
-        assertFalse(StringValidator.isFormed(Optional.ofNullable("'  ")));
+        assertFalse(StringValidator.isFormed(Optional.ofNullable("<")));
         assertFalse(StringValidator.isFormed(Optional.ofNullable("@")));
     }
 }

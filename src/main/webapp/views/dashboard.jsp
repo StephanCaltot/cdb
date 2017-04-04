@@ -22,7 +22,6 @@
 
 	<section id="main">
 		<div class="container">
-			<h1><spring:message code="cdb.add.title"/></h1>
 			<h1 id="homeTitle">${numberOfElements} computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">

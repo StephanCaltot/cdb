@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.excilys.scaltot.cdb.entities.company.CompanyDto;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
@@ -77,13 +78,25 @@ public class EditController {
     @PostMapping
     public String doPost (@ModelAttribute("computerDto") @Validated ComputerDto computerDto,
             BindingResult result,
-            Model model) {
+            Model model,
+            final RedirectAttributes redirectAttributes) {
 
-        try {
-            crudComputerServiceImpl.update(Optional.ofNullable(MapperComputerDto.computerDtoToComputer(computerDto)));
-        } catch (PersistenceException persistenceException) {
+    	if (result.hasErrors()) {
+    		
+            companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
+            model.addAttribute("companies", companies);
+            model.addAttribute("computerDto", computerDto);
 
+            return "editComputer";
+        } else {
+            
+            try {
+                crudComputerServiceImpl.update(Optional.ofNullable(MapperComputerDto.computerDtoToComputer(computerDto)));
+            } catch (PersistenceException persistenceException) {
+                
+            }
         }
+
 
         return "redirect:springcdb";
     }

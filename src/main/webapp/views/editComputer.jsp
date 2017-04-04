@@ -26,43 +26,57 @@
                     <div class="label label-default pull-right">
                         id: ${computerDto.id}
                     </div>
-                    <h1>Edit Computer</h1>
+                    <h1><spring:message code="cdb.edit.title"/></h1>
 
                     <form:form action="editComputer" modelAttribute="computerDto" method="POST">
                         <input name="action" type="hidden" value="edit"/>
-                        <fieldset>
-                                <input type="hidden" class="form-control" id="id" name="id" value="${computerDto.id}" />
-                            <div class="form-group">
-                                <label for="computerName">Computer name</label>
-                                <form:input path="computerName" type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" value="${computerDto.computerName}" />
-                                <span id="nameError">Name have to matches letters, numbers or '-' , '_', '.', '*' and '/' characters.</span>
-                            </div>
-                            <div class="form-group">
+                            <input type="hidden" class="form-control" id="id" name="id" value="${computerDto.id}" />
+                            
+                            
+                            <spring:bind path="computerName">
+								<div class="form-group ${status.error ? 'has-error' : ''}">
+									<label for="computerName">Computer Name</label>
+                                	<form:input path="computerName" type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" value="${computerDto.computerName}" />
+									<form:errors path="computerName" class="control-label" />
+								</div>
+							</spring:bind>
+                           
+                            <spring:bind path="dateWichIsIntroduced">
+								<div class="form-group ${status.error ? 'has-error' : ''}">
                                 <label for="introduced">Introduced date</label>
-                                <form:input path="dateWichIsIntroduced" type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computerDto.dateWichIsIntroduced}" />
-								<span id="dateError">Date have to matches dd/mm/aaaa format.</span>
-                            </div>
-                            <div class="form-group">
+                                	<form:input path="dateWichIsIntroduced" type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computerDto.dateWichIsIntroduced}" />
+									<form:errors path="dateWichIsIntroduced" class="control-label" />
+								</div>
+							</spring:bind>
+                            
+                            <spring:bind path="dateWichIsDiscontinued">
+								<div class="form-group ${status.error ? 'has-error' : ''}">
                                 <label for="discontinued">Discontinued date</label>
-                                <form:input path="dateWichIsDiscontinued" type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" value="${computerDto.dateWichIsDiscontinued}"/>
-                            </div>
-                            <div class="form-group">
+                               	    <form:input path="dateWichIsDiscontinued" type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" value="${computerDto.dateWichIsDiscontinued}"/>
+									<form:errors path="dateWichIsDiscontinued" class="control-label" />
+								</div>
+							</spring:bind>
+                            
+                            <spring:bind path="companyId">
+								<div class="form-group ${status.error ? 'has-error' : ''}">
                                 <label for="companyId">Company</label>
-                                <select name="companyId" class="form-control" id="companyId" >                                   
-                                    <c:forEach var="company" items="${companies}">
-                                    <c:choose>
-                                    	<c:when test="${computerDto.companyId == company.id}">
-                                    		<option value="${company.id}" selected="selected" >${company.name}</option>
-                                    	</c:when>
-                                    	
-                                    	<c:otherwise>
-                                    		<option value="${company.id}">${company.name}</option>
-                                    	</c:otherwise>
-                                    </c:choose>
-              						</c:forEach>
-                                </select>
-                            </div>             
-                        </fieldset>
+									<form:select path="companyId" class="form-control">
+										<c:forEach var="company" items="${companies}">
+	                                    <c:choose>
+	                                    	<c:when test="${computerDto.companyId == company.id}">
+	                                    		<option value="${company.id}" selected="selected" >${company.name}</option>
+	                                    	</c:when>
+	                                    	
+	                                    	<c:otherwise>
+	                                    		<option value="${company.id}">${company.name}</option>
+	                                    	</c:otherwise>
+	                                    </c:choose>
+	              						</c:forEach>
+									</form:select>
+									<form:errors path="companyId" class="control-label" />
+								</div>
+							</spring:bind> 
+                           
                         <div class="actions pull-right">
                             <input id="editComputerButton" type="submit" value="Edit" class="btn btn-primary">
                             or
@@ -74,6 +88,5 @@
         </div>
     </section>
 	<script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
-	<script src="<c:url value="/resources/js/editcomputer.js"/>"></script>
 </body>
 </html>
