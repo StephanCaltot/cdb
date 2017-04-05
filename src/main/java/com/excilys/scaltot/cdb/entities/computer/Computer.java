@@ -2,6 +2,18 @@ package com.excilys.scaltot.cdb.entities.computer;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
 import com.excilys.scaltot.cdb.entities.company.Company;
 
 /**
@@ -11,13 +23,25 @@ import com.excilys.scaltot.cdb.entities.company.Company;
  *
  *         20 févr. 2017
  */
+@Entity
+@Table(schema = "computer")
+@TableGenerator(name="COMPUTER_GEN",
+        table="ID_GEN_COMPUTER",
+        pkColumnName="GEN_KEY",
+        valueColumnName="GEN_VALUE",
+        pkColumnValue="COMPUTER_ID",
+        allocationSize=1)
 public class Computer implements Serializable {
 
     private static final long serialVersionUID = 7843282249327558232L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "COMPUTER_GEN")
     private long id;
     private String name;
     private LocalDate dateWichIsIntroduced;
     private LocalDate dateWichIsDiscontinued;
+    @ManyToOne (cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JoinColumn(name="COMPANY_ID")
     private Company manufacturer;
 
     /**

@@ -2,6 +2,7 @@ package com.excilys.scaltot.cdb.persistence.implementation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.annotation.PostConstruct;
 
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.company.QCompany;
 import com.excilys.scaltot.cdb.entities.mappers.MapperCompany;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.pagination.Pagination;
@@ -21,6 +23,9 @@ import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
 import com.excilys.scaltot.cdb.persistence.utils.CrudServiceConstant;
 import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
 import com.excilys.scaltot.cdb.persistence.utils.Datasource;
+import org.hibernate.SessionFactory;
+import com.querydsl.jpa.hibernate.HibernateQuery;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
 /**
  * Crud service allows CRUD's operations on Company entities.
@@ -34,7 +39,19 @@ import com.excilys.scaltot.cdb.persistence.utils.Datasource;
 public class CrudCompanyImpl implements CrudCompany {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudCompanyImpl.class.getName());
+    
+    
+    private static QCompany qCompany = QCompany.company;
+    private SessionFactory sessionFactory;
 
+    private Supplier<HibernateQueryFactory> queryFactory =
+            () -> new HibernateQueryFactory(sessionFactory.getCurrentSession());
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }    
+    
     @Autowired
     private Datasource dataSource;
 
@@ -166,5 +183,6 @@ public class CrudCompanyImpl implements CrudCompany {
         return id;
 
     }
+
 
 }
