@@ -15,7 +15,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a id="homePage" class="navbar-brand" href="springcdb"> Application - Computer Database </a>
+            <a id="homePage" class="navbar-brand" href="springcdb"><spring:message code="cdb.webapp.title"/></a>
         </div>
     </header>
     
@@ -35,7 +35,7 @@
                             
                             <spring:bind path="computerName">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
-									<label for="computerName">Computer Name</label>
+									<label for="computerName"><spring:message code="cdb.computer.name"/></label>
                                 	<form:input path="computerName" type="text" id="computerName" class="form-control" placeholder="Computer name" name="computerName" value="${computerDto.computerName}" />
 									<form:errors path="computerName" class="control-label" />
 								</div>
@@ -43,7 +43,7 @@
                            
                             <spring:bind path="dateWichIsIntroduced">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
-                                <label for="introduced">Introduced date</label>
+                                <label for="introduced"><spring:message code="cdb.computer.introduced"/></label>
                                 	<form:input path="dateWichIsIntroduced" type="date" class="form-control" id="introduced" placeholder="Introduced date" name="introduced" value="${computerDto.dateWichIsIntroduced}" />
 									<form:errors path="dateWichIsIntroduced" class="control-label" />
 								</div>
@@ -51,7 +51,7 @@
                             
                             <spring:bind path="dateWichIsDiscontinued">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
-                                <label for="discontinued">Discontinued date</label>
+                                <label for="discontinued"><spring:message code="cdb.computer.discontinued"/></label>
                                	    <form:input path="dateWichIsDiscontinued" type="date" class="form-control" id="discontinued" placeholder="Discontinued date" name="discontinued" value="${computerDto.dateWichIsDiscontinued}"/>
 									<form:errors path="dateWichIsDiscontinued" class="control-label" />
 								</div>
@@ -59,7 +59,7 @@
                             
                             <spring:bind path="companyId">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
-                                <label for="companyId">Company</label>
+                                <label for="companyId"><spring:message code="cdb.computer.company"/></label>
 									<form:select path="companyId" class="form-control">
 										<c:forEach var="company" items="${companies}">
 	                                    <c:choose>
@@ -78,9 +78,9 @@
 							</spring:bind> 
                            
                         <div class="actions pull-right">
-                            <input id="editComputerButton" type="submit" value="Edit" class="btn btn-primary">
-                            or
-                            <a href="springcdb" class="btn btn-default">Cancel</a>
+                            <input id="editComputerButton" type="submit" value="<spring:message code="cdb.form.add"/>" class="btn btn-primary">
+                            <spring:message code="cdb.form.or"/>
+                            <a href="springcdb" class="btn btn-default"><spring:message code="cdb.form.cancel"/></a>
                         </div>
                     </form:form>
                 </div>

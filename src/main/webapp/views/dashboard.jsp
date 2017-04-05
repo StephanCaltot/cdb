@@ -16,24 +16,24 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-            <a id="homePage" class="navbar-brand" href="springcdb"> Application - Computer Database </a>
+            <a id="homePage" class="navbar-brand" href="springcdb"><spring:message code="cdb.webapp.title"/></a>
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${numberOfElements} computers found</h1>
+			<h1 id="homeTitle">${numberOfElements} <spring:message code="cdb.dashboard.total"/></h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
                     	<input name="action" type="hidden" value="filter"/>
 						<input type="search" id="searchbox" name="filter" class="form-control" placeholder="Search name" /> 
-						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+						<input type="submit" id="searchsubmit" value=<spring:message code="cdb.dashboard.search"/> class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer" >Add Computer</a>
-					<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer" ><spring:message code="cdb.add.title"/></a>
+					<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="cdb.dashboard.edit"/></a>
 				</div>
 			</div>
 		</div>
@@ -56,12 +56,12 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<th><spring:message code="cdb.computer.name"/></th>
+						<th><spring:message code="cdb.computer.introduced"/></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><spring:message code="cdb.computer.discontinued"/></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><spring:message code="cdb.computer.company"/></th>
 
 					</tr>
 				</thead>
