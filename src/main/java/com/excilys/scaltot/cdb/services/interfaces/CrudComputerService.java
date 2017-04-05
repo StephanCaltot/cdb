@@ -30,16 +30,17 @@ public interface CrudComputerService {
      * Delete CRUD's operation.
      *
      * @param id : id
-     * @return boolean
+     * @return 
      */
-    Boolean delete(long id);
+    long delete(long id);
 
     /**
      * Update CRUD's operation.
      *
      * @param computer : computer
+     * @return 
      */
-    void update(Optional<Computer> computer);
+    Optional<Computer> update(Optional<Computer> computer);
 
     /**
      * Retrieves all computers without any pagination.

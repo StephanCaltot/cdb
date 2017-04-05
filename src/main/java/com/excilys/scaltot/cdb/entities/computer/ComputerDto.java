@@ -8,7 +8,7 @@ package com.excilys.scaltot.cdb.entities.computer;
 public class ComputerDto {
 
     private long id;
-    private String name;
+    private String computerName;
     private String dateWichIsIntroduced;
     private String dateWichIsDiscontinued;
     private String companyName;
@@ -18,14 +18,14 @@ public class ComputerDto {
     /**
      * @return the name
      */
-    public String getName() {
-        return name;
+    public String getComputerName() {
+        return computerName;
     }
     /**
-     * @param name : the name to set
+     * @param computerName : the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setComputerName(String computerName) {
+        this.computerName = computerName;
     }
     /**
      * @return the id
@@ -103,7 +103,7 @@ public class ComputerDto {
      */
     @Override
     public String toString() {
-        return "Computer (" + getId() + ") - " + getName()
+        return "Computer (" + getId() + ") - " + getComputerName()
                 + ((getDateWichIsIntroduced() == null) ? ", not introduced yet "
                         : ", introduced in " + getDateWichIsIntroduced())
                 + ((getDateWichIsDiscontinued() == null) ? ", not discontinued yet "
@@ -124,7 +124,7 @@ public class ComputerDto {
         result = prime * result + ((dateWichIsDiscontinued == null) ? 0 : dateWichIsDiscontinued.hashCode());
         result = prime * result + ((dateWichIsIntroduced == null) ? 0 : dateWichIsIntroduced.hashCode());
         result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((computerName == null) ? 0 : computerName.hashCode());
         return result;
     }
 
@@ -170,11 +170,11 @@ public class ComputerDto {
         if (id != other.id) {
             return false;
         }
-        if (name == null) {
-            if (other.name != null) {
+        if (computerName == null) {
+            if (other.computerName != null) {
                 return false;
             }
-        } else if (!name.equals(other.name)) {
+        } else if (!computerName.equals(other.computerName)) {
             return false;
         }
         return true;

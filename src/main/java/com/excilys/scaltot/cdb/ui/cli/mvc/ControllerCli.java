@@ -16,7 +16,7 @@ import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
 import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
 import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
 import com.excilys.scaltot.cdb.ui.cli.ScannerSystemIn;
-import com.excilys.scaltot.cdb.ui.webapp.utils.BeanConfig;
+import com.excilys.scaltot.cdb.ui.webapp.utils.CdbConfiguration;
 
 /**
  * Controler for Command line interface.
@@ -36,7 +36,7 @@ public class ControllerCli {
     private Pagination paginationCompany = new Pagination.PaginationBuilder().build();
     private long offset = 0;
 
-    private ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+    private ApplicationContext context = new AnnotationConfigApplicationContext(CdbConfiguration.class);
     private CrudComputerServiceImpl crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
     private CrudCompanyServiceImpl crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
     private PaginationServiceImpl paginationComputerServiceImpl = context.getBean(PaginationServiceImpl.class);
@@ -198,7 +198,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the computer's id you want delete : "));
             computerId = scan.nextInt();
         } while (computerId <= 0);
-        if (crudComputerServiceImpl.delete(computerId)) {
+        if (crudComputerServiceImpl.delete(computerId) == computerId) {
             viewCli.displayInfo(Optional.of("\nComputer (" + computerId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
@@ -219,7 +219,7 @@ public class ControllerCli {
             viewCli.displayInfo(Optional.of("\nPlease enter the company's id you want delete : "));
             companyId = scan.nextInt();
         } while (companyId <= 0);
-        if (crudCompanyServiceImpl.delete(companyId)) {
+        if (crudCompanyServiceImpl.delete(companyId) == companyId) {
             viewCli.displayInfo(Optional.of("\nCompany (" + companyId + ") deleted successfully !\n\n"));
         }
         viewCli.displayInfo(Optional.of(ViewCli.FOOTER));
