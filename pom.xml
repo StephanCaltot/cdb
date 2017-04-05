@@ -39,6 +39,7 @@
 		<selenium.version>3.3.1</selenium.version>
 		<maven-logback.version>1.2.1</maven-logback.version>
 		<javadoc>2.10.3</javadoc>
+		<hibernate.version>5.2.9.Final</hibernate.version>
 		
 	</properties>
 
@@ -269,6 +270,12 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${maven-logback.version}</version>
 		    <scope>compile</scope>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>${hibernate.version}</version>
 		</dependency>
 		
 	</dependencies>

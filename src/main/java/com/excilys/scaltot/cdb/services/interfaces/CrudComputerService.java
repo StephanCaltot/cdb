@@ -30,7 +30,7 @@ public interface CrudComputerService {
      * Delete CRUD's operation.
      *
      * @param id : id
-     * @return 
+     * @return long id
      */
     long delete(long id);
 
@@ -38,7 +38,7 @@ public interface CrudComputerService {
      * Update CRUD's operation.
      *
      * @param computer : computer
-     * @return 
+     * @return computer
      */
     Optional<Computer> update(Optional<Computer> computer);
 

@@ -47,6 +47,10 @@ public class EditController {
     @Autowired
     private ComputerFormValidator computerFormValidator;
 
+    /**
+     * Set the validator.
+     * @param binder : binder
+     */
     @InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(computerFormValidator);
@@ -57,7 +61,7 @@ public class EditController {
      * @param model : model
      * @param id : id
      * @return page redirection
-     */ 
+     */
     @GetMapping
     public String doGet(ModelMap model, @RequestParam(value = "id", defaultValue = "0") final int id) {
 
@@ -72,28 +76,30 @@ public class EditController {
     /**
      * Post method for edit.
      * @param model : model
-     * @param parameters : parameters
+     * @param computerDto : computer
+     * @param result : result
+     * @param redirectAttributes redirectAttributes
      * @return page redirection
      */
     @PostMapping
-    public String doPost (@ModelAttribute("computerDto") @Validated ComputerDto computerDto,
+    public String doPost(@ModelAttribute("computerDto") @Validated ComputerDto computerDto,
             BindingResult result,
             Model model,
             final RedirectAttributes redirectAttributes) {
 
-    	if (result.hasErrors()) {
-    		
+        if (result.hasErrors()) {
+
             companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
             model.addAttribute("companies", companies);
             model.addAttribute("computerDto", computerDto);
 
             return "editComputer";
         } else {
-            
+
             try {
                 crudComputerServiceImpl.update(Optional.ofNullable(MapperComputerDto.computerDtoToComputer(computerDto)));
             } catch (PersistenceException persistenceException) {
-                
+
             }
         }
 

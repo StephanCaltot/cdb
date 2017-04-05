@@ -47,7 +47,7 @@ public class MapperCompanyDto {
 
         return companiesDto;
     };
-    
+
     /**
      * Changes companyDto to company.
      * @param companyDto : companyDto
@@ -56,7 +56,7 @@ public class MapperCompanyDto {
     public static Company companyDtoToCompany(CompanyDto companyDto) {
 
         Company company = null;
-        
+
         if (StringUtils.isNotBlank(companyDto.getName()) && companyDto.getId() > 0) {
             company = new Company.CompanyBuilder()
                     .withId(companyDto.getId())

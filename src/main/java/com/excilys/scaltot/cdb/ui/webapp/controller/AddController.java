@@ -44,6 +44,10 @@ public class AddController {
     @Autowired
     private ComputerFormValidator computerFormValidator;
 
+    /**
+     * Set the validator.
+     * @param binder : binder
+     */
     @InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(computerFormValidator);
@@ -68,7 +72,9 @@ public class AddController {
     /**
      * Post method for add computer.
      * @param model : model
-     * @param parameters : parameters
+     * @param computerDto : computerDto
+     * @param result : result
+     * @param redirectAttributes redirectAttributes
      * @return page redirection
      */
     @PostMapping
@@ -76,20 +82,20 @@ public class AddController {
             BindingResult result,
             Model model,
             final RedirectAttributes redirectAttributes) {
-        
-    
+
+
         if (result.hasErrors()) {
 
             companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
             model.addAttribute("companies", companies);
-            
+
             return "addComputer";
         } else {
-            
+
             try {
                 crudComputerServiceImpl.create(Optional.ofNullable(MapperComputerDto.computerDtoToComputer(computerDto)));
             } catch (PersistenceException persistenceException) {
-                
+
             }
         }
 

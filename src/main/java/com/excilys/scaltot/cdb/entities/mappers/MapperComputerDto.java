@@ -83,8 +83,8 @@ public class MapperComputerDto {
      */
     public static Computer computerDtoToComputer(ComputerDto computerDto) {
         ComputerBuilder computerBuilder = new Computer.ComputerBuilder();
-        
-        if (computerDto.getId() > 0 ) {
+
+        if (computerDto.getId() > 0) {
             computerBuilder.withId(computerDto.getId());
         }
 
@@ -110,5 +110,5 @@ public class MapperComputerDto {
 
         return computerBuilder.build();
     }
-    
+
 }

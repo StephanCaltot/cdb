@@ -47,6 +47,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * Delete CRUD's operation.
      *
      * @param id : id
+     * @return long id
      */
     public long delete(long id) {
 
@@ -58,6 +59,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
      * Update CRUD's operation.
      *
      * @param computer : computer
+     * @return computer
      */
     public Optional<Computer> update(Optional<Computer> computer) {
 
@@ -93,7 +95,7 @@ public class CrudComputerServiceImpl implements CrudComputerService {
     public List<Computer> getComputersFiltered(String nameFilter) {
 
         return crudComputerImpl.getComputersFiltered(nameFilter);
-        
+
     }
 
     /**

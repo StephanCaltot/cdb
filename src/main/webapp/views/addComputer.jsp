@@ -34,7 +34,7 @@
 									<form:errors path="computerName" class="control-label" />
 								</div>
 							</spring:bind>
-                        
+
                             <spring:bind path="dateWichIsIntroduced">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
                                 <label for="introduced"><spring:message code="cdb.computer.introduced"/></label>
@@ -42,7 +42,7 @@
 									<form:errors path="dateWichIsIntroduced" class="control-label" />
 								</div>
 							</spring:bind>
-                    
+
                              <spring:bind path="dateWichIsDiscontinued">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
                                 <label for="discontinued"><spring:message code="cdb.computer.discontinued"/></label>
@@ -50,9 +50,9 @@
 									<form:errors path="dateWichIsDiscontinued" class="control-label" />
 								</div>
 							</spring:bind>
-                            
-           
-                            
+
+
+
 	                        <spring:bind path="companyId">
 								<div class="form-group ${status.error ? 'has-error' : ''}">
                                 <label for="companyId"><spring:message code="cdb.computer.company"/></label>
@@ -62,8 +62,8 @@
 									</form:select>
 									<form:errors path="companyId" class="control-label" />
 								</div>
-							</spring:bind> 
-                                          
+							</spring:bind>
+
                         <div class="actions pull-right">
                             <input id="addComputerButton" type="submit" value="<spring:message code="cdb.form.add"/>" class="btn btn-primary">
                             <spring:message code="cdb.form.or"/>
@@ -74,7 +74,7 @@
             </div>
         </div>
     </section>
-    
+
 	<script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
 </body>
 </html>

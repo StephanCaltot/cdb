@@ -38,7 +38,7 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      */
     public List<Company> findAll() {
 
-    	return crudCompanyImpl.findAll();
+        return crudCompanyImpl.findAll();
 
     }
 
@@ -59,7 +59,7 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      */
     public long getCountOfCompanies() {
 
-    	return crudCompanyImpl.getCountOfElements();
+        return crudCompanyImpl.getCountOfElements();
 
     }
 
@@ -70,7 +70,7 @@ public class CrudCompanyServiceImpl implements CrudCompanyService {
      */
     public long delete(long companyId) {
 
-    	return crudCompanyImpl.delete(companyId);
+        return crudCompanyImpl.delete(companyId);
 
     }
 }
