@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.excilys.scaltot.cdb.entities.company.CompanyDto;
+import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.entities.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.entities.mappers.MapperComputerDto;
@@ -66,7 +67,8 @@ public class EditController {
     public String doGet(ModelMap model, @RequestParam(value = "id", defaultValue = "0") final int id) {
 
       companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
-      computerDto = MapperComputerDto.computerToComputerDto(crudComputerServiceImpl.find(id));
+      Optional<Computer> computer = crudComputerServiceImpl.find(id);
+      computerDto = MapperComputerDto.computerToComputerDto(computer);
       model.addAttribute("companies", companies);
       model.addAttribute("computerDto", computerDto);
 

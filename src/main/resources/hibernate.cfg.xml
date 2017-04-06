@@ -6,8 +6,8 @@
 <hibernate-configuration>
 	<session-factory>
 		<property name="hbm2ddl.auto">update</property>
-		<mapping class="com.excilys.scaltot.entities.company.Company" />
-		<mapping class="com.excilys.scaltot.entities.computer.Computer" />
+		<mapping class="com.excilys.scaltot.cdb.entities.company.Company" />
+		<mapping class="com.excilys.scaltot.cdb.entities.computer.Computer" />
 	</session-factory>
 
 </hibernate-configuration>

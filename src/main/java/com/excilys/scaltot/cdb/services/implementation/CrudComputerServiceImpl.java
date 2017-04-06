@@ -67,15 +67,6 @@ public class CrudComputerServiceImpl implements CrudComputerService {
 
     }
 
-    /**
-     * Retrieves all computers without any pagination.
-     *
-     * @return list of computers
-     */
-    public List<Computer> findAll() {
-
-        return crudComputerImpl.findAll();
-    }
 
     /**
      * Return the number of computer in database.

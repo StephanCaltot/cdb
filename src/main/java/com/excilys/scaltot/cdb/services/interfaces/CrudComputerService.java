@@ -43,13 +43,6 @@ public interface CrudComputerService {
     Optional<Computer> update(Optional<Computer> computer);
 
     /**
-     * Retrieves all computers without any pagination.
-     *
-     * @return list of computers
-     */
-    List<Computer> findAll();
-
-    /**
      * Return the number of computer in database.
      * @return long
      */

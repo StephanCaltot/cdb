@@ -13,11 +13,11 @@ import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.pagination.Pagination;
-import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
-import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
-import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
+import com.excilys.scaltot.cdb.persistence.HibernateConfiguration;
+import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
+import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
+import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
 import com.excilys.scaltot.cdb.ui.cli.ScannerSystemIn;
-import com.excilys.scaltot.cdb.utils.HibernateConfiguration;
 
 /**
  * Controler for Command line interface.
@@ -37,22 +37,21 @@ public class ControllerCli {
     private Pagination paginationCompany = new Pagination.PaginationBuilder().build();
     private long offset = 0;
 
-    ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfiguration.class);
-
     @Autowired
-    private CrudComputerServiceImpl crudComputerServiceImpl;
+    private CrudComputerService crudComputerServiceImpl;
     @Autowired
-    private CrudCompanyServiceImpl crudCompanyServiceImpl;
+    private CrudCompanyService crudCompanyServiceImpl;
     @Autowired
-    private PaginationServiceImpl paginationComputerServiceImpl;
+    private PaginationService paginationComputerServiceImpl;
     @Autowired
-    private PaginationServiceImpl paginationServiceImpl;
+    private PaginationService paginationServiceImpl;
 
     /**
      * Controler's constructor setting crudService for company and computer.
      */
     public ControllerCli() {
-
+        @SuppressWarnings("resource")
+        ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfiguration.class);
         context.getAutowireCapableBeanFactory().autowireBean(this);
 
         paginationServiceImpl.paginationInitialisation(paginationComputer, Computer.class);

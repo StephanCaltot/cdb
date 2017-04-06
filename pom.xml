@@ -15,7 +15,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<checkstyle.config.location>config/checkstyle/checkstyle.xml</checkstyle.config.location>
-		<maven.compiler>3.5.1</maven.compiler>
+		<maven.compiler>3.6.0</maven.compiler>
 		<maven.war>2.6</maven.war>
 		<maven.site>3.4</maven.site>
 		<maven.checkstyle>2.17</maven.checkstyle>
@@ -34,14 +34,15 @@
 		<jstl>1.2</jstl>
 		<tomcat7.version>2.2</tomcat7.version>
 		<commons.version>3.0</commons.version>
-		<spring>4.3.7.RELEASE</spring>
+		<spring>4.3.5.RELEASE</spring>
 		<webdrivermanager.version>1.6.1</webdrivermanager.version>
 		<selenium.version>3.3.1</selenium.version>
 		<maven-logback.version>1.2.1</maven-logback.version>
 		<javadoc>2.10.3</javadoc>
-		<hibernate.version>5.2.9.Final</hibernate.version>
+		<hibernate.version>5.1.3.Final</hibernate.version>
 		<querydsl.version>4.1.4</querydsl.version>
-		<jpa>2.1.1</jpa>
+		<javax.persistence.version>2.1.1</javax.persistence.version>
+		<apt.version>1.1.3</apt.version>
 
 	</properties>
 
@@ -50,6 +51,23 @@
 	
 		<plugins>
 		
+			<plugin>
+			    <groupId>com.mysema.maven</groupId>
+			    <artifactId>apt-maven-plugin</artifactId>
+			    <version>${apt.version}</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>process</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>target/generated-sources/java</outputDirectory>
+			                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+		    
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler}</version>
@@ -211,35 +229,96 @@
 		    <scope>compile</scope>
 		</dependency>
 		
+		
+		
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+		
+		
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-core</artifactId>
 		    <version>${spring}</version>
-		    <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-context</artifactId>
+		    <artifactId>spring-aop</artifactId>
 		    <version>${spring}</version>
-		    <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
-	    	<groupId>org.springframework</groupId>
-		    <artifactId>spring-test</artifactId>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-aspects</artifactId>
 		    <version>${spring}</version>
-		    <scope>test</scope>
+		    <exclusions>
+		        <exclusion>
+		            <groupId>commons-logging</groupId>
+		            <artifactId>commons-logging</artifactId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>
+		
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-orm</artifactId>
+		    <version>${spring}</version>
 		</dependency>
 		
 		<dependency>
-	    	<groupId>org.springframework</groupId>
-		    <artifactId>spring-web</artifactId>
-		    <version>${spring}</version>
-		    <scope>compile</scope>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-context</artifactId>
+	        <version>${spring}</version>
+	        <exclusions>
+	            <exclusion>
+	                <groupId>commons-logging</groupId>
+	                <artifactId>commons-logging</artifactId>
+	            </exclusion>
+	        </exclusions>
 		</dependency>
 		
-			<dependency>
+		
+		<dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-tx</artifactId>
+	        <version>${spring}</version>
+	        <exclusions>
+	            <exclusion>
+	                <groupId>commons-logging</groupId>
+	                <artifactId>commons-logging</artifactId>
+	            </exclusion>
+	        </exclusions>
+        </dependency>
+		
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+		
+		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
 		    <artifactId>selenium-java</artifactId>
 		    <version>${selenium.version}</version>
@@ -260,11 +339,17 @@
 		    <scope>compile</scope>
 		</dependency>
 		
-		<dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring}</version>
-		    <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 		
 		<dependency>
@@ -284,7 +369,6 @@
 		  <groupId>com.querydsl</groupId>
 		  <artifactId>querydsl-apt</artifactId>
 		  <version>${querydsl.version}</version>
-		  <scope>provided</scope>
 		</dependency>    
 		    
 		<dependency>
@@ -292,11 +376,24 @@
 		  <artifactId>querydsl-jpa</artifactId>
 		  <version>${querydsl.version}</version>
 		</dependency>
-			
+		
+		
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
+		
 		<dependency>
 		    <groupId>org.eclipse.persistence</groupId>
 		    <artifactId>javax.persistence</artifactId>
-		    <version>${jpa}</version>
+		    <version>${javax.persistence.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-java8</artifactId>
+		    <version>${hibernate.version}</version>
 		</dependency>
 		
 	</dependencies>

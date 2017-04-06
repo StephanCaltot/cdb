@@ -18,7 +18,7 @@ import com.excilys.scaltot.cdb.entities.computer.Computer.ComputerBuilder;
  * 3 mars 2017
  */
 public class MapperComputerDto {
-
+    
     /**
      * Changes computer to computer DTO.
      * @param computer : computer
@@ -29,6 +29,7 @@ public class MapperComputerDto {
 
         computerDto.setId(computer.get().getId());
         computerDto.setComputerName(computer.get().getName());
+
         if (computer.get().getDateWichIsIntroduced() != null) {
             computerDto.setDateWichIsIntroduced(computer.get().getDateWichIsIntroduced().toString());
         }
@@ -37,7 +38,7 @@ public class MapperComputerDto {
             computerDto.setDateWichIsDiscontinued(computer.get().getDateWichIsDiscontinued().toString());
         }
 
-        if (computer.get().getManufacturer().getId() > 0) {
+        if (computer.get().getManufacturer() != null && computer.get().getManufacturer().getId() > 0) {
             computerDto.setCompanyId(computer.get().getManufacturer().getId());
             computerDto.setCompanyName(computer.get().getManufacturer().getName());
         }
@@ -66,7 +67,7 @@ public class MapperComputerDto {
                 computerDto.setDateWichIsDiscontinued(computer.getDateWichIsDiscontinued().toString());
             }
 
-            if (computer.getManufacturer().getId() > 0) {
+            if (computer.getManufacturer() != null && computer.getManufacturer().getId() > 0) {
                 computerDto.setCompanyId(computer.getManufacturer().getId());
                 computerDto.setCompanyName(computer.getManufacturer().getName());
             }

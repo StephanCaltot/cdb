@@ -93,6 +93,13 @@ public class DashboardController {
 
         computers = MapperComputerDto.computerListToComputerDto(paginationServiceImpl.findComputerByPage(page));
 
+        LOGGER.debug("********************************************************************************");
+        LOGGER.debug("Size of liste : " + computers.size());
+        for (ComputerDto comp : computers) {
+            LOGGER.debug("Computer : " + comp.toString());
+        }
+
+
         model.addAttribute("computers", computers);
         model.addAttribute("numberOfPages", page.getNumberOfPages());
         model.addAttribute("currentPage", page.getCurrentPage());
