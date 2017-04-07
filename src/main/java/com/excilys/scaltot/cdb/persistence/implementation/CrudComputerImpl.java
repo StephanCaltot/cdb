@@ -1,27 +1,23 @@
-    package com.excilys.scaltot.cdb.persistence.implementation;
+package com.excilys.scaltot.cdb.persistence.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
-import javax.annotation.PostConstruct;
-
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.scaltot.cdb.entities.company.QCompany;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.entities.mappers.MapperComputer;
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.entities.computer.QComputer;
 import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
 import com.excilys.scaltot.cdb.persistence.utils.CrudServiceConstant;
-import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
-import com.excilys.scaltot.cdb.persistence.utils.Datasource;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
 /**
  * CRUD service allows CRUD operations on Computer entities.
@@ -36,27 +32,25 @@ public class CrudComputerImpl implements CrudComputer {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudComputerImpl.class);
 
+    private static QCompany qCompany = QCompany.company;
+    private static QComputer qComputer = QComputer.computer;
+    
+    private SessionFactory sessionFactory;
+
+    private Supplier<HibernateQueryFactory> queryFactory =
+            () -> new HibernateQueryFactory(sessionFactory.getCurrentSession());
+
     @Autowired
-    private Datasource dataSource;
-
-    private JdbcTemplate jdbcTemplateObject;
-
-    /**
-     * Avoids error on JDBC template initialization.
-     */
-    @PostConstruct
-    public void setDataSource() {
-
-       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-
-    }
-
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }    
+    
     /**
      * Create CRUD's operation.
      *
      * @param computer : computer
      */
-    public void create(Optional<Computer> computer) {
+    public Optional<Computer> create(Optional<Computer> computer) {
 
         LOGGER.warn("Creating computer...");
 
@@ -64,17 +58,10 @@ public class CrudComputerImpl implements CrudComputer {
             throw new IllegalArgumentException("You are trying to create a null computer !");
         }
 
-        try {
+        sessionFactory.getCurrentSession().save(computer.get());
+        
+        return computer;
 
-            jdbcTemplateObject.update(DaoProperties.CREATE_COMPUTER,
-                    computer.get().getName(),
-                    computer.get().getDateWichIsIntroduced(),
-                    computer.get().getDateWichIsDiscontinued(),
-                    computer.get().getManufacturer() != null ? computer.get().getManufacturer().getId() : null);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
     }
 
     /**
@@ -90,18 +77,8 @@ public class CrudComputerImpl implements CrudComputer {
         if (id <= 0) {
             throw new IllegalArgumentException("You are trying to find a computer with null or negative id !");
         }
-
-        Computer computer = null;
-
-        try {
-
-            computer = jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPUTER, new MapperComputer(), id);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
-
-        return Optional.ofNullable(computer);
+        
+        return Optional.of(queryFactory.get().select(qComputer).from(qComputer).where(qComputer.id.eq(id)).fetchOne());
     }
 
     /**
@@ -118,13 +95,7 @@ public class CrudComputerImpl implements CrudComputer {
             throw new IllegalArgumentException("You are trying to delete a computer with null or negative id !");
         }
 
-        try {
-
-            jdbcTemplateObject.update(DaoProperties.DELETE_COMPUTER, id);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
+        queryFactory.get().delete(qComputer).where(qComputer.id.eq(id)).execute();
 
         return id;
     }
@@ -137,48 +108,21 @@ public class CrudComputerImpl implements CrudComputer {
      */
     public Optional<Computer> update(Optional<Computer> computer) {
 
-        LOGGER.warn("Updating computer with id" + computer.get().getId() + "...");
+        LOGGER.warn("Updating computer with id " + computer.get().getId() + "...");
 
         if (!computer.isPresent()) {
             throw new IllegalArgumentException("You are trying to update a null computer !");
         }
 
-        try {
-
-            jdbcTemplateObject.update(DaoProperties.UPDATE_COMPUTER,
-                    computer.get().getName(),
-                    computer.get().getDateWichIsIntroduced(),
-                    computer.get().getDateWichIsDiscontinued(),
-                    computer.get().getManufacturer() != null ? computer.get().getManufacturer().getId() : null,
-                    computer.get().getId());
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
+        queryFactory.get().update(qComputer)
+        .where(qComputer.id.eq(computer.get().getId()))
+        .set(qComputer.name, computer.get().getName())
+        .set(qComputer.dateWichIsIntroduced, computer.get().getDateWichIsIntroduced())
+        .set(qComputer.dateWichIsDiscontinued, computer.get().getDateWichIsDiscontinued())
+        .set(qComputer.manufacturer, computer.get().getManufacturer())
+        .execute();
 
         return computer;
-    }
-
-    /**
-     * Retrieves all computers without any pagination.
-     *
-     * @return list of computers
-     */
-    public List<Computer> findAll() {
-
-        LOGGER.warn("Doing find all computer...");
-
-        List<Computer> computers = new ArrayList<>();
-
-        try {
-
-            computers = jdbcTemplateObject.query(DaoProperties.FIND_ALL_COMPUTERS, new MapperComputer());
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
-
-        return computers;
     }
 
     /**
@@ -188,18 +132,8 @@ public class CrudComputerImpl implements CrudComputer {
     public long getCountOfElements() {
 
         LOGGER.warn("Getting number of computer...");
-
-        long countOfElements = 0;
-
-        try {
-
-            countOfElements = jdbcTemplateObject.queryForObject(DaoProperties.COUNT_COMPUTER, long.class);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
-
-        return countOfElements;
+        
+        return (long) queryFactory.get().from(qComputer).fetchCount();
     }
 
     /**
@@ -211,17 +145,13 @@ public class CrudComputerImpl implements CrudComputer {
 
         LOGGER.warn("Getting computer filtered by name beggining by " + nameFilter +  "...");
 
-        List<Computer> computers = new ArrayList<>();
-
-        try {
-
-            computers = jdbcTemplateObject.query(DaoProperties.COMPUTER_FILTERED, new MapperComputer(),  nameFilter + "%");
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
-
-       return computers;
+        return queryFactory.get()
+            .select(qComputer)
+            .from(qComputer)
+            .leftJoin(qCompany)
+            .on(qCompany.id.eq(qComputer.manufacturer.id))
+            .where(qComputer.name.like(nameFilter))
+            .fetch();
 
     }
 
@@ -246,10 +176,14 @@ public class CrudComputerImpl implements CrudComputer {
             offset = 0;
         }
 
-        try {
-            return jdbcTemplateObject.query(DaoProperties.PAGE_COMPUTER_FILTERED, new MapperComputer(), filter + "%", pageSize, offset);
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
+        return queryFactory.get()
+            .select(qComputer)
+            .from(qComputer)
+            .leftJoin(qCompany)
+            .on(qCompany.id.eq(qComputer.manufacturer.id))
+            .where(qComputer.name.like(filter + "%"))
+            .limit(pageSize)
+            .offset(offset)
+            .fetch();
     }
 }

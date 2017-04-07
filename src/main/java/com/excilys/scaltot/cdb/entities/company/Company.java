@@ -2,6 +2,12 @@ package com.excilys.scaltot.cdb.entities.company;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Class representing a Company implementing ICompany.
  *
@@ -9,9 +15,14 @@ import java.io.Serializable;
  *
  *         20 févr. 2017
  */
+@Entity
+@Table(name = "company")
 public class Company implements Serializable {
 
+
     private static final long serialVersionUID = 5909107314153074415L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
 

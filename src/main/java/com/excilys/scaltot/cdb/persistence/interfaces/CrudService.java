@@ -22,13 +22,6 @@ public interface CrudService<T> {
     Optional<T> find(long id) throws PersistenceException;
 
     /**
-     * Retrieves all elements.
-     * @return T
-     * @throws PersistenceException : PersistenceException
-     */
-    List<T> findAll() throws PersistenceException;
-
-    /**
      * Retrieves all elements paginated and filtered.
      * @param pagination : page
      * @return List<T>
@@ -39,7 +32,7 @@ public interface CrudService<T> {
     /**
      * Delete one elements referenced by id in parameter.
      * @param id : id
-     * @return 
+     * @return long
      * @throws PersistenceException : PersistenceException
      */
     long delete(long id) throws PersistenceException;

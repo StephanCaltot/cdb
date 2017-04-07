@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -12,11 +13,11 @@ import com.excilys.scaltot.cdb.entities.company.Company;
 import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.pagination.Pagination;
-import com.excilys.scaltot.cdb.services.implementation.CrudCompanyServiceImpl;
-import com.excilys.scaltot.cdb.services.implementation.CrudComputerServiceImpl;
-import com.excilys.scaltot.cdb.services.implementation.PaginationServiceImpl;
+import com.excilys.scaltot.cdb.persistence.HibernateConfiguration;
+import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
+import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
+import com.excilys.scaltot.cdb.services.interfaces.PaginationService;
 import com.excilys.scaltot.cdb.ui.cli.ScannerSystemIn;
-import com.excilys.scaltot.cdb.ui.webapp.utils.CdbConfiguration;
 
 /**
  * Controler for Command line interface.
@@ -36,16 +37,23 @@ public class ControllerCli {
     private Pagination paginationCompany = new Pagination.PaginationBuilder().build();
     private long offset = 0;
 
-    private ApplicationContext context = new AnnotationConfigApplicationContext(CdbConfiguration.class);
-    private CrudComputerServiceImpl crudComputerServiceImpl = context.getBean(CrudComputerServiceImpl.class);
-    private CrudCompanyServiceImpl crudCompanyServiceImpl = context.getBean(CrudCompanyServiceImpl.class);
-    private PaginationServiceImpl paginationComputerServiceImpl = context.getBean(PaginationServiceImpl.class);
-    private PaginationServiceImpl paginationServiceImpl = context.getBean(PaginationServiceImpl.class);
+    @Autowired
+    private CrudComputerService crudComputerServiceImpl;
+    @Autowired
+    private CrudCompanyService crudCompanyServiceImpl;
+    @Autowired
+    private PaginationService paginationComputerServiceImpl;
+    @Autowired
+    private PaginationService paginationServiceImpl;
 
     /**
      * Controler's constructor setting crudService for company and computer.
      */
     public ControllerCli() {
+        @SuppressWarnings("resource")
+        ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfiguration.class);
+        context.getAutowireCapableBeanFactory().autowireBean(this);
+
         paginationServiceImpl.paginationInitialisation(paginationComputer, Computer.class);
         paginationServiceImpl.paginationInitialisation(paginationCompany, Company.class);
         scan = ScannerSystemIn.getInstance();

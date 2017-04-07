@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -25,7 +26,8 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.excilys.scaltot.cdb","com.excilys.scaltot.cdb.services", "com.excilys.scaltot.cdb.ui", "com.excilys.scaltot.cdb.persistence"})
+@EnableTransactionManagement
+@ComponentScan(basePackages = {"com.excilys.scaltot.cdb"})//.services", "com.excilys.scaltot.cdb.ui", "com.excilys.scaltot.cdb.persistence"})
 public class CdbConfiguration extends WebMvcConfigurerAdapter {
 
     /**
@@ -35,7 +37,7 @@ public class CdbConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames(new String[] {"/message/language/cdb","/message/validation"});           
+        messageSource.setBasenames(new String[] {"/message/language/cdb", "/message/validation"});
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
@@ -45,7 +47,7 @@ public class CdbConfiguration extends WebMvcConfigurerAdapter {
      * @return resolver.
      */
     @Bean
-    public LocaleResolver localeResolver(){
+    public LocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
         resolver.setDefaultLocale(new Locale("fr_FR"));
         return resolver;

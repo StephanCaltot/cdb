@@ -2,25 +2,22 @@ package com.excilys.scaltot.cdb.persistence.implementation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
-import javax.annotation.PostConstruct;
-
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.entities.mappers.MapperCompany;
-import com.excilys.scaltot.cdb.exceptions.PersistenceException;
+import com.excilys.scaltot.cdb.entities.company.QCompany;
+import com.excilys.scaltot.cdb.entities.computer.QComputer;
 import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
 import com.excilys.scaltot.cdb.persistence.utils.CrudServiceConstant;
-import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
-import com.excilys.scaltot.cdb.persistence.utils.Datasource;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
 /**
  * Crud service allows CRUD's operations on Company entities.
@@ -34,20 +31,18 @@ import com.excilys.scaltot.cdb.persistence.utils.Datasource;
 public class CrudCompanyImpl implements CrudCompany {
 
     Logger LOGGER = LoggerFactory.getLogger(CrudCompanyImpl.class.getName());
+    
+    
+    private static QCompany qCompany = QCompany.company;
+    private static QComputer qComputer = QComputer.computer;
+    private SessionFactory sessionFactory;
+
+    private Supplier<HibernateQueryFactory> queryFactory =
+            () -> new HibernateQueryFactory(sessionFactory.getCurrentSession());
 
     @Autowired
-    private Datasource dataSource;
-
-    private JdbcTemplate jdbcTemplateObject;
-
-    /**
-     * Avoids error on JDBC template initialization.
-     */
-    @PostConstruct
-    public void setDataSource() {
-
-       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     /**
@@ -64,17 +59,7 @@ public class CrudCompanyImpl implements CrudCompany {
             throw new IllegalArgumentException("You are trying to find a company with null or negative id !");
         }
 
-        Company company = null;
-
-        try {
-
-            company = jdbcTemplateObject.queryForObject(DaoProperties.FIND_COMPANY, new MapperCompany(), id);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException(dataAccessException);
-        }
-
-        return Optional.of(company);
+        return Optional.of((Company) queryFactory.get().from(qCompany).where(qCompany.id.eq(id)).fetchOne());
     }
 
     /**
@@ -85,13 +70,8 @@ public class CrudCompanyImpl implements CrudCompany {
 
         LOGGER.warn("Doing find all company...");
 
-        try {
+        return (List<Company>) queryFactory.get().selectFrom(qCompany).fetch();
 
-            return jdbcTemplateObject.query(DaoProperties.FIND_ALL_COMPANIES, new MapperCompany());
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
     }
 
     /**
@@ -113,14 +93,15 @@ public class CrudCompanyImpl implements CrudCompany {
         if (offset < 0) {
             offset = 0;
         }
+        return queryFactory
+                .get()
+                .select(qCompany)
+                .from(qCompany)
+                .where(qCompany.name.like(filter))
+                .limit(pageSize)
+                .offset(offset)
+                .fetch();
 
-        try {
-
-            return jdbcTemplateObject.query(DaoProperties.PAGE_COMPANY_FILTERED, new MapperCompany(), filter, pageSize, offset);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
     }
 
     /**
@@ -131,13 +112,8 @@ public class CrudCompanyImpl implements CrudCompany {
 
         LOGGER.warn("Getting number of company...");
 
-        try {
-
-            return jdbcTemplateObject.queryForObject(DaoProperties.COUNT_COMPANY, long.class);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
+        return (long) queryFactory.get().from(qCompany).fetchCount();
+        
     }
 
     /**
@@ -153,18 +129,13 @@ public class CrudCompanyImpl implements CrudCompany {
 
             throw new IllegalArgumentException("You are trying to delete a company with null or negative id !");
         }
-
-        try {
-
-            jdbcTemplateObject.update(DaoProperties.DELETE_COMPUTER_COMPANY, id);
-            jdbcTemplateObject.update(DaoProperties.DELETE_COMPANY, id);
-
-        } catch (DataAccessException dataAccessException) {
-            throw new PersistenceException();
-        }
+        
+        queryFactory.get().delete(qComputer).where(qComputer.manufacturer.id.eq(id)).execute();
+        queryFactory.get().delete(qCompany).where(qCompany.id.eq(id)).execute();
 
         return id;
 
     }
+
 
 }

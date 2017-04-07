@@ -30,21 +30,20 @@ public class ComputerFormValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        
-        
+
         ComputerDto computer = (ComputerDto) target;
-        
+
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "computerName", "NotEmpty.computerForm.name");
-        
+
         if (!StringValidator.isFormed(Optional.of(computer.getComputerName()))) {
             errors.rejectValue("computerName", "ForbiddenCaracters.computerForm.name");
         }
-        
-        if (StringUtils.isNotBlank(computer.getDateWichIsDiscontinued()) && StringUtils.isNotBlank(computer.getDateWichIsIntroduced()) ) {
+
+        if (StringUtils.isNotBlank(computer.getDateWichIsDiscontinued()) && StringUtils.isNotBlank(computer.getDateWichIsIntroduced())) {
             LocalDate introduced   = LocalDate.parse(computer.getDateWichIsIntroduced());
             LocalDate discontinued = LocalDate.parse(computer.getDateWichIsDiscontinued());
-            
-            if ( discontinued.isBefore(introduced)) {
+
+            if (discontinued.isBefore(introduced)) {
                 errors.rejectValue("dateWichIsDiscontinued", "NotBeforeIntroduced.computerForm.discontinued");
             }
         }

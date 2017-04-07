@@ -30,7 +30,7 @@ public interface CrudComputerService {
      * Delete CRUD's operation.
      *
      * @param id : id
-     * @return 
+     * @return long id
      */
     long delete(long id);
 
@@ -38,16 +38,9 @@ public interface CrudComputerService {
      * Update CRUD's operation.
      *
      * @param computer : computer
-     * @return 
+     * @return computer
      */
     Optional<Computer> update(Optional<Computer> computer);
-
-    /**
-     * Retrieves all computers without any pagination.
-     *
-     * @return list of computers
-     */
-    List<Computer> findAll();
 
     /**
      * Return the number of computer in database.

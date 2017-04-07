@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.excilys.scaltot.cdb.entities.company.CompanyDto;
+import com.excilys.scaltot.cdb.entities.computer.Computer;
 import com.excilys.scaltot.cdb.entities.computer.ComputerDto;
 import com.excilys.scaltot.cdb.entities.mappers.MapperCompanyDto;
 import com.excilys.scaltot.cdb.entities.mappers.MapperComputerDto;
@@ -47,6 +48,10 @@ public class EditController {
     @Autowired
     private ComputerFormValidator computerFormValidator;
 
+    /**
+     * Set the validator.
+     * @param binder : binder
+     */
     @InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(computerFormValidator);
@@ -57,12 +62,13 @@ public class EditController {
      * @param model : model
      * @param id : id
      * @return page redirection
-     */ 
+     */
     @GetMapping
     public String doGet(ModelMap model, @RequestParam(value = "id", defaultValue = "0") final int id) {
 
       companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
-      computerDto = MapperComputerDto.computerToComputerDto(crudComputerServiceImpl.find(id));
+      Optional<Computer> computer = crudComputerServiceImpl.find(id);
+      computerDto = MapperComputerDto.computerToComputerDto(computer);
       model.addAttribute("companies", companies);
       model.addAttribute("computerDto", computerDto);
 
@@ -72,28 +78,30 @@ public class EditController {
     /**
      * Post method for edit.
      * @param model : model
-     * @param parameters : parameters
+     * @param computerDto : computer
+     * @param result : result
+     * @param redirectAttributes redirectAttributes
      * @return page redirection
      */
     @PostMapping
-    public String doPost (@ModelAttribute("computerDto") @Validated ComputerDto computerDto,
+    public String doPost(@ModelAttribute("computerDto") @Validated ComputerDto computerDto,
             BindingResult result,
             Model model,
             final RedirectAttributes redirectAttributes) {
 
-    	if (result.hasErrors()) {
-    		
+        if (result.hasErrors()) {
+
             companies = MapperCompanyDto.companyListToCompanyDto(crudCompanyServiceImpl.findAll());
             model.addAttribute("companies", companies);
             model.addAttribute("computerDto", computerDto);
 
             return "editComputer";
         } else {
-            
+
             try {
                 crudComputerServiceImpl.update(Optional.ofNullable(MapperComputerDto.computerDtoToComputer(computerDto)));
             } catch (PersistenceException persistenceException) {
-                
+
             }
         }
 
