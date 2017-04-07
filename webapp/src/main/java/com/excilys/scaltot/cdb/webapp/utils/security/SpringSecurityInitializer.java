@@ -1,7 +1,5 @@
-package com.excilys.scaltot.cdb.webapp.utils.security;
-//package com.excilys.scaltot.cdb.ui.webapp.utils.security;
+//package com.excilys.scaltot.cdb.webapp.utils.security;
 //
-//import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 //
 ///**
 // * @author Caltot Stéphan
