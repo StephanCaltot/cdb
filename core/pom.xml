@@ -14,7 +14,6 @@
  
   <name>cdb core module</name>
 
-		
 	<build>
 		<plugins>
 			<plugin>
