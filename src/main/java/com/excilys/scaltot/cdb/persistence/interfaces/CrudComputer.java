@@ -3,7 +3,7 @@ package com.excilys.scaltot.cdb.persistence.interfaces;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.entities.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 
 /**

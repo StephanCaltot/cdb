@@ -10,7 +10,8 @@ import java.time.LocalDate;
 import org.junit.Before;
 import org.mockito.Mockito;
 
-import com.excilys.scaltot.cdb.entities.computer.Computer;
+import com.excilys.scaltot.cdb.entities.Computer;
+import com.excilys.scaltot.cdb.mappers.MapperComputer;
 
 import org.junit.Test;
 

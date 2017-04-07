@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.scaltot.cdb.entities.company.QCompany;
-import com.excilys.scaltot.cdb.entities.computer.Computer;
-import com.excilys.scaltot.cdb.entities.computer.QComputer;
+import com.excilys.scaltot.cdb.entities.Computer;
+import com.excilys.scaltot.cdb.entities.QCompany;
+import com.excilys.scaltot.cdb.entities.QComputer;
 import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
 import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
@@ -44,7 +44,7 @@ public class CrudComputerImpl implements CrudComputer {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }    
-    
+
     /**
      * Create CRUD's operation.
      *

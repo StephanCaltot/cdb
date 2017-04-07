@@ -8,7 +8,8 @@ import java.util.Optional;
 
 import org.junit.Test;
 
-import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.Company;
+import com.excilys.scaltot.cdb.entities.Computer;
 import com.excilys.scaltot.cdb.validation.ComputerValidator;
 
 /**

@@ -2,7 +2,7 @@ package com.excilys.scaltot.cdb.persistence.interfaces;
 
 import java.util.List;
 
-import com.excilys.scaltot.cdb.entities.company.Company;
+import com.excilys.scaltot.cdb.entities.Company;
 
 /**
  * @author Caltot Stéphan

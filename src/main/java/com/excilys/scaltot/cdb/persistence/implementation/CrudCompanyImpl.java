@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.scaltot.cdb.entities.company.Company;
-import com.excilys.scaltot.cdb.entities.company.QCompany;
-import com.excilys.scaltot.cdb.entities.computer.QComputer;
+import com.excilys.scaltot.cdb.entities.Company;
+import com.excilys.scaltot.cdb.entities.QCompany;
+import com.excilys.scaltot.cdb.entities.QComputer;
 import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
 import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
