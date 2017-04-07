@@ -16,7 +16,7 @@ import com.excilys.scaltot.cdb.entities.company.QCompany;
 import com.excilys.scaltot.cdb.entities.computer.QComputer;
 import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudCompany;
-import com.excilys.scaltot.cdb.persistence.utils.CrudServiceConstant;
+import com.excilys.scaltot.cdb.persistence.utils.DaoProperties;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
 /**
@@ -88,7 +88,7 @@ public class CrudCompanyImpl implements CrudCompany {
         String filter = pagination.getFilter();
 
         if (pageSize <= 0) {
-            pageSize = CrudServiceConstant.LIMIT_DEFAULT;
+            pageSize = DaoProperties.LIMIT_DEFAULT;
         }
         if (offset < 0) {
             offset = 0;

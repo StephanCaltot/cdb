@@ -9,6 +9,8 @@ package com.excilys.scaltot.cdb.persistence.utils;
  */
 public class DaoProperties {
 
+    public static final int LIMIT_DEFAULT = 10;
+    
     public static final String CREATE_COMPUTER = "insert into computer(name, introduced, discontinued, company_id) values ( ?, ?, ?, ? )";
 
     public static final String DELETE_COMPUTER = "delete from computer where id= ?;";
