@@ -1,4 +1,4 @@
-package java;
+package com.excilys.scaltot.cdb.services.implementation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.scaltot.cdb.entities.UserRole;
+import com.excilys.scaltot.cdb.persistence.interfaces.UserDao;
 
 @Service("userDetailsService")
 public class MyUserDetailsService implements UserDetailsService {

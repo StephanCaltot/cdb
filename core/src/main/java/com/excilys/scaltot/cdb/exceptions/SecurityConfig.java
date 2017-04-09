@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dto;
+package com.excilys.scaltot.cdb.exceptions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/computers/add","/computers/delete","/computers/{\\d+}/edit")
+        http.authorizeRequests().antMatchers("/springcdb/addComputer","/computers/delete","/springcdb/editComputer")
             .access("hasRole('ROLE_ADMIN')").and().formLogin()
             .loginPage("/login").failureUrl("/login?error")
                 .usernameParameter("username")

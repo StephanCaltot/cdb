@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.persistence.utils;
+package com.excilys.scaltot.cdb.exceptions;
 
 import java.util.Properties;
  

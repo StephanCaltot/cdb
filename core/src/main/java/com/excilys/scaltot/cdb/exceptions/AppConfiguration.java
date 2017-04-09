@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dto;
+package com.excilys.scaltot.cdb.exceptions;
 
 import java.util.Locale;
 
@@ -18,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-
 /**
  * @author Caltot Stéphan
  *
@@ -26,9 +25,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan({ "com.formation.cdb.web","com.formation.cdb.validator", "com.formation.cdb.configuration" })
+@ComponentScan({ "com.excilus.scaltot.cdb.webapp","com.excilys.scaltot.cdb.webapp.validator", "com.excilys.scaltot.cdb.exceptions	" })
 @PropertySource(value = { "classpath:application.properties" })
-@Import({ HibernateConfiguration.class, SecurityConfig.class })
+@Import({HibernateConfiguration.class, SecurityConfig.class })
 @EnableTransactionManagement
 public class AppConfiguration extends WebMvcConfigurerAdapter{
     @Bean

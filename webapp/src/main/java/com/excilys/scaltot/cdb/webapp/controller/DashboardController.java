@@ -115,8 +115,7 @@ public class DashboardController {
      * @return page redirection
      */
     @PostMapping
-    public String doPost(ModelMap model,
-            @RequestParam("selection") final Optional<String> selection) {
+    public String doPost(ModelMap model, @RequestParam("selection") final Optional<String> selection) {
 
         if (selection.isPresent()) {
             String[] selections = selection.get().split(",");
@@ -124,12 +123,12 @@ public class DashboardController {
                 LOGGER.info("DELETION ID" + Long.parseLong(computerId));
                 crudComputerServiceImpl.delete(Long.parseLong(computerId));
             }
-        }     
+        }
         
-        redirectAttributes.addFlashAttribute("css", "success");
-        redirectAttributes.addFlashAttribute("msg", "User is deleted!");
+//        redirectAttributes.addFlashAttribute("css", "success");
+//        redirectAttributes.addFlashAttribute("msg", "User is deleted!");
         
-        return "redirect:/users";
+        //return "redirect:/users";
         return "redirect:springcdb";
     }
 }

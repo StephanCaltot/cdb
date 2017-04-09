@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dto;
+package com.excilys.scaltot.cdb.exceptions;
 
 /**
  * @author Caltot Stéphan

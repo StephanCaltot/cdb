@@ -1,6 +1,6 @@
-package com.formation.cdb.persistence;
+package com.excilys.scaltot.cdb.persistence.interfaces;
 
-import com.formation.cdb.entity.impl.User;
+import com.excilys.scaltot.cdb.entities.User;
 
 public interface UserDao {
     User findByUserName(String username);

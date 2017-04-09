@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.dto;
+package com.excilys.scaltot.cdb.exceptions;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

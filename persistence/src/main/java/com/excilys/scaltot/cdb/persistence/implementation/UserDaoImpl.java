@@ -7,8 +7,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.formation.cdb.entity.impl.User;
-import com.formation.cdb.persistence.UserDao;
+import com.excilys.scaltot.cdb.entities.User;
+import com.excilys.scaltot.cdb.persistence.interfaces.UserDao;
 
 @Repository
 public class UserDaoImpl implements UserDao {
