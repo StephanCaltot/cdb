@@ -12,52 +12,35 @@
 
   <packaging>war</packaging>
 
-   <properties>
-
-
-   </properties>
-
-   <dependencies>
-
+  <dependencies>
+	
 	<dependency>
-		<groupId>org.springframework.security</groupId>
-		<artifactId>spring-security-web</artifactId>
-		<version>4.2.1.RELEASE</version>
+	   <groupId>${project.parent.groupId}</groupId>
+	   <artifactId>core</artifactId>
+	   <version>${project.parent.version}</version>
 	</dependency>
 	
 	<dependency>
-		<groupId>org.springframework.security</groupId>
-		<artifactId>spring-security-config</artifactId>
-		<version>4.2.1.RELEASE</version>
+	   <groupId>${project.parent.groupId}</groupId>
+	   <artifactId>persistence</artifactId>
+	   <version>${project.parent.version}</version>
 	</dependency>
-		
-    <dependency>
-       <groupId>${project.parent.groupId}</groupId>
-       <artifactId>core</artifactId>
-       <version>${project.parent.version}</version>
-    </dependency>
+	
+	<dependency>
+	   <groupId>${project.parent.groupId}</groupId>
+	   <artifactId>service</artifactId>
+	   <version>${project.parent.version}</version>
+	</dependency>
+	
+	<dependency>
+	   <groupId>${project.parent.groupId}</groupId>
+	   <artifactId>binding</artifactId>
+	   <version>${project.parent.version}</version>
+	</dependency>
 
-    <dependency>
-       <groupId>${project.parent.groupId}</groupId>
-       <artifactId>persistence</artifactId>
-       <version>${project.parent.version}</version>
-    </dependency>
+ </dependencies>
 
-    <dependency>
-       <groupId>${project.parent.groupId}</groupId>
-       <artifactId>service</artifactId>
-       <version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-       <groupId>${project.parent.groupId}</groupId>
-       <artifactId>binding</artifactId>
-       <version>${project.parent.version}</version>
-    </dependency>
-
-  </dependencies>
-
-  <name>cdb webapp module</name>
+ <name>cdb webapp module</name>
 
 		
 	<build>

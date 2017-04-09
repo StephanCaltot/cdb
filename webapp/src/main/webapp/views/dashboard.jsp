@@ -18,10 +18,24 @@
 		<div class="container">
             <a id="homePage" class="navbar-brand" href="springcdb"><spring:message code="cdb.webapp.title"/></a>
 		</div>
-	</header>
-
+		
+ 	<a class="align-middle" href="?locale=en"><i class="us flag"></i></a>
+    <a class="align-middle" href="?locale=fr_FR"><i class="fr flag"></i></a>
+    
+    </header>
+     
 	<section id="main">
 		<div class="container">
+
+			<c:if test="${not empty msg}">
+				<div class="alert alert-${css} alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<strong>${msg}</strong>
+				</div>
+			</c:if>
+
 			<h1 id="homeTitle">${numberOfElements} <spring:message code="cdb.dashboard.total"/></h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">

@@ -124,7 +124,12 @@ public class DashboardController {
                 LOGGER.info("DELETION ID" + Long.parseLong(computerId));
                 crudComputerServiceImpl.delete(Long.parseLong(computerId));
             }
-        }
+        }     
+        
+        redirectAttributes.addFlashAttribute("css", "success");
+        redirectAttributes.addFlashAttribute("msg", "User is deleted!");
+        
+        return "redirect:/users";
         return "redirect:springcdb";
     }
 }
