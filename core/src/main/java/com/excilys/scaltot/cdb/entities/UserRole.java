@@ -1,7 +1,6 @@
 package com.excilys.scaltot.cdb.entities;
 
 import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.excilys.scaltot.cdb.entities.Model;
-
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = { "role", "username" }))
-public class UserRole extends Model {
+public class UserRole{
 
     private Integer userRoleId;
     private User user;
@@ -32,7 +29,8 @@ public class UserRole extends Model {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "user_role_id", unique = true, nullable = false)
+    @Column(name = "user_role_id",
+        unique = true, nullable = false)
     public Integer getUserRoleId() {
         return this.userRoleId;
     }
@@ -60,45 +58,4 @@ public class UserRole extends Model {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "UserRole [userRoleId=" + userRoleId + ", user=" + user + ", role=" + role + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((role == null) ? 0 : role.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
-        result = prime * result + ((userRoleId == null) ? 0 : userRoleId.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        UserRole other = (UserRole) obj;
-        if (role == null) {
-            if (other.role != null)
-                return false;
-        } else if (!role.equals(other.role))
-            return false;
-        if (user == null) {
-            if (other.user != null)
-                return false;
-        } else if (!user.equals(other.user))
-            return false;
-        if (userRoleId == null) {
-            if (other.userRoleId != null)
-                return false;
-        } else if (!userRoleId.equals(other.userRoleId))
-            return false;
-        return true;
-    }
 }

@@ -10,11 +10,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
+import com.excilys.scaltot.cdb.configuration.HibernateConfiguration;
 import com.excilys.scaltot.cdb.entities.Company;
 import com.excilys.scaltot.cdb.entities.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.pagination.Pagination;
-import com.excilys.scaltot.cdb.persistence.utils.HibernateConfiguration;
 import com.excilys.scaltot.cdb.services.interfaces.CrudCompanyService;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
 import com.excilys.scaltot.cdb.services.interfaces.PaginationService;

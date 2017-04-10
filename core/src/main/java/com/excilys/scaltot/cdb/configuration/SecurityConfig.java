@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.exceptions;
+package com.excilys.scaltot.cdb.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,16 +28,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/springcdb/addComputer","/computers/delete","/springcdb/editComputer")
-            .access("hasRole('ROLE_ADMIN')").and().formLogin()
-            .loginPage("/login").failureUrl("/login?error")
+        http.authorizeRequests().antMatchers("/springcdb/delete", "/addComputer","/editComputer")
+                .access("hasRole('ROLE_ADMIN')").and().formLogin()
+                .loginPage("/login").failureUrl("/login?error")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .and().logout().logoutSuccessUrl("/login?logout")
                 .and().csrf()
                 .and().exceptionHandling().accessDeniedPage("/403");
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         PasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -45,3 +45,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     
 }
+    

@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.exceptions;
+package com.excilys.scaltot.cdb.configuration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -11,12 +11,12 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
-    protected Class[] getRootConfigClasses() {
+    protected Class<?>[] getRootConfigClasses() {
         return new Class[] { AppConfiguration.class };
     }
 
     @Override
-    protected Class[] getServletConfigClasses() {
+    protected Class<?>[] getServletConfigClasses() {
         return null;
     }
 

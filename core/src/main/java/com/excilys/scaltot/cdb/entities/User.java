@@ -10,11 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.excilys.scaltot.cdb.entities.Model;
-
 @Entity
 @Table(name = "users")
-public class User extends Model{
+public class User {
 
     private String username;
     private String password;
@@ -30,7 +28,8 @@ public class User extends Model{
         this.enabled = enabled;
     }
 
-    public User(String username, String password, boolean enabled, Set<UserRole> userRole) {
+    public User(String username, String password,
+        boolean enabled, Set<UserRole> userRole) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -38,7 +37,8 @@ public class User extends Model{
     }
 
     @Id
-    @Column(name = "username", unique = true, nullable = false, length = 45)
+    @Column(name = "username", unique = true,
+        nullable = false, length = 45)
     public String getUsername() {
         return this.username;
     }
@@ -47,7 +47,8 @@ public class User extends Model{
         this.username = username;
     }
 
-    @Column(name = "password", nullable = false, length = 60)
+    @Column(name = "password",
+        nullable = false, length = 60)
     public String getPassword() {
         return this.password;
     }
@@ -73,46 +74,5 @@ public class User extends Model{
     public void setUserRole(Set<UserRole> userRole) {
         this.userRole = userRole;
     }
-
-    @Override
-    public String toString() {
-        return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (enabled ? 1231 : 1237);
-        result = prime * result + ((password == null) ? 0 : password.hashCode());
-        result = prime * result + ((username == null) ? 0 : username.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        User other = (User) obj;
-        if (enabled != other.enabled)
-            return false;
-        if (password == null) {
-            if (other.password != null)
-                return false;
-        } else if (!password.equals(other.password))
-            return false;
-        if (username == null) {
-            if (other.username != null)
-                return false;
-        } else if (!username.equals(other.username))
-            return false;
-        return true;
-    }
-
-
 
 }

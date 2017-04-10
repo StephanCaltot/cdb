@@ -52,7 +52,7 @@
 			</div>
 		</div>
 
-        <form id="deleteForm" action="springcdb" method="POST">
+        <form id="deleteForm" action="springcdb/delete" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
