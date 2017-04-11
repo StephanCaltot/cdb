@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.scaltot.cdb.cli.ScannerSystemIn;
-import com.excilys.scaltot.cdb.configuration.HibernateConfiguration;
 import com.excilys.scaltot.cdb.entities.Company;
 import com.excilys.scaltot.cdb.entities.Computer;
 import com.excilys.scaltot.cdb.exceptions.PersistenceException;
@@ -50,9 +49,9 @@ public class ControllerCli {
      * Controler's constructor setting crudService for company and computer.
      */
     public ControllerCli() {
-        @SuppressWarnings("resource")
-        ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfiguration.class);
-        context.getAutowireCapableBeanFactory().autowireBean(this);
+//        @SuppressWarnings("resource")
+//        ApplicationContext context = new AnnotationConfigApplicationContext(MyHibernateConfiguration.class);
+//        context.getAutowireCapableBeanFactory().autowireBean(this);
 
         paginationServiceImpl.paginationInitialisation(paginationComputer, Computer.class);
         paginationServiceImpl.paginationInitialisation(paginationCompany, Company.class);

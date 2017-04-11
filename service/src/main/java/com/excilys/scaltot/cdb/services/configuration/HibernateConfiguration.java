@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.configuration;
+package com.excilys.scaltot.cdb.services.configuration;
 
 import java.util.Properties;
  
@@ -39,7 +39,7 @@ public class HibernateConfiguration {
         dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
         dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
         dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
-        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
+        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));   
         return dataSource;
     }
      

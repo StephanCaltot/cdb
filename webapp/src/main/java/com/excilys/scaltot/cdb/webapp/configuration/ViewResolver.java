@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.configuration;
+package com.excilys.scaltot.cdb.webapp.configuration;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;

@@ -12,15 +12,48 @@
 
   <packaging>jar</packaging>
  
-  <name>cdb core module</name>
+  <dependencies>
+ 
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+	</dependency>
 
+	<dependency>
+	    <groupId>org.eclipse.persistence</groupId>
+	    <artifactId>javax.persistence</artifactId>
+	</dependency>
+
+	<dependency>
+	    <groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+	</dependency>
+	
+	<dependency>
+	  <groupId>com.querydsl</groupId>
+	  <artifactId>querydsl-apt</artifactId>
+	</dependency>    
+	    
+	<dependency>
+	  <groupId>com.querydsl</groupId>
+	  <artifactId>querydsl-jpa</artifactId>
+	</dependency>
+	
+  </dependencies>  
+  
+  <name>cdb core module</name>
+	
 	<build>
 		<plugins>
+		
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+			    <groupId>com.mysema.maven</groupId>
+			    <artifactId>apt-maven-plugin</artifactId>
 			</plugin>
+			
 		</plugins>
+		
 	</build>
+			    
 	
 </project>

@@ -1,6 +1,6 @@
-    package com.excilys.scaltot.cdb.webapp.controller;
-    
-    import javax.servlet.http.HttpServletRequest;
+package com.excilys.scaltot.cdb.webapp.controller;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -59,71 +59,80 @@
 
 
 	<build>
-
-		<plugins>
+	
+		<pluginManagement>
 		
-			<plugin>
-			    <groupId>com.mysema.maven</groupId>
-			    <artifactId>apt-maven-plugin</artifactId>
-			    <version>${apt.version}</version>
-			    <executions>
-			        <execution>
-			            <goals>
-			                <goal>process</goal>
-			            </goals>
-			            <configuration>
-			                <outputDirectory>target/generated-sources/java</outputDirectory>
-			                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin>
-		    
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
+			<plugins>
 			
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${maven.war}</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
+				<plugin>
+				    <groupId>com.mysema.maven</groupId>
+				    <artifactId>apt-maven-plugin</artifactId>
+				    <version>${apt.version}</version>
+				    <executions>
+				        <execution>
+				            <goals>
+				                <goal>process</goal>
+				            </goals>
+				            <configuration>
+				                <outputDirectory>target/generated-sources/java</outputDirectory>
+				                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+				            </configuration>
+				        </execution>
+				    </executions>
+				</plugin>
+								
+				<plugin>
+				    <groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven.war}</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+							
+				<plugin>
+				  <groupId>org.apache.tomcat.maven</groupId>
+				  <artifactId>tomcat7-maven-plugin</artifactId>
+				  <version>${tomcat7.version}</version>
+				  <configuration>
+				  		<url>${url}</url>
+				  		<password>${password}</password>
+				  		<username>${username}</username>
+				  </configuration>
+				</plugin>
+				
+			</plugins>
+		
+		</pluginManagement>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>${maven.site}</version>
-				<configuration>
-					<locales>en,fr</locales>
-				</configuration>
-			</plugin>
+			<plugins>
 			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${maven.checkstyle}</version>
-			</plugin>
-			
-			<plugin>
-			  <groupId>org.apache.tomcat.maven</groupId>
-			  <artifactId>tomcat7-maven-plugin</artifactId>
-			  <version>${tomcat7.version}</version>
-			  <configuration>
-			  		<url>${url}</url>
-			  		<password>${password}</password>
-			  		<username>${username}</username>
-			  </configuration>
-			</plugin>
-			
-		</plugins>
-
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler}</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+	
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>${maven.site}</version>
+					<configuration>
+						<locales>en,fr</locales>
+					</configuration>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>${maven.checkstyle}</version>
+				</plugin>
+				
+			</plugins>
+				
 	</build>
 
 
@@ -181,7 +190,7 @@
 		
 	</reporting>
 	
-<!-- 	<dependencyManagement> -->
+	<dependencyManagement>
 	
 		<dependencies>
 		
@@ -193,30 +202,9 @@
 			</dependency>
 			
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j}</version>
-				<scope>compile</scope>
-			</dependency>
-	
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${slf4j}</version>
-				<scope>runtime</scope>
-			</dependency>
-			
-			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit}</version>
-				<scope>test</scope>
-			</dependency>
-	
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>${mockito}</version>
 				<scope>test</scope>
 			</dependency>
 			
@@ -253,18 +241,6 @@
 			    <scope>compile</scope>
 			</dependency>
 			
-	        <dependency>
-	            <groupId>org.springframework</groupId>
-	            <artifactId>spring-test</artifactId>
-	            <version>${spring}</version>
-	        </dependency>
-	
-	        <dependency>
-	            <groupId>org.springframework</groupId>
-	            <artifactId>spring-beans</artifactId>
-	            <version>${spring}</version>
-	        </dependency>
-			
 			<dependency>
 			    <groupId>org.springframework</groupId>
 			    <artifactId>spring-core</artifactId>
@@ -275,24 +251,6 @@
 	                    <artifactId>commons-logging</artifactId>
 	                </exclusion>
 	            </exclusions>
-			</dependency>
-			
-			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-aop</artifactId>
-			    <version>${spring}</version>
-			</dependency>
-			
-			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-aspects</artifactId>
-			    <version>${spring}</version>
-			    <exclusions>
-			        <exclusion>
-			            <groupId>commons-logging</groupId>
-			            <artifactId>commons-logging</artifactId>
-			        </exclusion>
-			    </exclusions>
 			</dependency>
 			
 			<dependency>
@@ -350,13 +308,7 @@
 				<version>${webdrivermanager.version}</version>
 				<scope>compile</scope>
 			</dependency>
-			
-			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-jdbc</artifactId>
-			    <version>${spring}</version>
-			    <scope>compile</scope>
-			</dependency>
+		
 			
 	        <dependency>
 	            <groupId>org.springframework</groupId>
@@ -401,12 +353,6 @@
 			  <version>${querydsl.version}</version>
 			</dependency>
 			
-	        <dependency>
-	            <groupId>com.querydsl</groupId>
-	            <artifactId>querydsl-core</artifactId>
-	            <version>${querydsl.version}</version>
-	        </dependency>
-			
 			<dependency>
 			    <groupId>org.eclipse.persistence</groupId>
 			    <artifactId>javax.persistence</artifactId>
@@ -421,6 +367,6 @@
 			
 		</dependencies>
 
-<!-- 	</dependencyManagement> -->
+	</dependencyManagement>
 	
 </project>

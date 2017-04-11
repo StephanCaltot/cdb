@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.configuration;
+package com.excilys.scaltot.cdb.webapp.configuration;
 
 import java.util.Locale;
 
@@ -17,6 +17,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import com.excilys.scaltot.cdb.services.configuration.HibernateConfiguration;
+
 
 /**
  * @author Caltot Stéphan

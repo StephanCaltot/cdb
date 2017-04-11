@@ -1,4 +1,4 @@
-package com.excilys.scaltot.cdb.configuration;
+package com.excilys.scaltot.cdb.webapp.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
