@@ -1,26 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.excilys.scaltot</groupId>
-  <artifactId>cdb</artifactId>
-  <version>2.0.0</version>
-  <packaging>pom</packaging>
+	<groupId>com.excilys.scaltot</groupId>
+	<artifactId>cdb</artifactId>
+	<version>2.0.0</version>
+	<packaging>pom</packaging>
 
-  <modules>
-     <module>core</module>
-     <module>persistence</module>
-     <module>service</module>
-     <module>webapp</module>
-     <module>console</module>
-     <module>binding</module>
-  </modules>
+	<modules>
+		<module>core</module>
+		<module>persistence</module>
+		<module>service</module>
+		<module>webapp</module>
+		<module>console</module>
+		<module>binding</module>
+		<module>webservices</module>
+	</modules>
 
-  <name>Computer database</name>
-  <url>http://localhost:8080/cdb/springcdb</url>
+	<name>Computer database</name>
+	<url>http://localhost:8080/cdb/springcdb</url>
 
-  	<properties>
-  
+	<properties>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<checkstyle.config.location>config/checkstyle/checkstyle.xml</checkstyle.config.location>
@@ -53,91 +54,91 @@
 		<javax.persistence.version>2.1.1</javax.persistence.version>
 		<apt.version>1.1.3</apt.version>
 		<jcl.slf4j.version>1.7.12</jcl.slf4j.version>
-   		<springSecurity.version>4.2.2.RELEASE</springSecurity.version>
-
+		<springSecurity.version>4.2.2.RELEASE</springSecurity.version>
+		<jackson.version>2.4.4</jackson.version>
 	</properties>
 
 
 	<build>
-	
+
 		<pluginManagement>
-		
+
 			<plugins>
-			
+
 				<plugin>
-				    <groupId>com.mysema.maven</groupId>
-				    <artifactId>apt-maven-plugin</artifactId>
-				    <version>${apt.version}</version>
-				    <executions>
-				        <execution>
-				            <goals>
-				                <goal>process</goal>
-				            </goals>
-				            <configuration>
-				                <outputDirectory>target/generated-sources/java</outputDirectory>
-				                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-				            </configuration>
-				        </execution>
-				    </executions>
+					<groupId>com.mysema.maven</groupId>
+					<artifactId>apt-maven-plugin</artifactId>
+					<version>${apt.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>process</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>target/generated-sources/java</outputDirectory>
+								<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
-								
+
 				<plugin>
-				    <groupId>org.apache.maven.plugins</groupId>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>${maven.war}</version>
 					<configuration>
 						<failOnMissingWebXml>false</failOnMissingWebXml>
 					</configuration>
 				</plugin>
-							
+
 				<plugin>
-				  <groupId>org.apache.tomcat.maven</groupId>
-				  <artifactId>tomcat7-maven-plugin</artifactId>
-				  <version>${tomcat7.version}</version>
-				  <configuration>
-				  		<url>${url}</url>
-				  		<password>${password}</password>
-				  		<username>${username}</username>
-				  </configuration>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>${tomcat7.version}</version>
+					<configuration>
+						<url>${url}</url>
+						<password>${password}</password>
+						<username>${username}</username>
+					</configuration>
 				</plugin>
-				
+
 			</plugins>
-		
+
 		</pluginManagement>
 
-			<plugins>
-			
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${maven.compiler}</version>
-					<configuration>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-					</configuration>
-				</plugin>
-	
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>${maven.site}</version>
-					<configuration>
-						<locales>en,fr</locales>
-					</configuration>
-				</plugin>
-				
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>${maven.checkstyle}</version>
-				</plugin>
-				
-			</plugins>
-				
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven.site}</version>
+				<configuration>
+					<locales>en,fr</locales>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven.checkstyle}</version>
+			</plugin>
+
+		</plugins>
+
 	</build>
 
 
 	<reporting>
-	
+
 		<plugins>
 
 			<plugin>
@@ -180,193 +181,218 @@
 				</configuration>
 			</plugin>
 
-	        <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-jxr-plugin</artifactId>
-	            <version>${maven.jxr}</version>
-	        </plugin>
-	        
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>${maven.jxr}</version>
+			</plugin>
+
 		</plugins>
-		
+
 	</reporting>
-	
+
 	<dependencyManagement>
-	
+
 		<dependencies>
-		
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring}</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql}</version>
 				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit}</version>
 				<scope>test</scope>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>javax.servlet</groupId>
-			    <artifactId>jstl</artifactId>
-			    <version>${jstl}</version>
-			    <scope>compile</scope>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>${jstl}</version>
+				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
 				<version>${springSecurity.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${springSecurity.version}</version>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>javax.servlet</groupId>
-			    <artifactId>javax.servlet-api</artifactId>
-			    <version>${servlet}</version>
-			    <scope>provided</scope>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${servlet}</version>
+				<scope>provided</scope>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.apache.commons</groupId>
-			    <artifactId>commons-lang3</artifactId>
-			    <version>${commons.version}</version>
-			    <scope>compile</scope>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons.version}</version>
+				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-core</artifactId>
-			    <version>${spring}</version>
-			    <exclusions>
-	                <exclusion>
-	                    <groupId>commons-logging</groupId>
-	                    <artifactId>commons-logging</artifactId>
-	                </exclusion>
-	            </exclusions>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-orm</artifactId>
-			    <version>${spring}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring}</version>
 			</dependency>
-			
+
 			<dependency>
-		        <groupId>org.springframework</groupId>
-		        <artifactId>spring-context</artifactId>
-		        <version>${spring}</version>
-		        <exclusions>
-		            <exclusion>
-		                <groupId>commons-logging</groupId>
-		                <artifactId>commons-logging</artifactId>
-		            </exclusion>
-		        </exclusions>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
-	
+
 			<dependency>
-		        <groupId>org.springframework</groupId>
-		        <artifactId>spring-tx</artifactId>
-		        <version>${spring}</version>
-		        <exclusions>
-		            <exclusion>
-		                <groupId>commons-logging</groupId>
-		                <artifactId>commons-logging</artifactId>
-		            </exclusion>
-		        </exclusions>
-	        </dependency>
-			
-	        <dependency>
-	            <groupId>org.springframework</groupId>
-	            <artifactId>spring-web</artifactId>
-	            <version>${spring}</version>
-	            <exclusions>
-	                <exclusion>
-	                    <groupId>commons-logging</groupId>
-	                    <artifactId>commons-logging</artifactId>
-	                </exclusion>
-	            </exclusions>
-	        </dependency>
-			
-			<dependency>
-			    <groupId>org.seleniumhq.selenium</groupId>
-			    <artifactId>selenium-java</artifactId>
-			    <version>${selenium.version}</version>
-			    <scope>test</scope>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-java</artifactId>
+				<version>${selenium.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>io.github.bonigarcia</groupId>
 				<artifactId>webdrivermanager</artifactId>
 				<version>${webdrivermanager.version}</version>
 				<scope>compile</scope>
 			</dependency>
-		
-			
-	        <dependency>
-	            <groupId>org.springframework</groupId>
-	            <artifactId>spring-webmvc</artifactId>
-	            <version>${spring}</version>
-	            <exclusions>
-	                <exclusion>
-	                    <groupId>commons-logging</groupId>
-	                    <artifactId>commons-logging</artifactId>
-	                </exclusion>
-	            </exclusions>
-	        </dependency>
-			
+
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
 				<version>${maven-logback.version}</version>
-			    <scope>compile</scope>
+				<scope>compile</scope>
 			</dependency>
-	
+
 			<dependency>
-			    <groupId>org.hibernate</groupId>
-			    <artifactId>hibernate-core</artifactId>
-			    <version>${hibernate.version}</version>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
 			</dependency>
-			
+
 			<dependency>
-	           <groupId>org.slf4j</groupId>
-	           <artifactId>jcl-over-slf4j</artifactId>
-	           <version>${jcl.slf4j.version}</version>
-	       </dependency>
-			
-			<dependency>
-			  <groupId>com.querydsl</groupId>
-			  <artifactId>querydsl-apt</artifactId>
-			  <version>${querydsl.version}</version>
-			</dependency>    
-			    
-			<dependency>
-			  <groupId>com.querydsl</groupId>
-			  <artifactId>querydsl-jpa</artifactId>
-			  <version>${querydsl.version}</version>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${jcl.slf4j.version}</version>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.eclipse.persistence</groupId>
-			    <artifactId>javax.persistence</artifactId>
-			    <version>${javax.persistence.version}</version>
+				<groupId>com.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<version>${querydsl.version}</version>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.hibernate</groupId>
-			    <artifactId>hibernate-java8</artifactId>
-			    <version>${hibernate.version}</version>
+				<groupId>com.querydsl</groupId>
+				<artifactId>querydsl-jpa</artifactId>
+				<version>${querydsl.version}</version>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>org.eclipse.persistence</groupId>
+				<artifactId>javax.persistence</artifactId>
+				<version>${javax.persistence.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-java8</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>
-	
+
 </project>
