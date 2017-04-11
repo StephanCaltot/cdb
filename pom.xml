@@ -53,7 +53,7 @@
 		<javax.persistence.version>2.1.1</javax.persistence.version>
 		<apt.version>1.1.3</apt.version>
 		<jcl.slf4j.version>1.7.12</jcl.slf4j.version>
-   		<springSecurity.version>4.2.1.RELEASE</springSecurity.version>
+   		<springSecurity.version>4.2.2.RELEASE</springSecurity.version>
 
 	</properties>
 
@@ -181,250 +181,246 @@
 		
 	</reporting>
 	
+<!-- 	<dependencyManagement> -->
 	
-	<dependencies>
+		<dependencies>
+		
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql}</version>
+				<scope>compile</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j}</version>
+				<scope>compile</scope>
+			</dependency>
 	
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql}</version>
-			<scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j}</version>
-			<scope>runtime</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${mockito}</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>jstl</artifactId>
-		    <version>${jstl}</version>
-		    <scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-			<version>${springSecurity.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${springSecurity.version}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-		    <version>${servlet}</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>${commons.version}</version>
-		    <scope>compile</scope>
-		</dependency>
-		
-		
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring}</version>
-        </dependency>
-		
-		
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-core</artifactId>
-		    <version>${spring}</version>
-		    <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aop</artifactId>
-		    <version>${spring}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aspects</artifactId>
-		    <version>${spring}</version>
-		    <exclusions>
-		        <exclusion>
-		            <groupId>commons-logging</groupId>
-		            <artifactId>commons-logging</artifactId>
-		        </exclusion>
-		    </exclusions>
-		</dependency>
-		
-		
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-orm</artifactId>
-		    <version>${spring}</version>
-		</dependency>
-		
-		<dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-context</artifactId>
-	        <version>${spring}</version>
-	        <exclusions>
-	            <exclusion>
-	                <groupId>commons-logging</groupId>
-	                <artifactId>commons-logging</artifactId>
-	            </exclusion>
-	        </exclusions>
-		</dependency>
-		
-		
-		<dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-tx</artifactId>
-	        <version>${spring}</version>
-	        <exclusions>
-	            <exclusion>
-	                <groupId>commons-logging</groupId>
-	                <artifactId>commons-logging</artifactId>
-	            </exclusion>
-	        </exclusions>
-        </dependency>
-		
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-		
-		<dependency>
-		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-java</artifactId>
-		    <version>${selenium.version}</version>
-		    <scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>${webdrivermanager.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-jdbc</artifactId>
-		    <version>${spring}</version>
-		    <scope>compile</scope>
-		</dependency>
-		
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-		
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${maven-logback.version}</version>
-		    <scope>compile</scope>
-		</dependency>
-
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-core</artifactId>
-		    <version>${hibernate.version}</version>
-		</dependency>
-		
-		<dependency>
-           <groupId>org.slf4j</groupId>
-           <artifactId>jcl-over-slf4j</artifactId>
-           <version>${jcl.slf4j.version}</version>
-       </dependency>
-		
-		<dependency>
-		  <groupId>com.querydsl</groupId>
-		  <artifactId>querydsl-apt</artifactId>
-		  <version>${querydsl.version}</version>
-		</dependency>    
-		    
-		<dependency>
-		  <groupId>com.querydsl</groupId>
-		  <artifactId>querydsl-jpa</artifactId>
-		  <version>${querydsl.version}</version>
-		</dependency>
-		
-		
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-core</artifactId>
-            <version>${querydsl.version}</version>
-        </dependency>
-		
-		<dependency>
-		    <groupId>org.eclipse.persistence</groupId>
-		    <artifactId>javax.persistence</artifactId>
-		    <version>${javax.persistence.version}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-java8</artifactId>
-		    <version>${hibernate.version}</version>
-		</dependency>
-		
-	</dependencies>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${slf4j}</version>
+				<scope>runtime</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit}</version>
+				<scope>test</scope>
+			</dependency>
 	
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito}</version>
+				<scope>test</scope>
+			</dependency>
+			
+			<dependency>
+			    <groupId>javax.servlet</groupId>
+			    <artifactId>jstl</artifactId>
+			    <version>${jstl}</version>
+			    <scope>compile</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${springSecurity.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${springSecurity.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>javax.servlet</groupId>
+			    <artifactId>javax.servlet-api</artifactId>
+			    <version>${servlet}</version>
+			    <scope>provided</scope>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-lang3</artifactId>
+			    <version>${commons.version}</version>
+			    <scope>compile</scope>
+			</dependency>
+			
+	        <dependency>
+	            <groupId>org.springframework</groupId>
+	            <artifactId>spring-test</artifactId>
+	            <version>${spring}</version>
+	        </dependency>
+	
+	        <dependency>
+	            <groupId>org.springframework</groupId>
+	            <artifactId>spring-beans</artifactId>
+	            <version>${spring}</version>
+	        </dependency>
+			
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-core</artifactId>
+			    <version>${spring}</version>
+			    <exclusions>
+	                <exclusion>
+	                    <groupId>commons-logging</groupId>
+	                    <artifactId>commons-logging</artifactId>
+	                </exclusion>
+	            </exclusions>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-aop</artifactId>
+			    <version>${spring}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-aspects</artifactId>
+			    <version>${spring}</version>
+			    <exclusions>
+			        <exclusion>
+			            <groupId>commons-logging</groupId>
+			            <artifactId>commons-logging</artifactId>
+			        </exclusion>
+			    </exclusions>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-orm</artifactId>
+			    <version>${spring}</version>
+			</dependency>
+			
+			<dependency>
+		        <groupId>org.springframework</groupId>
+		        <artifactId>spring-context</artifactId>
+		        <version>${spring}</version>
+		        <exclusions>
+		            <exclusion>
+		                <groupId>commons-logging</groupId>
+		                <artifactId>commons-logging</artifactId>
+		            </exclusion>
+		        </exclusions>
+			</dependency>
+	
+			<dependency>
+		        <groupId>org.springframework</groupId>
+		        <artifactId>spring-tx</artifactId>
+		        <version>${spring}</version>
+		        <exclusions>
+		            <exclusion>
+		                <groupId>commons-logging</groupId>
+		                <artifactId>commons-logging</artifactId>
+		            </exclusion>
+		        </exclusions>
+	        </dependency>
+			
+	        <dependency>
+	            <groupId>org.springframework</groupId>
+	            <artifactId>spring-web</artifactId>
+	            <version>${spring}</version>
+	            <exclusions>
+	                <exclusion>
+	                    <groupId>commons-logging</groupId>
+	                    <artifactId>commons-logging</artifactId>
+	                </exclusion>
+	            </exclusions>
+	        </dependency>
+			
+			<dependency>
+			    <groupId>org.seleniumhq.selenium</groupId>
+			    <artifactId>selenium-java</artifactId>
+			    <version>${selenium.version}</version>
+			    <scope>test</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>io.github.bonigarcia</groupId>
+				<artifactId>webdrivermanager</artifactId>
+				<version>${webdrivermanager.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-jdbc</artifactId>
+			    <version>${spring}</version>
+			    <scope>compile</scope>
+			</dependency>
+			
+	        <dependency>
+	            <groupId>org.springframework</groupId>
+	            <artifactId>spring-webmvc</artifactId>
+	            <version>${spring}</version>
+	            <exclusions>
+	                <exclusion>
+	                    <groupId>commons-logging</groupId>
+	                    <artifactId>commons-logging</artifactId>
+	                </exclusion>
+	            </exclusions>
+	        </dependency>
+			
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${maven-logback.version}</version>
+			    <scope>compile</scope>
+			</dependency>
+	
+			<dependency>
+			    <groupId>org.hibernate</groupId>
+			    <artifactId>hibernate-core</artifactId>
+			    <version>${hibernate.version}</version>
+			</dependency>
+			
+			<dependency>
+	           <groupId>org.slf4j</groupId>
+	           <artifactId>jcl-over-slf4j</artifactId>
+	           <version>${jcl.slf4j.version}</version>
+	       </dependency>
+			
+			<dependency>
+			  <groupId>com.querydsl</groupId>
+			  <artifactId>querydsl-apt</artifactId>
+			  <version>${querydsl.version}</version>
+			</dependency>    
+			    
+			<dependency>
+			  <groupId>com.querydsl</groupId>
+			  <artifactId>querydsl-jpa</artifactId>
+			  <version>${querydsl.version}</version>
+			</dependency>
+			
+	        <dependency>
+	            <groupId>com.querydsl</groupId>
+	            <artifactId>querydsl-core</artifactId>
+	            <version>${querydsl.version}</version>
+	        </dependency>
+			
+			<dependency>
+			    <groupId>org.eclipse.persistence</groupId>
+			    <artifactId>javax.persistence</artifactId>
+			    <version>${javax.persistence.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.hibernate</groupId>
+			    <artifactId>hibernate-java8</artifactId>
+			    <version>${hibernate.version}</version>
+			</dependency>
+			
+		</dependencies>
+
+<!-- 	</dependencyManagement> -->
 	
 </project>

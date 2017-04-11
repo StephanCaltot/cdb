@@ -1,6 +1,6 @@
-package com.excilys.scaltot.cdb.webapp.controller;
-
-import javax.servlet.http.HttpServletRequest;
+    package com.excilys.scaltot.cdb.webapp.controller;
+    
+    import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
+    
 /**
  * @author Caltot Stéphan
  *
