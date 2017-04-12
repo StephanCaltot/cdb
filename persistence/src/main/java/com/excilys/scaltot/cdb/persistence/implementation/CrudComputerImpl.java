@@ -150,7 +150,7 @@ public class CrudComputerImpl implements CrudComputer {
             .from(qComputer)
             .leftJoin(qCompany)
             .on(qCompany.id.eq(qComputer.manufacturer.id))
-            .where(qComputer.name.like(nameFilter))
+            .where(qComputer.name.like(nameFilter + "%"))
             .fetch();
 
     }

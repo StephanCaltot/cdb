@@ -20,7 +20,7 @@ public class MapperCompanyDto {
      * @param company : company
      * @return computerDto
      */
-    public static CompanyDto comanyToCompanyDto(Optional<Company> company) {
+    public static CompanyDto companyToCompanyDto(Optional<Company> company) {
         CompanyDto companyDto = new CompanyDto();
 
         companyDto.setId(company.get().getId());

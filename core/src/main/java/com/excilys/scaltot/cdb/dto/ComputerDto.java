@@ -1,12 +1,15 @@
 package com.excilys.scaltot.cdb.dto;
 
+import java.io.Serializable;
+
 /**
  * @author Caltot Stéphan
  *
  * 1 mars 2017
  */
-public class ComputerDto {
+public class ComputerDto implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private long id;
     private String computerName;
     private String dateWichIsIntroduced;

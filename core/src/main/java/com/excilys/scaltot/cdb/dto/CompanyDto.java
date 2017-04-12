@@ -1,12 +1,15 @@
 package com.excilys.scaltot.cdb.dto;
 
+import java.io.Serializable;
+
 /**
  * @author Caltot Stéphan
  *
  * 1 mars 2017
  */
-public class CompanyDto {
+public class CompanyDto implements Serializable {
 
+    private static final long serialVersionUID = -4801059240940752116L;
     private long id;
     private String name;
 

@@ -39,7 +39,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-java8</artifactId>
 		</dependency>
-		
+
 	</dependencies>
 
 	<name>cdb persistence module</name>
