@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import javax.ws.rs.Produces;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,23 +38,24 @@ public class ControllerCompany {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
-    public CompanyDto getComputer(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<CompanyDto> getComputer(@PathVariable Long id) throws SQLException {
         Optional<Company> company = crudCompanyService.find(id);
-        CompanyDto computerDto = MapperCompanyDto.companyToCompanyDto(company);
-        return computerDto;
+        CompanyDto companyDto = MapperCompanyDto.companyToCompanyDto(company);
+        return new ResponseEntity<CompanyDto>(companyDto,HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public List<CompanyDto> getCompanies() {
+    public ResponseEntity<List<CompanyDto>> getCompanies() {
         List<Company> companies = crudCompanyService.findAll();
-        List<CompanyDto> computersDto = MapperCompanyDto.companyListToCompanyDto(companies);
-        return computersDto;
+        List<CompanyDto> companiesDto = MapperCompanyDto.companyListToCompanyDto(companies);
+        return new ResponseEntity<List<CompanyDto>>(companiesDto,HttpStatus.OK);
     }
     
     
     @RequestMapping(method=RequestMethod.DELETE)
-    public void putComputer(Long id) {
+    public ResponseEntity<Long> putComputer(Long id) {
         crudCompanyService.delete(id);
+        return new ResponseEntity<Long>( id, HttpStatus.OK);
     }
 
 }

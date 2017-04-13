@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.ws.rs.Produces;
-import javax.xml.ws.Response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.scaltot.cdb.dto.ComputerDto;
 import com.excilys.scaltot.cdb.entities.Computer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.mappers.MapperComputerDto;
 import com.excilys.scaltot.cdb.services.interfaces.CrudComputerService;
 
@@ -38,34 +38,50 @@ public class ControllerComputer {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
-    public ComputerDto getComputer(@PathVariable Long id) {
-        Optional<Computer> computer = crudComputerService.find(id);
-        ComputerDto computerDto = MapperComputerDto.computerToComputerDto(computer);
-        return computerDto;
+    public ResponseEntity<?> getComputer(@PathVariable Long id) {
+        try {
+            Optional<Computer> computer = crudComputerService.find(id);
+            if (computer.isPresent()) {
+                ComputerDto computerDto = MapperComputerDto.computerToComputerDto(computer);
+                return new ResponseEntity<ComputerDto>(computerDto, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+            }
+        } catch (PersistenceException persistenceException) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public List<ComputerDto> getComputers() {
-        List<Computer> computers = crudComputerService.getComputersFiltered("");
-        List<ComputerDto> computersDto = MapperComputerDto.computerListToComputerDto(computers);
-        return computersDto;
+    public ResponseEntity<?> getComputers() {
+        try {
+            List<Computer> computers = crudComputerService.getComputersFiltered("");
+            List<ComputerDto> computersDto = MapperComputerDto.computerListToComputerDto(computers);
+            return new ResponseEntity<List<Computer>>(computers, HttpStatus.OK);
+        } catch (PersistenceException persistenceException) {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
     }
     
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Computer> postComputer(ComputerDto computerDto) {
+    public ResponseEntity<?> postComputer(ComputerDto computerDto) {
         Computer computer = MapperComputerDto.computerDtoToComputer(computerDto);
         crudComputerService.create(Optional.of(computer));
-        return new ResponseEntity<Computer>(computer, HttpStatus.ACCEPTED   );
-    }
-    
-    @RequestMapping(method=RequestMethod.PUT)
-    public void putComputer(ComputerDto computerDto) {
-        Computer computer = MapperComputerDto.computerDtoToComputer(computerDto);
-        crudComputerService.update(Optional.of(computer));
+        return new ResponseEntity<ComputerDto>(computerDto, HttpStatus.OK);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE)
-    public void putComputer(Long id) {
+    @RequestMapping(method=RequestMethod.PUT)
+    public ResponseEntity<?> putComputer(ComputerDto computerDto) {
+        Computer computer = MapperComputerDto.computerDtoToComputer(computerDto);
+        crudComputerService.update(Optional.of(computer));
+        return new ResponseEntity<ComputerDto>(computerDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<?> putComputer(@PathVariable Long id)   {
         crudComputerService.delete(id);
+        return new ResponseEntity<Long>( id, HttpStatus.OK);
     }
 }

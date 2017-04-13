@@ -14,8 +14,11 @@ import org.springframework.stereotype.Repository;
 import com.excilys.scaltot.cdb.entities.Computer;
 import com.excilys.scaltot.cdb.entities.QCompany;
 import com.excilys.scaltot.cdb.entities.QComputer;
+import com.excilys.scaltot.cdb.exceptions.PersistenceException;
 import com.excilys.scaltot.cdb.pagination.Pagination;
 import com.excilys.scaltot.cdb.persistence.interfaces.CrudComputer;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryException;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
 /**
@@ -77,8 +80,11 @@ public class CrudComputerImpl implements CrudComputer {
         if (id <= 0) {
             throw new IllegalArgumentException("You are trying to find a computer with null or negative id !");
         }
-        
-        return Optional.of(queryFactory.get().select(qComputer).from(qComputer).where(qComputer.id.eq(id)).fetchOne());
+        try {
+            return Optional.ofNullable(queryFactory.get().select(qComputer).from(qComputer).where(qComputer.id.eq(id)).fetchOne());
+        } catch (QueryException queryException) {
+            throw new PersistenceException(queryException);
+        }
     }
 
     /**
